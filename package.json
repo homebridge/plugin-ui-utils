@@ -21,6 +21,8 @@
   },
   "devDependencies": {
     "@types/node": "^14.14.6",
+    "@typescript-eslint/eslint-plugin": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.0",
     "eslint": "^7.12.1",
     "rimraf": "^3.0.2",
     "ts-node": "^9.0.0",
@@ -29,5 +31,6 @@
   "keywords": [
     "homebridge",
     "homebridge-ui"
-  ]
+  ],
+  "dependencies": {}
 }
