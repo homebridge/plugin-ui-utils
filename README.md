@@ -12,6 +12,7 @@ The package assists plugin developers creating fully customisable configuration 
   * [Toast Notifications](#toast-notifications)
   * [Modal](#modal)
   * [Events](#events)
+  * [Plugin / Server Information](#plugin--server-information)
 - [Server API](#server-api)
   * [Setup](#setup)
   * [Request Handling](#request-handling)
@@ -342,6 +343,45 @@ The corresponding code in the `server.js` file would look like this:
 
 ```ts
 this.pushEvent('my-event', { some: 'data' });
+```
+
+## Plugin / Server Information
+
+### `homebridge.plugin`
+
+> `homebridge.plugin`
+
+Is an object that contains plugin metadata. 
+
+```ts
+{
+  name: string;
+  description: string;
+  installedVersion: string;
+  latestVersion: string;
+  verifiedPlugin: boolean;
+  updateAvailable: boolean;
+  publicPackage: boolean;
+  links: {
+    npm: string;
+    homepage?: string;
+  }
+}
+```
+
+### homebridge.serverEnv
+
+> `homebridge.serverEnv`
+
+Is an object containing some server metadata
+
+```ts
+{
+  env: {
+    platform: string;       // darwin, win32, linux, freebsd etc.
+    nodeVersion: string;    // Node.js version
+  }
+}
 ```
 
 # Server API
