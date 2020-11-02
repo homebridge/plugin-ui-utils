@@ -184,7 +184,7 @@ This allows the custom UI to make API requests to their `server.js` script.
 
 ### `homebridge.request`
 
-> `homebridge.request(path: string, body?: any): Promise<any>;`
+> `homebridge.request(path: string, body?: any): Promise<any>`
 
 Make a request to the plugins server side script.
 
@@ -220,7 +220,7 @@ Toast notifications are the pop-up notifications displayed in the bottom right c
 
 ### `homebridge.toast.success`
 
-> `homebridge.toast.success(message: string, title?: string);`
+> `homebridge.toast.success(message: string, title?: string)`
 
 Shows a green "success" notification.
 
@@ -229,7 +229,7 @@ Shows a green "success" notification.
 
 ### `homebridge.toast.error`
 
-> `homebridge.toast.error(message: string, title?: string);`
+> `homebridge.toast.error(message: string, title?: string)`
 
 Shows a red "error" notification.
 
@@ -238,7 +238,7 @@ Shows a red "error" notification.
 
 ### `homebridge.toast.warning`
 
-> `homebridge.toast.success(message: string, title?: string);`
+> `homebridge.toast.success(message: string, title?: string)`
 
 Shows a amber "warning" notification.
 
@@ -247,7 +247,7 @@ Shows a amber "warning" notification.
 
 ### `homebridge.toast.info`
 
-> `homebridge.toast.success(message: string, title?: string);`
+> `homebridge.toast.success(message: string, title?: string)`
 
 Shows a blue "info" notification.
 
@@ -258,7 +258,7 @@ Shows a blue "info" notification.
 
 ### `homebridge.closeSettings`
 
-> `homebridge.closeSettings(): void;`
+> `homebridge.closeSettings(): void`
 
 Close the settings modal.
 
@@ -268,3 +268,34 @@ This action does not save any config changes.
 homebridge.closeSettings();
 ```
 
+## Events
+
+The `homebridge` object is an [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget), this allows you to use the browsers built in [addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) and [removeEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener) functions to subscribe and unsubscribe from events.
+
+### Ready Event
+
+Called when the Homebridge UI has completed rendering the plugin's custom UI.
+
+```ts
+homebridge.addEventListener('ready', () => {
+  // do something with event
+});
+```
+
+### Custom Events
+
+Custom events can be pushed from the plugin's `server.js` script.
+
+UI Example:
+
+```ts
+homebridge.addEventListener('my-event', (event) => {
+  console.log(event.data); // the event payload from the server
+});
+```
+
+The corresponding code in the `server.js` file would look like this:
+
+```ts
+this.pushEvent('pushEvent', { some: 'data' });
+```
