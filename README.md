@@ -369,6 +369,11 @@ class UiServer extends HomebridgePluginUiServer {
     this.ready();
   }
 }
+
+// start the instance of the class
+(() => {
+  return new UiServer;
+})();
 ```
 
 ## Setup
