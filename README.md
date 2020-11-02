@@ -38,7 +38,10 @@ A plugin's custom UI is displayed inside an iframe in the settings modal, in pla
 <img width="700px" src="https://user-images.githubusercontent.com/3979615/97826339-73d83500-1d15-11eb-8a14-a2a8e4895959.png">
 </p>
 
-Users should make use [Bootstrap 4](https://getbootstrap.com/docs) css classes, as these will automatically be styled and themed correctly.
+
+Developers are free to create their UI using any framework they wish, such as Angular, Vue, or React - or they can also just use plain vanilla JavaScript.
+
+Developers should make use [Bootstrap 4](https://getbootstrap.com/docs) css classes, as these will automatically be styled and themed correctly.
 
 The `index.html` file should not include `<html>`, `<head>`, or `<body>` tags, as these are added by the Homebridge UI during the render process.
 
@@ -59,7 +62,11 @@ Example `index.html`:
 
 <script>
 (async () => {
+  // get the current homebridge config
   const pluginConfig = await homebridge.getPluginConfig();
+
+  // make requests to your server.js script
+  const result = await homebridge.request('/hello', { name: 'world' });
 })();
 </script>
 ```
