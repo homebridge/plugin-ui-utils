@@ -34,6 +34,27 @@ export declare class IHomebridgePluginUi extends EventTarget {
   public closeSettings(): void;
 
   /**
+   * Show a loading spinner overlay.
+   * Prevents user input until cleared with `homebridge.hideSpinner();`
+   * 
+   * @example
+   * ```ts
+   * this.showSpinner();
+   * ```
+   */
+  public showSpinner(): void;
+
+  /**
+   * Hide theloading spinner overlay.
+   * 
+   * @example
+   * ```ts
+   * this.hideSpinner();
+   * ```
+   */
+  public hideSpinner(): void;
+
+  /**
    * Get the current config for the plugin.
    * @returns an array of platforms or accessory config blocks.
    * @returns an empty array if the plugin has no current config.
@@ -100,25 +121,15 @@ export declare class IHomebridgePluginUi extends EventTarget {
   public request(path: string, body?: any): Promise<any>;
 
   /**
-   * Show a loading spinner overlay.
-   * Prevents user input until cleared with `homebridge.hideSpinner();`
-   * 
-   * @example
-   * ```ts
-   * this.showSpinner();
-   * ```
+   * Return the current language the user interface is displayed in.
+   * Returns the i18n country code.
    */
-  public showSpinner(): void;
+  public i18nCurrentLang(): Promise<string>;
 
   /**
-   * Hide theloading spinner overlay.
-   * 
-   * @example
-   * ```ts
-   * this.hideSpinner();
-   * ```
+   * Returns the full translation object for the current language.
    */
-  public hideSpinner(): void;
+  public i18nGetTranslation(): Promise<Record<string, string>>;
 }
 
 export declare class IHomebridgeUiToastHelper {

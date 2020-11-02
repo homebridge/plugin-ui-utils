@@ -127,6 +127,14 @@ class HomebridgePluginUi extends EventTarget {
     this._postMessage({ action: 'close' });
   }
 
+  public showSpinner(): void {
+    this._postMessage({ action: 'spinner.show' });
+  }
+
+  public hideSpinner(): void {
+    this._postMessage({ action: 'spinner.hide' });
+  }
+
   public async getPluginConfig(): Promise<PluginConfig> {
     return await this._requestResponse({ action: 'config.get' });
   }
@@ -143,12 +151,12 @@ class HomebridgePluginUi extends EventTarget {
     return await this._requestResponse({ action: 'request', path: path, body: body });
   }
 
-  public showSpinner(): void {
-    this._postMessage({ action: 'spinner.show' });
+  public async i18nCurrentLang(): Promise<string> {
+    return await this._requestResponse({ action: 'i18n.lang' });
   }
 
-  public hideSpinner(): void {
-    this._postMessage({ action: 'spinner.hide' });
+  public async i18nGetTranslation(): Promise<Record<string, string>> {
+    return await this._requestResponse({ action: 'i18n.translations' });
   }
 }
 
