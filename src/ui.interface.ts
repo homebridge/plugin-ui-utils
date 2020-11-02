@@ -78,7 +78,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
 
   /**
    * Make a request to the plugins server side script
-   * @param path - the path handler to send the request to
+   * @param path - the path handler on the server that the request should be sent to
    * @param body - an optional payload
    * 
    * @example

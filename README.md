@@ -39,7 +39,7 @@ A plugin's custom UI is displayed inside an iframe in the settings modal, in pla
 </p>
 
 
-Developers are free to create their UI using any framework they wish, such as Angular, Vue, or React - or they can also just use plain vanilla JavaScript.
+Developers are free to use front end frameworks such as Angular, Vue, or React to create the plugin's custom user interface; 
 
 Developers should make use [Bootstrap 4](https://getbootstrap.com/docs) css classes, as these will automatically be styled and themed correctly.
 
@@ -111,3 +111,160 @@ class UiServer extends HomebridgePluginUiServer {
   return new UiServer;
 })();
 ```
+
+# User Interface API
+
+The user interface API is provided to the plugin's custom UI via the `window.homebridge` object. This is injected into the plugin's custom UI during render.
+
+## Config
+
+### `homebridge.getPluginConfig`
+
+> homebridge.getPluginConfig(): Promise<PluginConfig[]>;
+
+Returns a promise that resolves an array of accessory or platform config blocks for the plugin.
+
+An empty array will be returned if the plugin is not currently configured.
+
+```ts
+const pluginConfigBlocks = await homebridge.getPluginConfig();
+// [{ platform: 'ExamplePlatform', name: 'example' }]
+```
+
+### `homebridge.updatePluginConfig`
+
+> homebridge.updatePluginConfig(pluginConfig: PluginConfig): Promise<PluginConfig[]>;
+
+Update the plugin config.
+
+* `pluginConfig`: A full array of platform and accessory config blocks.
+
+This should be called whenever a change to the config is made.
+
+This does not save the plugin config to disk.
+
+Existing blocks not included will be removed.
+
+```ts
+const pluginConfig = [
+  {
+    name: 'my light 1',
+    accessory: 'ExampleAccessory'
+  },
+  {
+    name: 'my light 2',
+    accessory: 'ExampleAccessory'
+  }
+]
+
+await homebridge.updatePluginConfig(pluginConfig);
+```
+
+### `homebridge.savePluginConfig`
+
+> homebridge.savePluginConfig(): Promise<void>
+
+Saves the plugin config changes to the Homebridge `config.json`. This is the equivalent of clicking the *Save* button.
+
+This should be used sparingly, for example, after a access token is generated.
+
+You must call `await homebridge.updatePluginConfig()` first.
+
+```ts
+// update config first!
+await homebridge.updatePluginConfig(pluginConfig);
+
+// save config
+await homebridge.savePluginConfig();
+```
+
+## Requests
+
+This allows the custom UI to make API requests to their `server.js` script.
+
+### `homebridge.request`
+
+> homebridge.request(path: string, body?: any): Promise<any>;
+
+Make a request to the plugins server side script.
+
+* `path`: the path handler on the server that the request should be sent to
+* `body`: an optional payload
+
+Returns a promise with the response from the server.
+
+User Interface Example:
+
+```ts
+const response = await homebridge.request('/hello', { who: 'world' });
+console.log(response); // the response from the server
+```
+
+The corresponding code in the `server.js` file would look like this:
+
+```js
+// server side request handler
+this.onRequest('/hello', async (payload) => {
+  console.log(payload) // the payload sent from the UI
+  return { hello: 'user' };
+});
+```
+
+## Toast Notifications
+
+Toast notifications are the pop-up notifications displayed in the bottom right corner. A plugin's custom UI can generate custom notifications with custom content.
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/3979615/97829910-7e97c780-1d1f-11eb-95ff-7d85d883b44c.png">
+</p>
+
+### `homebridge.toast.success`
+
+> homebridge.toast.success(message: string, title?: string);
+
+Shows a green "success" notification.
+
+* `message`: the toast content
+* `title`: an optional title
+
+### `homebridge.toast.error`
+
+> homebridge.toast.error(message: string, title?: string);
+
+Shows a red "error" notification.
+
+* `message`: the toast content
+* `title`: an optional title
+
+### `homebridge.toast.warning`
+
+> homebridge.toast.success(message: string, title?: string);
+
+Shows a amber "warning" notification.
+
+* `message`: the toast content
+* `title`: an optional title
+
+### `homebridge.toast.info`
+
+> homebridge.toast.success(message: string, title?: string);
+
+Shows a blue "info" notification.
+
+* `message`: the toast content
+* `title`: an optional title
+
+## Modal
+
+### `homebridge.closeSettings`
+
+> homebridge.closeSettings(): void;
+
+Close the settings modal.
+
+This action does not save any config changes.
+
+```ts
+homebridge.closeSettings();
+```
+
