@@ -21,6 +21,6 @@
     "src/"
   ],
   "exclude": [
-    "**/*.spec.ts"
+    "src/ui.ts"
   ]
 }

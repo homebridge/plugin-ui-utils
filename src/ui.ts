@@ -1,9 +1,3 @@
-declare global {
-  interface Window {
-    homebridge: HomebridgePluginUi;
-  }
-}
-
 type PluginConfig = Array<Record<string, any>>;
 
 /**
@@ -11,10 +5,11 @@ type PluginConfig = Array<Record<string, any>>;
  * You should not include it in your own code, however you can use it for type information if desired.
  * It provides the interface to interact with the Homebridge UI service.
  */
-export class HomebridgePluginUi extends EventTarget {
-  public toast = new HomebridgeUiToastHelper();
-  public origin = '';
+class HomebridgePluginUi extends EventTarget {
+  private origin = '';
+  private lastBodyHeight = 0;
 
+  public toast = new HomebridgeUiToastHelper();
   public plugin = window['_homebridge'].plugin;
   public serverEnv = window['_homebridge'].serverEnv;
 
@@ -30,6 +25,7 @@ export class HomebridgePluginUi extends EventTarget {
         document.body.style.display = 'block';
         this.dispatchEvent(new Event('ready'));
         this.fixScrollHeight();
+        this._monitorFrameHeight();
         break;
       }
       case 'response': {
@@ -82,6 +78,24 @@ export class HomebridgePluginUi extends EventTarget {
     document.head.appendChild(linkElement);
   }
 
+  private _monitorFrameHeight() {
+    if (window['ResizeObserver']) {
+      // use ResizeObserver if available
+      const resizeObserver = new window['ResizeObserver'](() => {
+        this.fixScrollHeight();
+      });
+      resizeObserver.observe(document.body);
+    } else {
+      // fall back to polling
+      setInterval(() => {
+        if (document.body.scrollHeight !== this.lastBodyHeight) {
+          this.lastBodyHeight = document.body.scrollHeight;
+          this.fixScrollHeight();
+        }
+      }, 250);
+    }
+  }
+
   private async _requestResponse(payload): Promise<any> {
     // generate a random request id so we can link the response
     const requestId = Math.random().toString(36).substring(2);
@@ -105,95 +119,29 @@ export class HomebridgePluginUi extends EventTarget {
     });
   }
 
-  /**
-   * Tell the UI to adjust the height of the iframe container to the same as your document body
-   */
   public fixScrollHeight() {
-    this._postMessage({ action: 'scollHeight', scrollHeight: document.body.scrollHeight });
+    this._postMessage({ action: 'scrollHeight', scrollHeight: document.body.scrollHeight });
   }
 
-  /**
-   * Close the Plugin Settings modal.
-   * This action does not save any config changes.
-   */
   public closeSettings(): void {
     this._postMessage({ action: 'close' });
   }
 
-  /**
-   * Get the current config for the plugin.
-   * @returns an array of platforms or accessory config blocks.
-   * @returns an empty array if the plugin has no current config.
-   * 
-   * @example
-   * ```ts
-   * const pluginConfigBlocks = await homebridge.getPluginConfig();
-   * ```
-   */
   public async getPluginConfig(): Promise<PluginConfig> {
     return await this._requestResponse({ action: 'config.get' });
   }
 
-  /**
-  * Update the plugin config.
-  * This should be called whenever a change to the config is made.
-  * This method does not save the changes to the config.json file.
-  * Existing blocks not included will be removed.
-  *
-  * @example
-  * ```ts
-  * await homebridge.updatePluginConfig(
-  *   [
-  *      {
-  *         "name": "my light",
-  *         "platform": "example_platform"
-  *      }
-  *   ]
-  * );
-  * ```
-  */
   public async updatePluginConfig(pluginConfig: PluginConfig): Promise<PluginConfig> {
     return await this._requestResponse({ action: 'config.update', pluginConfig: pluginConfig });
   }
 
-  /**
-   * Save the plugin config.
-   * You must called `homebridge.updatePluginConfig` first.
-   * 
-   * @example
-   * ```ts
-   * await homebridge.savePluginConfig();
-   * ```
-   */
   public async savePluginConfig(): Promise<void> {
     return await this._requestResponse({ action: 'config.save' });
   }
 
-  /**
-   * Make a request to the plugins server side script
-   * @param path - the path handler to send the request to
-   * @param body - an optional payload
-   * 
-   * @example
-   * ```ts
-   * 
-   * const response = await homebridge.request('/hello', { who: 'world' });
-   * console.log(response); // the response from the server
-   * ```
-   * 
-   * The server side component would handle this using `this.onRequest`.
-   * 
-   * @example
-   * ```ts
-   * this.onRequest('/hello', async (payload) => {
-   *  return {hello: 'user'};
-   * });
-   * ```
-   */
   public async request(path: string, body?: any): Promise<any> {
     return await this._requestResponse({ action: 'request', path: path, body: body });
   }
-
 }
 
 class HomebridgeUiToastHelper {
@@ -201,41 +149,21 @@ class HomebridgeUiToastHelper {
     window.parent.postMessage({ action: 'toast.' + type, message: message, title: title }, '*');
   }
 
-  /**
-   * Trigger a success toast notification in the UI
-   * @param message 
-   * @param title - optional title
-   */
   public success(message: string, title?: string) {
     this._postMessage('success', message, title);
   }
 
-  /**
-   * Trigger an error toast notification in the UI
-   * @param message 
-   * @param title  - optional title
-   */
   public error(message: string, title?: string) {
     this._postMessage('error', message, title);
   }
 
-  /**
-   * Trigger a warning toast notification in the UI
-   * @param message 
-   * @param title  - optional title
-   */
   public warning(message: string, title?: string) {
     this._postMessage('warning', message, title);
   }
 
-  /**
-   * Trigger an info toast notification in the UI
-   * @param message 
-   * @param title  - optional title
-   */
   public info(message: string, title?: string) {
     this._postMessage('info', message, title);
   }
 }
 
-window.homebridge = new HomebridgePluginUi();
+window['homebridge'] = new HomebridgePluginUi();

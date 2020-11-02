@@ -81,8 +81,12 @@ export class HomebridgePluginUiServer {
         const resp = await this.handlers[request.path](request.body || {});
         return this.sendResponse(request, resp, true);
       } catch (e) {
-        console.log(e);
-        return this.sendResponse(request, { message: e.message, error: e }, false);
+        if (e instanceof RequestError) {
+          return this.sendResponse(request, { message: e.message, error: e.requestError }, false);
+        } else {
+          console.error(e);
+          return this.sendResponse(request, { message: e.message }, false);
+        }
       }
     } else {
       console.error('No Registered Handler:', request.path);
@@ -167,6 +171,17 @@ export class HomebridgePluginUiServer {
     });
   }
 
+}
+
+export class RequestError extends Error {
+  public requestError: string;
+
+  constructor(error) {
+    super('Request Error');
+    Object.setPrototypeOf(this, RequestError.prototype);
+
+    this.requestError = error;
+  }
 }
 
 type RequestResponse = string | number | Record<any, any> | Array<any>;

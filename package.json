@@ -1,6 +1,6 @@
 {
   "name": "@homebridge/plugin-ui-utils",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "A tool to help plugins provide custom ui screens in the Homebridge UI",
   "author": "oznu",
   "license": "MIT",
@@ -16,7 +16,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint src/**.ts --max-warnings=0",
-    "build": "rimraf ./dist && tsc",
+    "build": "rimraf ./dist && tsc --project tsconfig.json && tsc --project tsconfig.ui.json",
     "prepublishOnly": "npm run lint && npm run build"
   },
   "devDependencies": {
