@@ -395,6 +395,8 @@ Example:
 
 ```ts
 // server side code
+const { RequestError } = require('@homebridge/plugin-ui-utils');
+
 this.onRequest('/hello', async (payload) => {
   // something went wrong, throw a RequestError:
   throw new RequestError('Something went wrong!', { status: 404 });
