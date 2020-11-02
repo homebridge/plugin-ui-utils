@@ -120,7 +120,7 @@ The user interface API is provided to the plugin's custom UI via the `window.hom
 
 ### `homebridge.getPluginConfig`
 
-> homebridge.getPluginConfig(): Promise<PluginConfig[]>;
+> `homebridge.getPluginConfig(): Promise<PluginConfig[]>;`
 
 Returns a promise that resolves an array of accessory or platform config blocks for the plugin.
 
@@ -133,7 +133,7 @@ const pluginConfigBlocks = await homebridge.getPluginConfig();
 
 ### `homebridge.updatePluginConfig`
 
-> homebridge.updatePluginConfig(pluginConfig: PluginConfig): Promise<PluginConfig[]>;
+> `homebridge.updatePluginConfig(pluginConfig: PluginConfig): Promise<PluginConfig[]>;`
 
 Update the plugin config.
 
@@ -162,7 +162,7 @@ await homebridge.updatePluginConfig(pluginConfig);
 
 ### `homebridge.savePluginConfig`
 
-> homebridge.savePluginConfig(): Promise<void>
+> `homebridge.savePluginConfig(): Promise<void>`
 
 Saves the plugin config changes to the Homebridge `config.json`. This is the equivalent of clicking the *Save* button.
 
@@ -184,7 +184,7 @@ This allows the custom UI to make API requests to their `server.js` script.
 
 ### `homebridge.request`
 
-> homebridge.request(path: string, body?: any): Promise<any>;
+> `homebridge.request(path: string, body?: any): Promise<any>;`
 
 Make a request to the plugins server side script.
 
@@ -220,7 +220,7 @@ Toast notifications are the pop-up notifications displayed in the bottom right c
 
 ### `homebridge.toast.success`
 
-> homebridge.toast.success(message: string, title?: string);
+> `homebridge.toast.success(message: string, title?: string);`
 
 Shows a green "success" notification.
 
@@ -229,7 +229,7 @@ Shows a green "success" notification.
 
 ### `homebridge.toast.error`
 
-> homebridge.toast.error(message: string, title?: string);
+> `homebridge.toast.error(message: string, title?: string);`
 
 Shows a red "error" notification.
 
@@ -238,7 +238,7 @@ Shows a red "error" notification.
 
 ### `homebridge.toast.warning`
 
-> homebridge.toast.success(message: string, title?: string);
+> `homebridge.toast.success(message: string, title?: string);`
 
 Shows a amber "warning" notification.
 
@@ -247,7 +247,7 @@ Shows a amber "warning" notification.
 
 ### `homebridge.toast.info`
 
-> homebridge.toast.success(message: string, title?: string);
+> `homebridge.toast.success(message: string, title?: string);`
 
 Shows a blue "info" notification.
 
@@ -258,7 +258,7 @@ Shows a blue "info" notification.
 
 ### `homebridge.closeSettings`
 
-> homebridge.closeSettings(): void;
+> `homebridge.closeSettings(): void;`
 
 Close the settings modal.
 
