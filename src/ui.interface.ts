@@ -98,6 +98,27 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * ```
    */
   public request(path: string, body?: any): Promise<any>;
+
+  /**
+   * Show a loading spinner overlay.
+   * Prevents user input until cleared with `homebridge.hideSpinner();`
+   * 
+   * @example
+   * ```ts
+   * this.showSpinner();
+   * ```
+   */
+  public showSpinner(): void;
+
+  /**
+   * Hide theloading spinner overlay.
+   * 
+   * @example
+   * ```ts
+   * this.hideSpinner();
+   * ```
+   */
+  public hideSpinner(): void;
 }
 
 export declare class IHomebridgeUiToastHelper {

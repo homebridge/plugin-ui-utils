@@ -150,7 +150,7 @@ const pluginConfigBlocks = await homebridge.getPluginConfig();
 
 ### `homebridge.updatePluginConfig`
 
-> `homebridge.updatePluginConfig(pluginConfig: PluginConfig): Promise<PluginConfig[]>;`
+> `homebridge.updatePluginConfig(pluginConfig: PluginConfig[]): Promise<PluginConfig[]>;`
 
 Update the plugin config.
 
@@ -237,7 +237,7 @@ Toast notifications are the pop-up notifications displayed in the bottom right c
 
 ### `homebridge.toast.success`
 
-> `homebridge.toast.success(message: string, title?: string)`
+> `homebridge.toast.success(message: string, title?: string): void`
 
 Shows a green "success" notification.
 
@@ -246,7 +246,7 @@ Shows a green "success" notification.
 
 ### `homebridge.toast.error`
 
-> `homebridge.toast.error(message: string, title?: string)`
+> `homebridge.toast.error(message: string, title?: string): void`
 
 Shows a red "error" notification.
 
@@ -255,7 +255,7 @@ Shows a red "error" notification.
 
 ### `homebridge.toast.warning`
 
-> `homebridge.toast.success(message: string, title?: string)`
+> `homebridge.toast.success(message: string, title?: string): void`
 
 Shows an amber "warning" notification.
 
@@ -264,7 +264,7 @@ Shows an amber "warning" notification.
 
 ### `homebridge.toast.info`
 
-> `homebridge.toast.success(message: string, title?: string)`
+> `homebridge.toast.success(message: string, title?: string): void`
 
 Shows a blue "info" notification.
 
@@ -283,6 +283,33 @@ This action does not save any config changes.
 
 ```ts
 homebridge.closeSettings();
+```
+
+### `homebridge.showSpinner`
+
+> `homebridge.showSpinner(): void`
+
+Displays a spinner / loading overlay, preventing user input until cleared with `homebridge.hideSpinner`.
+
+```ts
+// show the spinner overlay
+homebridge.showSpinner();
+
+// wait for the request to process
+await homebridge.request('/hello');
+
+// hide the spinner overlay
+homebridge.hideSpinner();
+```
+
+### `homebridge.hideSpinner`
+
+> `homebridge.hideSpinner(): void`
+
+Hide the spinner / loading overlay.
+
+```ts
+homebridge.hideSpinner();
 ```
 
 ## Events

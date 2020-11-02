@@ -142,6 +142,14 @@ class HomebridgePluginUi extends EventTarget {
   public async request(path: string, body?: any): Promise<any> {
     return await this._requestResponse({ action: 'request', path: path, body: body });
   }
+
+  public showSpinner(): void {
+    this._postMessage({ action: 'spinner.show' });
+  }
+
+  public hideSpinner(): void {
+    this._postMessage({ action: 'spinner.hide' });
+  }
 }
 
 class HomebridgeUiToastHelper {
