@@ -174,13 +174,13 @@ export class HomebridgePluginUiServer {
 }
 
 export class RequestError extends Error {
-  public requestError: string;
+  public requestError: any;
 
-  constructor(error) {
-    super('Request Error');
+  constructor(message: string, requestError: any) {
+    super(message);
     Object.setPrototypeOf(this, RequestError.prototype);
 
-    this.requestError = error;
+    this.requestError = requestError;
   }
 }
 

@@ -240,7 +240,7 @@ Shows a red "error" notification.
 
 > `homebridge.toast.success(message: string, title?: string)`
 
-Shows a amber "warning" notification.
+Shows an amber "warning" notification.
 
 * `message`: the toast content
 * `title`: an optional title
@@ -297,5 +297,159 @@ homebridge.addEventListener('my-event', (event) => {
 The corresponding code in the `server.js` file would look like this:
 
 ```ts
-this.pushEvent('pushEvent', { some: 'data' });
+this.pushEvent('my-event', { some: 'data' });
+```
+
+# Server API
+
+If your plugin implements the `server.js` code, you will need to include the  `@homebridge/plugin-ui-utils` library as a prod dependency:
+
+```
+npm install --save @homebridge/plugin-ui-utils
+```
+
+The `server.js` script lifecycle is only active while the user has the plugin's settings modal open.
+
+The `server.js` script must create a new instance of a class that extends `HomebridgePluginUiServer` from the `@homebridge/plugin-ui-utils` library.
+
+```js
+const { HomebridgePluginUiServer } = require('@homebridge/plugin-ui-utils');
+
+// your class MUST extend the HomebridgePluginUiServer
+class UiServer extends HomebridgePluginUiServer {
+  constructor () { 
+    // super must be called first
+    super();
+
+    // call ready when you are ready to accept requests
+    this.ready();
+  }
+}
+```
+
+## Setup
+
+### `this.ready`
+
+> `this.ready(): void`
+
+Let the UI know the server is ready to accept requests.
+
+```ts
+this.ready();
+```
+
+## Request Handling
+
+### `this.onRequest`
+
+> `this.onRequest(path: string, fn: RequestHandler)`
+
+Handle requests sent from the UI to the given path.
+
+* `path`: the request path name
+* `fn`: a function to handle the incoming requests
+
+The value returned/resolved from the request handler function will be sent back to the UI as the request response.
+
+Example creating a request handler on the server:
+
+```ts
+// server side code
+this.onRequest('/hello', async (payload) => {
+  console.log(payload) // the payload sent from the UI
+  return { hello: 'user' };
+});
+```
+
+The corresponding call in the UI to send requests to this endpoint:
+
+```ts
+// ui code
+const response = await homebridge.request('/hello', { who: 'world' });
+console.log(response); // the response from the server
+```
+
+## Request Error Handling
+
+If you need to throw an error during your request, you should throw an instance of `RequestError` instead of a normal `Error`:
+
+Example:
+
+```ts
+// server side code
+this.onRequest('/hello', async (payload) => {
+  // something went wrong, throw a RequestError:
+  throw new RequestError('Something went wrong!', { status: 404 });
+});
+```
+
+You can then catch this in the UI:
+
+```ts
+try {
+  await homebridge.request('/hello', { who: 'world' });
+} catch (e) {
+  console.log(e.message); // 'Something went wrong!'
+  console.log(e.error); // { status: 404 }
+}
+```
+
+Uncaught errors in event handlers, or errors thrown using `new Error` will still result in the waiting promise in the UI being rejected, however the error stack trace will also be shown in the Homebridge logs which should be avoided.
+
+## Push Events
+
+### `this.pushEvent`
+
+> `this.pushEvent(event: string, data: any)`
+
+Push events allow you to send data to the UI, without needed the UI to request it first.
+
+* `event`: a string to describe the event type
+* `data`: any data to send as an event payload to the UI.
+
+Example pushing an event payload to the UI:
+
+```ts
+this.pushEvent('my-event', { some: 'data' });
+```
+
+The corresponding code to watch for the event in the UI:
+
+```ts
+homebridge.addEventListener('my-event', (event) => {
+  console.log(event.data); // the event payload from the server
+});
+```
+
+## Server Information
+
+### `this.homebridgeStoragePath`
+
+> `this.homebridgeStoragePath: string`
+
+Returns the Homebridge instance's current storage path.
+
+```ts
+const storagePath = this.homebridgeStoragePath;
+```
+
+### `this.homebridgeConfigPath`
+
+> `this.homebridgeConfigPath: string`
+
+Returns the path to the Homebridge `config.json` file:
+
+```ts
+const configPath = this.homebridgeConfigPath;
+```
+
+### `this.homebridgeUiVersion`
+
+> `this.homebridgeUiVersion: string`
+
+Returns the version of the Homebridge UI:
+
+```ts
+const uiVersion = this.homebridgeUiVersion;
 ```
