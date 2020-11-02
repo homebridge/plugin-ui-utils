@@ -2,6 +2,23 @@
 
 The package assists plugin developers creating fully customisable configuration UIs for their plugins.
 
+- [Implementation](#implementation)
+  * [Project Layout](#project-layout)
+  * [User Interface](#user-interface)
+  * [Server](#server)
+- [User Interface API](#user-interface-api)
+  * [Config](#config)
+  * [Requests](#requests)
+  * [Toast Notifications](#toast-notifications)
+  * [Modal](#modal)
+  * [Events](#events)
+- [Server API](#server-api)
+  * [Setup](#setup)
+  * [Request Handling](#request-handling)
+  * [Request Error Handling](#request-error-handling)
+  * [Push Events](#push-events)
+  * [Server Information](#server-information)
+
 # Implementation
 
 A plugin's custom UI has two main components:
@@ -39,9 +56,9 @@ A plugin's custom UI is displayed inside an iframe in the settings modal, in pla
 </p>
 
 
-Developers are free to use front end frameworks such as Angular, Vue, or React to create the plugin's custom user interface; 
+Developers are free to use front end frameworks such as Angular, Vue, or React to create the plugin's custom user interface.
 
-Developers should make use [Bootstrap 4](https://getbootstrap.com/docs) css classes, as these will automatically be styled and themed correctly.
+Developers should make use [Bootstrap 4](https://getbootstrap.com/docs) CSS classes, as these will automatically be styled and themed correctly. There is no need to include the boostrap css yourself, this will be injected by the Homebridge UI during render.
 
 The `index.html` file should not include `<html>`, `<head>`, or `<body>` tags, as these are added by the Homebridge UI during the render process.
 
@@ -186,7 +203,7 @@ This allows the custom UI to make API requests to their `server.js` script.
 
 > `homebridge.request(path: string, body?: any): Promise<any>`
 
-Make a request to the plugins server side script.
+Make a request to the plugin's server side script.
 
 * `path`: the path handler on the server that the request should be sent to
 * `body`: an optional payload
