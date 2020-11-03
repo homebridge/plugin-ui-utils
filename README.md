@@ -22,8 +22,8 @@ The package assists plugin developers creating fully customisable configuration 
 
 A plugin's custom user interface has two main components:
 
-* User Interface - this is the HTML / CSS / JavaScript code the users interact with
-* Server - this is an optional server side script that provides endpoints the UI can call
+* [User Interface](#user-interface-api) - this is the HTML / CSS / JavaScript code the users interact with
+* [Server](#server-api) - this is an optional server side script that provides endpoints the UI can call
 
 ## Project Layout
 
