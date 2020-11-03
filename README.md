@@ -1,11 +1,9 @@
 # Homebridge Plugin Custom UI Utils
 
-The package assists plugin developers creating fully customisable configuration UIs for their plugins.
+The package assists plugin developers creating fully customisable configuration user interfaces for their plugins.
 
 - [Implementation](#implementation)
   * [Project Layout](#project-layout)
-  * [User Interface](#user-interface)
-  * [Server](#server)
 - [User Interface API](#user-interface-api)
   * [Config](#config)
   * [Requests](#requests)
@@ -22,7 +20,7 @@ The package assists plugin developers creating fully customisable configuration 
 
 # Implementation
 
-A plugin's custom UI has two main components:
+A plugin's custom user interface has two main components:
 
 * User Interface - this is the HTML / CSS / JavaScript code the users interact with
 * Server - this is an optional server side script that provides endpoints the UI can call
@@ -48,22 +46,22 @@ homebridge-example-plugin/
 ├── package.json
 ```
 
-## User Interface
+# User Interface API
 
-A plugin's custom UI is displayed inside an iframe in the settings modal, in place of the schema-generated form. As the custom UI is displayed in an iframe, the custom UI is isolated from the main UI, so custom JavaScript and CSS can be used safely.
+A plugin's custom user interface is displayed inside an iframe in the settings modal, in place of the schema-generated form. 
+
+The user interface API is provided to the plugin's custom UI via the `window.homebridge` object. This is injected into the plugin's custom UI during render.
 
 <p align="center">
 <img width="700px" src="https://user-images.githubusercontent.com/3979615/97826339-73d83500-1d15-11eb-8a14-a2a8e4895959.png">
 </p>
 
-
-Developers are free to use front end frameworks such as Angular, Vue, or React to create the plugin's custom user interface.
-
-Developers should make use [Bootstrap 4](https://getbootstrap.com/docs) CSS classes, as these will automatically be styled and themed correctly. There is no need to include the boostrap css yourself, this will be injected by the Homebridge UI during render.
-
-The `index.html` file should not include `<html>`, `<head>`, or `<body>` tags, as these are added by the Homebridge UI during the render process.
-
-You may include external assets in your HTML.
+Note:
+  * Developers are free to use front end frameworks such as Angular, Vue, or React to create the plugin's custom user interface.
+  * Developers should make use [Bootstrap 4](https://getbootstrap.com/docs) CSS classes, as these will automatically be styled and themed correctly. There is no need to include the boostrap css yourself, this will be injected by the Homebridge UI during render.
+  * As the user interface is displayed in an isolated iframe, you can safely use any custom JavaScript and CSS.
+  * The `index.html` file should not include `<html>`, `<head>`, or `<body>` tags, as these are added by the Homebridge UI during the render process.
+  * You may include external assets in your HTML.
 
 Example `index.html`:
 
@@ -88,51 +86,6 @@ Example `index.html`:
 })();
 </script>
 ```
-
-## Server
-
-To provide server API endpoints that can be called from the custom UI, a plugin must place a `server.js` file in the `homebridge-ui` directory.
-
-This file will be spawned as a child process when the plugin's settings modal is opened, and is terminated when the settings modal is closed.
-
-The server side script must extend the class provided by the `@homebridge/plugin-ui-utils` library.
-
-Example `server.js`:
-
-```js
-const { HomebridgePluginUiServer } = require('@homebridge/plugin-ui-utils');
-
-// your class MUST extend the HomebridgePluginUiServer
-class UiServer extends HomebridgePluginUiServer {
-  constructor () { 
-    // super must be called first
-    super();
-
-    // create api endpoint request handlers (example only)
-    this.onRequest('/hello', this.handleHelloRequest.bind(this));
-
-    // this.ready() must be called to let the UI know you are ready to accept api calls
-    this.ready();
-  }
-
-  /**
-   * Example only.
-   * Handle requests made from the UI to the `/hello` endpoint.
-   */
-  async handleHelloRequest(payload) {
-    return { hello: 'world'; }
-  }
-}
-
-// start the instance of the class
-(() => {
-  return new UiServer;
-})();
-```
-
-# User Interface API
-
-The user interface API is provided to the plugin's custom UI via the `window.homebridge` object. This is injected into the plugin's custom UI during render.
 
 ## Config
 
@@ -386,15 +339,21 @@ Is an object containing some server metadata
 
 # Server API
 
-If your plugin implements the `server.js` code, you will need to include the  `@homebridge/plugin-ui-utils` library as a prod dependency:
+To provide server API endpoints that can be called from the custom UI, a plugin must place a `server.js` file in the `homebridge-ui` directory.
+
+You will need to include the  `@homebridge/plugin-ui-utils` library as a prod dependency:
 
 ```
 npm install --save @homebridge/plugin-ui-utils
 ```
 
-The `server.js` script lifecycle is only active while the user has the plugin's settings modal open.
+Note:
+  * This `server.js` script will be spawned as a child process when the plugin's settings modal is opened, and is terminated when the settings modal is closed.
+  * The `server.js` script must create a new instance of a class that extends `HomebridgePluginUiServer` from the `@homebridge/plugin-ui-utils` library.
+  * This file will be spawned as a child process when the plugin's settings modal is opened, and is terminated when the settings modal is closed.
+  * The server side script must extend the class provided by the `@homebridge/plugin-ui-utils` library.
 
-The `server.js` script must create a new instance of a class that extends `HomebridgePluginUiServer` from the `@homebridge/plugin-ui-utils` library.
+Example `server.js`:
 
 ```js
 const { HomebridgePluginUiServer } = require('@homebridge/plugin-ui-utils');
@@ -405,8 +364,19 @@ class UiServer extends HomebridgePluginUiServer {
     // super must be called first
     super();
 
-    // call ready when you are ready to accept requests
+    // Example: create api endpoint request handlers (example only)
+    this.onRequest('/hello', this.handleHelloRequest.bind(this));
+
+    // this.ready() must be called to let the UI know you are ready to accept api calls
     this.ready();
+  }
+
+  /**
+   * Example only.
+   * Handle requests made from the UI to the `/hello` endpoint.
+   */
+  async handleHelloRequest(payload) {
+    return { hello: 'world'; }
   }
 }
 
