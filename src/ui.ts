@@ -1,5 +1,3 @@
-type PluginConfig = Array<Record<string, any>>;
-
 /**
  * This script is injected into a plugins custom settings ui by the Homebridge UI
  * You should not include it in your own code, however you can use it for type information if desired.
@@ -135,19 +133,23 @@ class HomebridgePluginUi extends EventTarget {
     this._postMessage({ action: 'spinner.hide' });
   }
 
-  public async getPluginConfig(): Promise<PluginConfig> {
+  public async getPluginConfig() {
     return await this._requestResponse({ action: 'config.get' });
   }
 
-  public async updatePluginConfig(pluginConfig: PluginConfig): Promise<PluginConfig> {
+  public async updatePluginConfig(pluginConfig) {
     return await this._requestResponse({ action: 'config.update', pluginConfig: pluginConfig });
   }
 
-  public async savePluginConfig(): Promise<void> {
+  public async savePluginConfig() {
     return await this._requestResponse({ action: 'config.save' });
   }
 
-  public async request(path: string, body?: any): Promise<any> {
+  public async getPluginConfigSchema() {
+    return await this._requestResponse({ action: 'config.schema' });
+  }
+
+  public async request(path: string, body?: any) {
     return await this._requestResponse({ action: 'request', path: path, body: body });
   }
 

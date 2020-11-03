@@ -1,3 +1,7 @@
+[![npm](https://badgen.net/npm/v/@homebridge/plugin-ui-utils)](https://www.npmjs.com/package/@homebridge/plugin-ui-utils)
+[![npm](https://badgen.net/npm/dt/@homebridge/plugin-ui-utils)](https://www.npmjs.com/package/@homebridge/plugin-ui-utils)
+[![Discord](https://img.shields.io/discord/432663330281226270?color=728ED5&logo=discord&label=discord)](https://discord.gg/kqNCe2D)
+
 # Homebridge Plugin Custom UI Utils
 
 The package assists plugin developers creating fully customisable configuration user interfaces for their plugins.
@@ -147,6 +151,16 @@ await homebridge.updatePluginConfig(pluginConfig);
 
 // save config
 await homebridge.savePluginConfig();
+```
+
+### `homebridge.getPluginConfigSchema`
+
+> `homebridge.getPluginConfigSchema(): Promise<PluginSchema>;`
+
+Returns the plugin's config.schema.json.
+
+```ts
+const schema = await homebridge.getPluginConfigSchema();
 ```
 
 ## Requests

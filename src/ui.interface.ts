@@ -1,10 +1,22 @@
-declare type PluginConfig = Array<Record<string, any>>;
-
 declare global {
   interface Window {
     homebridge: IHomebridgePluginUi;
   }
 }
+
+export interface PluginSchema extends Record<string, unknown> {
+  pluginAlias: string;
+  pluginType: string;
+  singular?: boolean;
+  customUi?: boolean;
+  headerDisplay?: string;
+  footerDisplay?: string;
+  schema: Record<string, any>;
+  layout: Record<string, any>[];
+  form: Record<string, any>[];
+}
+
+export declare type PluginConfig = Record<string, any>;
 
 export declare class IHomebridgePluginUi extends EventTarget {
   /**
@@ -64,7 +76,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * const pluginConfigBlocks = await homebridge.getPluginConfig();
    * ```
    */
-  public getPluginConfig(): Promise<PluginConfig>;
+  public getPluginConfig(): Promise<PluginConfig[]>;
 
   /**
   * Update the plugin config.
@@ -84,7 +96,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
   * );
   * ```
   */
-  public updatePluginConfig(pluginConfig: PluginConfig): Promise<PluginConfig>;
+  public updatePluginConfig(pluginConfig: PluginConfig[]): Promise<PluginConfig[]>;
 
   /**
    * Save the plugin config.
@@ -96,6 +108,16 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * ```
    */
   public savePluginConfig(): Promise<void>;
+
+  /**
+   * Returns the plugin's config.schema.json
+   * 
+   * @example
+   * ```ts
+   * const schema = await homebridge.getPluginConfigSchema();
+   * ```
+   */
+  public getPluginConfigSchema(): Promise<PluginSchema>;
 
   /**
    * Make a request to the plugins server side script
