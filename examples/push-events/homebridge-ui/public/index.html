@@ -1,0 +1,14 @@
+<div class="card card-body">
+  <div class="text-center">
+    <h2>Server Time</h2>
+    <h4 id="serverTime">Please wait...</h4>
+  </div>
+</div>
+
+<script>
+  // a basic example showing how to listen for events sent from the server script
+  homebridge.addEventListener('server-time-event', (event) => {
+    console.log('Got "server-time-event" event:', event.data);
+    document.querySelector('#serverTime').innerHTML = event.data.time;
+  });
+</script>
