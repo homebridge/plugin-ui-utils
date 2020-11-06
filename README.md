@@ -21,7 +21,7 @@ The package assists plugin developers creating fully customisable configuration 
   * [Request Error Handling](#request-error-handling)
   * [Push Events](#push-events)
   * [Server Information](#server-information)
-- [Examples](#examples)]
+- [Examples](#examples)
 
 # Implementation
 
