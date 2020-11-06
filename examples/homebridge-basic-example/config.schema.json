@@ -1,0 +1,18 @@
+{
+  "pluginAlias": "HomebridgeBasicExample",
+  "pluginType": "platform",
+  "singular": true,
+  "customUi": true,
+  "schema": {
+    "token": {
+      "title": "Token",
+      "type": "string",
+      "required": true
+    },
+    "username": {
+      "title": "Username",
+      "type": "string",
+      "required": true
+    }
+  }
+}

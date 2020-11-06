@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "homebridge-ui-basic-example",
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "engines": {
+    "node": ">=10.17.0",
+    "homebridge": ">=0.4.4"
+  },
+  "dependencies": {
+    "@homebridge/plugin-ui-utils": "0.0.10"
+  }
+}

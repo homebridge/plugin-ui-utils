@@ -1,0 +1,79 @@
+<div class="card card-body">
+  <form id="configForm">
+    <div class="form-group">
+      <label for="tokenInput">Token</label>
+      <input type="text" class="form-control" id="tokenInput" readonly>
+    </div>
+    <div class="form-group">
+      <label for="userNameInput">Username</label>
+      <input type="text" class="form-control" id="userNameInput" required>
+    </div>
+    <div class="text-center">
+      <button id="getTokenButton" type="button" class="btn btn-primary">Get Token</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  (async () => {
+    // get the initial config - this is an array potentially containing multiple config blocks
+    const pluginConfig = await homebridge.getPluginConfig();
+
+    // get the intial from the config and add it to the form
+    if (pluginConfig.length) {
+      document.querySelector('#userNameInput').value = pluginConfig[0].username;
+      document.querySelector('#tokenInput').value = pluginConfig[0].token;
+    } else {
+      pluginConfig.push({});
+    }
+
+    // watch for changes to the form and update the config
+    document.getElementById('configForm').addEventListener('input', () => {
+      // get the current values from the form
+      pluginConfig[0].username = document.querySelector('#userNameInput').value;
+      pluginConfig[0].token = document.querySelector('#tokenInput').value;
+
+      // update the config
+      homebridge.updatePluginConfig(pluginConfig);
+    });
+
+    // watch for click events on the getTokenButton
+    document.querySelector('#getTokenButton').addEventListener('click', async () => {
+      // validate a username was provided
+      const username = document.querySelector('#userNameInput').value;
+
+      if (!username) {
+        // create a error / red toast notification if the required input is not provided.
+        homebridge.toast.error('A username must be provided.', 'Error');
+        return;
+      }
+
+      // starting the request, show the loading spinner
+      homebridge.showSpinner();
+
+      // request a token from the server
+      try {
+        const response = await homebridge.request('/token', {
+          username: username,
+        });
+
+        // update the token input with the response
+        document.querySelector('#tokenInput').value = response.token;
+
+        // update the plugin config
+        pluginConfig[0].token = response.token;
+        homebridge.updatePluginConfig(pluginConfig);
+
+        // show a success toast notification
+        homebridge.toast.success('Got Token!', 'Success');
+      } catch (e) {
+        homebridge.toast.error(e.error, e.message);
+      } finally {
+        // remember to un-hide the spinner
+        homebridge.hideSpinner();
+      }
+    });
+
+  })();
+
+</script>
