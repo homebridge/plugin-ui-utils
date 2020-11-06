@@ -21,6 +21,7 @@ The package assists plugin developers creating fully customisable configuration 
   * [Request Error Handling](#request-error-handling)
   * [Push Events](#push-events)
   * [Server Information](#server-information)
+- [Examples](#examples)]
 
 # Implementation
 
@@ -528,3 +529,8 @@ Returns the version of the Homebridge UI:
 ```ts
 const uiVersion = this.homebridgeUiVersion;
 ```
+
+# Examples
+
+* [Basic Example](./examples/basic-ui-server) - demos a minimal custom user interface, interacting with server side scripts, updating the plugin config, and using toast notifications.
+* [Push Events](./examples/push-events) - demos how to send push events from the server, and listen for them in the custom user interface.
