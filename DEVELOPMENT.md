@@ -78,6 +78,8 @@ import '@homebridge/plugin-ui-utils/dist/ui.interface'
 
 As `window.homebridge` is injected at run time, you will need to mock the object in your tests. This package provides a class that helps you do this, `MockHomebridgePluginUi`.
 
+:warning: Do not include `MockHomebridgePluginUi` in your production build!
+
 Here is a simple example using Jest:
 
 ```ts
