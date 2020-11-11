@@ -22,6 +22,7 @@ The package assists plugin developers creating fully customisable configuration 
   * [Push Events](#push-events)
   * [Server Information](#server-information)
 - [Examples](#examples)
+- [Development](#development)
 
 # Implementation
 
@@ -50,6 +51,8 @@ homebridge-example-plugin/
 ├── config.schema.json
 ├── package.json
 ```
+
+You may customise the location of the `homebridge-ui` by setting the `customUiPath` property in the `config.schema.json`. For example: `"customUiPath": "./dist/homebridge-ui"`.
 
 # User Interface API
 
@@ -534,3 +537,7 @@ const uiVersion = this.homebridgeUiVersion;
 
 * [Basic Example](./examples/basic-ui-server) - demos a minimal custom user interface, interacting with server side scripts, updating the plugin config, and using toast notifications.
 * [Push Events](./examples/push-events) - demos how to send push events from the server, and listen for them in the custom user interface.
+
+# Development
+
+For hints and tips on how to develop your custom user interface, see [DEVELOPMENT.md](./DEVELOPMENT.md).

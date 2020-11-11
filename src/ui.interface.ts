@@ -11,9 +11,48 @@ export interface PluginSchema extends Record<string, unknown> {
   customUi?: boolean;
   headerDisplay?: string;
   footerDisplay?: string;
-  schema: Record<string, any>;
-  layout: Record<string, any>[];
-  form: Record<string, any>[];
+  schema?: Record<string, any>;
+  layout?: Record<string, any>[];
+  form?: Record<string, any>[];
+}
+
+export interface PluginMetadata {
+  name: string;
+  displayName?: string;
+  description: string;
+  verifiedPlugin: boolean;
+  installedVersion: string;
+  latestVersion: string | null;
+  updateAvailable: boolean;
+  publicPackage: boolean;
+  globalInstall: boolean;
+  settingsSchema: boolean;
+  installPath: string;
+  links: Record<string, string>[];
+  funding?: Record<string, string>[];
+}
+
+export interface ServerEnvMetadata {
+  theme: string;
+  serverTimestamp: string;
+  formAuth: boolean | 'none';
+  env: {
+    ableToConfigureSelf: boolean;
+    dockerOfflineUpdate: boolean;
+    enableAccessories: boolean;
+    enableTerminalAccess: boolean;
+    homebridgeInstanceName: string;
+    nodeVersion: string;
+    packageName: string;
+    packageVersion: string;
+    platform: string;
+    runningInDocker: boolean;
+    runningInLinux: boolean;
+    serviceMode: boolean;
+    temperatureUnits: string;
+    lang: string | null;
+    instanceId: string;
+  };
 }
 
 export declare type PluginConfig = Record<string, any>;
@@ -27,12 +66,12 @@ export declare class IHomebridgePluginUi extends EventTarget {
   /**
    * An object containing information about the current plugin.
    */
-  public plugin: Record<string, any>;
+  public plugin: PluginMetadata;
 
   /**
    * An object containing information about the server.
    */
-  public serverEnv: Record<string, any>;
+  public serverEnv: ServerEnvMetadata;
 
   /**
    * Tell the UI to adjust the height of the iframe container to the same as your document body
