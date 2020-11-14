@@ -106,6 +106,27 @@ export declare class IHomebridgePluginUi extends EventTarget {
   public hideSpinner(): void;
 
   /**
+   * Show the schema-generated form below the custom UI.
+   * This only works for platform plugins that have set `singular` = `true` in their config.schema.json file.
+   * 
+   * @example
+   * ```ts
+   * this.showSchemaForm();
+   * ```
+   */
+  public showSchemaForm(): void;
+
+  /**
+   * Hides the schema-generated form.
+   * 
+   * @example
+   * ```ts
+   * this.hideSchemaForm();
+   * ```
+   */
+  public hideSchemaForm(): void;
+
+  /**
    * Get the current config for the plugin.
    * @returns an array of platforms or accessory config blocks.
    * @returns an empty array if the plugin has no current config.

@@ -133,6 +133,14 @@ class HomebridgePluginUi extends EventTarget {
     this._postMessage({ action: 'spinner.hide' });
   }
 
+  public showSchemaForm(): void {
+    this._postMessage({ action: 'schema.show' });
+  }
+
+  public hideSchemaForm(): void {
+    this._postMessage({ action: 'schema.hide' });
+  }
+
   public async getPluginConfig() {
     return await this._requestResponse({ action: 'config.get' });
   }

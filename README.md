@@ -284,6 +284,35 @@ Hide the spinner / loading overlay.
 homebridge.hideSpinner();
 ```
 
+### `homebridge.showSchemaForm`
+
+> `homebridge.showSchemaForm(): void`
+
+Show the schema-generated form below the custom user interface.
+This feature only works for platform plugins that have set `singular` = `true` in their config.schema.json file.
+
+```ts
+homebridge.showSchemaForm();
+```
+
+When enabling the schema form, you should listen for the `configChanged` event to keep your config in sync. This event is triggered whenever the user makes a change in the schema-generated form (250ms debounce).
+
+```ts
+window.homebridge.addEventListener('configChanged', (event: MessageEvent) => {
+  console.log('Updated config:', event.data);
+});
+```
+
+### `homebridge.hideSchemaForm`
+
+> `homebridge.hideSchemaForm(): void`
+
+Hides the schema-generated form.
+
+```ts
+homebridge.hideSchemaForm();
+```
+
 ## Events
 
 The `homebridge` object is an [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget), this allows you to use the browsers built in [addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) and [removeEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener) functions to subscribe and unsubscribe from events.

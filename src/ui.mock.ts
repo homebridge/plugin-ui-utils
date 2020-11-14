@@ -67,6 +67,8 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
   public closeSettings() { }
   public showSpinner() { }
   public hideSpinner() { }
+  public showSchemaForm() { }
+  public hideSchemaForm() { }
 
   public async getPluginConfig() {
     return this.mockPluginConfig;
