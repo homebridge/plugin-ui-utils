@@ -84,7 +84,7 @@ Here is a simple example using Jest:
 
 ```ts
 // example.spec.ts
-import { MockHomebridgePluginUi } from '@homebridge/plugin-ui-utils'
+import { MockHomebridgePluginUi } from '@homebridge/plugin-ui-utils/dist/ui.mock'
 
 describe('TestCustomUi', () => {
   let homebridge: MockHomebridgePluginUi;
