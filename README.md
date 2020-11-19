@@ -13,6 +13,7 @@ The package assists plugin developers creating fully customisable configuration 
   * [Requests](#requests)
   * [Toast Notifications](#toast-notifications)
   * [Modal](#modal)
+  * [Forms](#forms)
   * [Events](#events)
   * [Plugin / Server Information](#plugin--server-information)
 - [Server API](#server-api)
@@ -284,6 +285,21 @@ Hide the spinner / loading overlay.
 homebridge.hideSpinner();
 ```
 
+## Forms
+
+The custom user interface allows you to create two types of forms:
+
+1. A form based on your plugin's `config.schema.json` file
+  * User input is automatically mapped to the plugin config object
+  * You can listen for change events from your custom user interface
+  * The schema must contain all config options
+2. A standalone form
+  * Not linked to your `config.schema.json` form in any way
+  * You must listen for change events, process the event, and update the plugin config
+  * The form does not need to include all config options
+
+Developers are also able to create their own forms using HTML.
+
 ### `homebridge.showSchemaForm`
 
 > `homebridge.showSchemaForm(): void`
@@ -311,6 +327,47 @@ Hides the schema-generated form.
 
 ```ts
 homebridge.hideSchemaForm();
+```
+
+### `homebridge.createForm`
+
+> `homebridge.createForm(schema: FormSchema, data: any): IHomebridgeUiFormHelper;`
+
+Create a new standalone form. You may pass in an arbitrary schema using the same options as the [config.schema.json](https://developers.homebridge.io/#/config-schema).
+
+Only one standalone form can be displayed at a time. The main config-schema based form cannot be shown while a standalone form is being displayed.
+
+Example:
+
+```ts
+// create the form
+const myForm = homebridge.createForm(
+   {
+      schema: {
+        type: 'object',
+        properties: {
+          name: {
+            title: 'Name',
+            type: string,
+            required: true,
+          }
+        }
+      },
+      layout: null,
+      form: null,
+   },
+   {
+      name: 'initial name value'
+   }
+);
+
+// watch for change events
+myForm.onChange((change) => {
+  console.log(change);
+});
+
+// stop listening to change events and hide the form
+myForm.end();
 ```
 
 ## Events

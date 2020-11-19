@@ -5,6 +5,7 @@ import {
   IHomebridgePluginUi,
   IHomebridgeUiToastHelper,
   PluginConfig,
+  PluginFormSchema,
   PluginMetadata,
   PluginSchema,
   ServerEnvMetadata,
@@ -69,6 +70,11 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
   public hideSpinner() { }
   public showSchemaForm() { }
   public hideSchemaForm() { }
+  public endForm() { }
+
+  public createForm(schema, data) {
+    return new MockHomebridgeUiFormHelper(this, schema, data);
+  }
 
   public async getPluginConfig() {
     return this.mockPluginConfig;
@@ -103,4 +109,16 @@ export class MockHomebridgeUiToastHelper implements IHomebridgeUiToastHelper {
   error(message: string, title: string) { }
   warning(message: string, title: string) { }
   info(message: string, title: string) { }
+}
+
+
+export class MockHomebridgeUiFormHelper {
+  constructor(
+    parent: IHomebridgePluginUi,
+    schema: PluginFormSchema,
+    data: any,
+  ) { }
+
+  public end() { }
+  public onChange(fn) { }
 }

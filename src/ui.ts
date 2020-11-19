@@ -55,7 +55,7 @@ class HomebridgePluginUi extends EventTarget {
     }
   }
 
-  private _postMessage(message) {
+  public _postMessage(message) {
     window.parent.postMessage(message, this.origin || '*');
   }
 
@@ -141,6 +141,14 @@ class HomebridgePluginUi extends EventTarget {
     this._postMessage({ action: 'schema.hide' });
   }
 
+  public createForm(schema, data) {
+    return new HomebridgeUiFormHelper(this, schema, data);
+  }
+
+  public endForm() {
+    this._postMessage({ action: 'form.end' });
+  }
+
   public async getPluginConfig() {
     return await this._requestResponse({ action: 'config.get' });
   }
@@ -189,6 +197,45 @@ class HomebridgeUiToastHelper {
 
   public info(message: string, title?: string) {
     this._postMessage('info', message, title);
+  }
+}
+
+class HomebridgeUiFormHelper {
+  private formId = Math.random().toString(36).substring(2);
+  private _changeHandle?: (change) => any;
+  public end: () => void;
+
+  constructor(
+    private parent: HomebridgePluginUi,
+    schema: Record<string, any>,
+    data: Record<string, any>,
+  ) {
+    this.parent._postMessage({ action: 'form.create', formId: this.formId, schema: schema, data: data });
+
+    const handle = this._eventHandle.bind(this);
+
+    this.parent.addEventListener(this.formId, handle);
+
+    this.end = () => {
+      this.parent.removeEventListener(this.formId, handle);
+      this.parent._postMessage({ action: 'form.end', formId: this.formId, schema: schema, data: data });
+    };
+  }
+
+  private _eventHandle(event) {
+    if (this._changeHandle && typeof this._changeHandle === 'function') {
+      this._changeHandle(event.data);
+    } else {
+      console.info('Homebridge Custom Plugin UI: Missing form onChange handler.');
+    }
+  }
+
+  public onChange(fn) {
+    if (typeof fn !== 'function') {
+      console.error('Homebridge Custom Plugin UI: Form onChange handler must be a function.');
+      return;
+    }
+    this._changeHandle = fn;
   }
 }
 

@@ -16,6 +16,12 @@ export interface PluginSchema extends Record<string, unknown> {
   form?: Record<string, any>[];
 }
 
+export interface PluginFormSchema {
+  schema: Record<string, any>;
+  layout?: Record<string, any>[] | null;
+  form?: Record<string, any>[] | null;
+}
+
 export interface PluginMetadata {
   name: string;
   displayName?: string;
@@ -90,7 +96,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * 
    * @example
    * ```ts
-   * this.showSpinner();
+   * homebridge.showSpinner();
    * ```
    */
   public showSpinner(): void;
@@ -100,7 +106,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * 
    * @example
    * ```ts
-   * this.hideSpinner();
+   * homebridge.hideSpinner();
    * ```
    */
   public hideSpinner(): void;
@@ -111,7 +117,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * 
    * @example
    * ```ts
-   * this.showSchemaForm();
+   * homebridge.showSchemaForm();
    * ```
    */
   public showSchemaForm(): void;
@@ -125,6 +131,48 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * ```
    */
   public hideSchemaForm(): void;
+
+  /**
+   * Create a form using a generic schema. 
+   * This is not linked to the main config schema model and you must listen for changes yourself.
+   * 
+   * @example
+   * ```ts
+   * const myForm = homebridge.createForm(
+   *   {
+   *      schema: {
+   *        type: 'object',
+   *        properties: {
+   *          name: {
+   *            title: 'Name',
+   *            type: string,
+   *            required: true,
+   *          }
+   *        }
+   *      },
+   *      layout: null,
+   *      form: null,
+   *   },
+   *   {
+   *      name: 'initial name value'
+   *   }
+   * );
+   * 
+   * // listen for input changes
+   * myForm.onChange((change) => {
+   *    console.log(change);
+   * });
+   * 
+   * // stop listening / hide the form
+   * myForm.end();
+   * ```
+   */
+  public createForm(schema: PluginFormSchema, data: any): IHomebridgeUiFormHelper;
+
+  /**
+   * Removes the form.
+   */
+  public endForm(): void;
 
   /**
    * Get the current config for the plugin.
@@ -242,4 +290,10 @@ export declare class IHomebridgeUiToastHelper {
    * @param title  - optional title
    */
   public info(message: string, title?: string);
+}
+
+export declare class IHomebridgeUiFormHelper {
+  constructor(parent: IHomebridgePluginUi, schema: PluginFormSchema, data: any);
+  public end(): void
+  public onChange(fn: (change: Record<string, any>) => any): void;
 }
