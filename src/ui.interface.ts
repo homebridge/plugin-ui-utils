@@ -294,6 +294,15 @@ export declare class IHomebridgeUiToastHelper {
 
 export declare class IHomebridgeUiFormHelper {
   constructor(parent: IHomebridgePluginUi, schema: PluginFormSchema, data: any);
+
+  /**
+   * Hide the form and stop listening to events
+   */
   public end(): void
+
+  /**
+   * Listen to input / change events emitted by the standalone form
+   * @param fn 
+   */
   public onChange(fn: (change: Record<string, any>) => any): void;
 }
