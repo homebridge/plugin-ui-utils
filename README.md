@@ -290,13 +290,13 @@ homebridge.hideSpinner();
 The custom user interface allows you to create two types of forms:
 
 1. A form based on your plugin's `config.schema.json` file
-  * User input is automatically mapped to the plugin config object
-  * You can listen for change events from your custom user interface
-  * The schema must contain all config options
+    * User input is automatically mapped to the plugin config object
+    * You can listen for change events from your custom user interface
+    * The schema must contain all config options
 2. A standalone form
-  * Not linked to your `config.schema.json` form in any way
-  * You must listen for change events, process the event, and update the plugin config
-  * The form does not need to include all config options
+    * Not linked to your `config.schema.json` form in any way
+    * You must listen for change events, process the event, and update the plugin config
+    * The form does not need to include all config options
 
 Developers are also able to create their own forms using HTML.
 
