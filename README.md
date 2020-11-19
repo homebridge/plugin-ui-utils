@@ -337,6 +337,9 @@ Create a new standalone form. You may pass in an arbitrary schema using the same
 
 Only one standalone form can be displayed at a time. The main config-schema based form cannot be shown while a standalone form is being displayed.
 
+* `schema`: The [form schema object](https://developers.homebridge.io/#/config-schema), may also contain layout metadata
+* `data`: The initial form data
+
 Example:
 
 ```ts
