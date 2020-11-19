@@ -133,8 +133,11 @@ export declare class IHomebridgePluginUi extends EventTarget {
   public hideSchemaForm(): void;
 
   /**
-   * Create a form using a generic schema. 
+   * Create a standalone form using a generic schema. 
    * This is not linked to the main config schema model and you must listen for changes yourself.
+   * 
+   * @param schema the schema used to generate the standlone form. See [schema guide](https://developers.homebridge.io/#/config-schema).
+   * @param data the initial form data
    * 
    * @example
    * ```ts
