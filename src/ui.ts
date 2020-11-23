@@ -3,7 +3,53 @@
  * You should not include it in your own code, however you can use it for type information if desired.
  * It provides the interface to interact with the Homebridge UI service.
  */
-class HomebridgePluginUi extends EventTarget {
+
+let EventTargetConstructor = window.EventTarget;
+
+/**
+ * Pollyfill for older browsers that do not support EventTarget as a constructor.
+ * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
+ */
+if (!Object.prototype.hasOwnProperty.call(window.EventTarget, 'caller')) {
+  EventTargetConstructor = function (this: EventTarget) {
+    this['listeners'] = {};
+  } as unknown as { new(): EventTarget; prototype: EventTarget };
+
+  EventTargetConstructor.prototype['listeners'] = null;
+  EventTargetConstructor.prototype.addEventListener = function (type, callback) {
+    if (!(type in this['listeners'])) {
+      this['listeners'][type] = [];
+    }
+    this['listeners'][type].push(callback);
+  };
+
+  EventTargetConstructor.prototype.removeEventListener = function (type, callback) {
+    if (!(type in this['listeners'])) {
+      return;
+    }
+    const stack = this['listeners'][type];
+    for (let i = 0, l = stack.length; i < l; i++) {
+      if (stack[i] === callback) {
+        stack.splice(i, 1);
+        return;
+      }
+    }
+  };
+
+  EventTargetConstructor.prototype.dispatchEvent = function (event) {
+    if (!(event.type in this['listeners'])) {
+      return true;
+    }
+    const stack = this['listeners'][event.type].slice();
+
+    for (let i = 0, l = stack.length; i < l; i++) {
+      stack[i].call(this, event);
+    }
+    return !event.defaultPrevented;
+  };
+}
+
+class HomebridgePluginUi extends EventTargetConstructor {
   private origin = '';
   private lastBodyHeight = 0;
 
