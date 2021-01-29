@@ -9,6 +9,6 @@
     "homebridge": ">=0.4.4"
   },
   "dependencies": {
-    "@homebridge/plugin-ui-utils": "0.0.14"
+    "@homebridge/plugin-ui-utils": "0.0.18"
   }
 }

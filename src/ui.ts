@@ -211,6 +211,10 @@ class HomebridgePluginUi extends EventTargetConstructor {
     return await this._requestResponse({ action: 'config.schema' });
   }
 
+  public async getCachedAccessories(): Promise<Record<string, string>> {
+    return await this._requestResponse({ action: 'cachedAccessories.get' });
+  }
+
   public async request(path: string, body?: any) {
     return await this._requestResponse({ action: 'request', path: path, body: body });
   }

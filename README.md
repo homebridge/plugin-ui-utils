@@ -168,6 +168,16 @@ Returns the plugin's config.schema.json.
 const schema = await homebridge.getPluginConfigSchema();
 ```
 
+### `homebridge.getCachedAccessories`
+
+> `homebridge.getCachedAccessories(): Promise<CachedAccessory[]>;`
+
+Returns the any cached accessories for the plugin
+
+```ts
+const cachedAccessories = await homebridge.getCachedAccessories();
+```
+
 ## Requests
 
 This allows the custom UI to make API requests to their `server.js` script.

@@ -61,6 +61,16 @@ export interface ServerEnvMetadata {
   };
 }
 
+export interface CachedAccessory {
+  plugin: string;
+  platform: string;
+  context: Record<string, any>;
+  displayName: string;
+  UUID: string;
+  category: string;
+  services: any[];
+}
+
 export declare type PluginConfig = Record<string, any>;
 
 export declare class IHomebridgePluginUi extends EventTarget {
@@ -229,6 +239,11 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * ```
    */
   public getPluginConfigSchema(): Promise<PluginSchema>;
+
+  /**
+   * Return an array of cached accessories for your plugin.
+   */
+  public getCachedAccessories(): Promise<CachedAccessory[]>;
 
   /**
    * Make a request to the plugins server side script
