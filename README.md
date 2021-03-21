@@ -349,6 +349,8 @@ Only one standalone form can be displayed at a time. The main config-schema base
 
 * `schema`: The [form schema object](https://developers.homebridge.io/#/config-schema), may also contain layout metadata
 * `data`: The initial form data
+* `submitButton`: String. Optional label for a submit button, if not provided, no submit button will be displayed
+* `cancelButton`: String. Optional label for a cancel button, if not provided, no cancel button will be displayed
 
 Example:
 
@@ -361,7 +363,7 @@ const myForm = homebridge.createForm(
         properties: {
           name: {
             title: 'Name',
-            type: string,
+            type: 'string',
             required: true,
           }
         }
@@ -377,6 +379,16 @@ const myForm = homebridge.createForm(
 // watch for change events
 myForm.onChange((change) => {
   console.log(change);
+});
+
+// watch for submit button click events
+myForm.onSubmit((form) => {
+  console.log(form);
+});
+
+// watch for cancel button click events
+myForm.onCancel((form) => {
+  console.log(form);
 });
 
 // stop listening to change events and hide the form

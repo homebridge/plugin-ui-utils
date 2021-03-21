@@ -180,7 +180,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * myForm.end();
    * ```
    */
-  public createForm(schema: PluginFormSchema, data: any): IHomebridgeUiFormHelper;
+  public createForm(schema: PluginFormSchema, data: any, submitButton?: string, cancelButton?: string): IHomebridgeUiFormHelper;
 
   /**
    * Removes the form.
@@ -311,7 +311,13 @@ export declare class IHomebridgeUiToastHelper {
 }
 
 export declare class IHomebridgeUiFormHelper {
-  constructor(parent: IHomebridgePluginUi, schema: PluginFormSchema, data: any);
+  constructor(
+    parent: IHomebridgePluginUi,
+    schema: PluginFormSchema,
+    data: any,
+    submitButton: string,
+    cancelButton: string,
+  );
 
   /**
    * Hide the form and stop listening to events
@@ -323,4 +329,16 @@ export declare class IHomebridgeUiFormHelper {
    * @param fn 
    */
   public onChange(fn: (change: Record<string, any>) => any): void;
+
+  /**
+   * Listen submit button form events
+   * @param fn
+   */
+  public onSubmit(fn: (change: Record<string, any>) => any): void;
+
+  /**
+   * Listen cancel button form events
+   * @param fn 
+   */
+  public onCancel(fn: (change: Record<string, any>) => any): void;
 }

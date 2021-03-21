@@ -187,8 +187,8 @@ class HomebridgePluginUi extends EventTargetConstructor {
     this._postMessage({ action: 'schema.hide' });
   }
 
-  public createForm(schema, data) {
-    return new HomebridgeUiFormHelper(this, schema, data);
+  public createForm(schema, data, submitButton?: string, cancelButton?: string) {
+    return new HomebridgeUiFormHelper(this, schema, data, submitButton, cancelButton);
   }
 
   public endForm() {
@@ -253,14 +253,18 @@ class HomebridgeUiToastHelper {
 class HomebridgeUiFormHelper {
   private formId = Math.random().toString(36).substring(2);
   private _changeHandle?: (change) => any;
+  private _submitHandle?: (change) => any;
+  private _cancelHandle?: (change) => any;
   public end: () => void;
 
   constructor(
     private parent: HomebridgePluginUi,
     schema: Record<string, any>,
     data: Record<string, any>,
+    submitButton?: string,
+    cancelButton?: string,
   ) {
-    this.parent._postMessage({ action: 'form.create', formId: this.formId, schema: schema, data: data });
+    this.parent._postMessage({ action: 'form.create', formId: this.formId, schema, data, submitButton, cancelButton });
 
     const handle = this._eventHandle.bind(this);
 
@@ -273,10 +277,37 @@ class HomebridgeUiFormHelper {
   }
 
   private _eventHandle(event) {
-    if (this._changeHandle && typeof this._changeHandle === 'function') {
-      this._changeHandle(event.data);
-    } else {
-      console.info('Homebridge Custom Plugin UI: Missing form onChange handler.');
+    switch (event.data.formEvent) {
+      case 'change': {
+        // general change events
+        if (this._changeHandle && typeof this._changeHandle === 'function') {
+          this._changeHandle(event.data.formData);
+        } else {
+          console.info('Homebridge Custom Plugin UI: Missing form onChange handler.');
+        }
+        break;
+      }
+      case 'submit': {
+        // submit form events
+        if (this._submitHandle && typeof this._submitHandle === 'function') {
+          this._submitHandle(event.data.formData);
+        } else {
+          console.info('Homebridge Custom Plugin UI: Missing form onSubmit handler.');
+        }
+        break;
+      }
+      case 'cancel': {
+        // cancel form events
+        if (this._cancelHandle && typeof this._cancelHandle === 'function') {
+          this._cancelHandle(event.data.formData);
+        } else {
+          console.info('Homebridge Custom Plugin UI: Missing form onCancel handler.');
+        }
+        break;
+      }
+      default: {
+        console.info('Unknown form event type:', event.data);
+      }
     }
   }
 
@@ -286,6 +317,22 @@ class HomebridgeUiFormHelper {
       return;
     }
     this._changeHandle = fn;
+  }
+
+  public onSubmit(fn) {
+    if (typeof fn !== 'function') {
+      console.error('Homebridge Custom Plugin UI: Form onSubmit handler must be a function.');
+      return;
+    }
+    this._submitHandle = fn;
+  }
+
+  public onCancel(fn) {
+    if (typeof fn !== 'function') {
+      console.error('Homebridge Custom Plugin UI: Form onCancel handler must be a function.');
+      return;
+    }
+    this._cancelHandle = fn;
   }
 }
 
