@@ -341,7 +341,7 @@ homebridge.hideSchemaForm();
 
 ### `homebridge.createForm`
 
-> `homebridge.createForm(schema: FormSchema, data: any): IHomebridgeUiFormHelper;`
+> `homebridge.createForm(schema: FormSchema, data: any, submitButton?: string, cancelButton?: string): IHomebridgeUiFormHelper;`
 
 Create a new standalone form. You may pass in an arbitrary schema using the same options as the [config.schema.json](https://developers.homebridge.io/#/config-schema).
 
