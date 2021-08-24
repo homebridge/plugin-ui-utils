@@ -238,7 +238,7 @@ Shows a red "error" notification.
 
 ### `homebridge.toast.warning`
 
-> `homebridge.toast.success(message: string, title?: string): void`
+> `homebridge.toast.warning(message: string, title?: string): void`
 
 Shows an amber "warning" notification.
 
@@ -247,7 +247,7 @@ Shows an amber "warning" notification.
 
 ### `homebridge.toast.info`
 
-> `homebridge.toast.success(message: string, title?: string): void`
+> `homebridge.toast.info(message: string, title?: string): void`
 
 Shows a blue "info" notification.
 
