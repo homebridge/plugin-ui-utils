@@ -1,5 +1,22 @@
 # Homebridge Custom UI Development FAQ
 
+## How to get started developing locally?
+
+You're probably used to using
+
+```
+npm run watch
+```
+
+in your plugin's root directory to test functionality while iterating. In order to do something similar when working on your UI, you'll need to install homebridge-ui-config-x as a dev dependency, and then start the homebridge-config-ui-x service itself.
+
+```
+npm i --save-dev homebridge-config-ui-x
+npx homebridge-config-ui-x
+```
+
+Open your browser to port 8080 (default) or the port you've specified. Your `server.js` is started when you click "Settings" in the Plugins view, and terminated when you close the view. To "refresh" the view, you only need to dismiss the model and re-open.
+
 ## How to prevent asset caching during development?
 
 1. Open DevTools
