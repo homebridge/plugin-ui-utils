@@ -86,7 +86,7 @@ export class HomebridgePluginUiServer {
         if (e instanceof RequestError) {
           return this.sendResponse(request, { message: e.message, error: e.requestError }, false);
         } else {
-          console.error(e as Error);
+          console.error(e);
           // @ts-ignore
           return this.sendResponse(request, { message: e.message }, false);
         }
