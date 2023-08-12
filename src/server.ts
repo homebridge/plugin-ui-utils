@@ -2,16 +2,16 @@
  * Homebridge Custom Plugin UI Base Class
  * This provides the api to facilitate two way communication between a plugin
  * custom UI HTML code and the server.
- * 
+ *
  * This is a base class and is intended to be extended.
- * 
+ *
  * @example
  * ```ts
  * class MyPluginUiServer extends HomebridgePluginUiServer {
  *   constructor() {
  *     // this MUST be called first
  *     super();
- *     
+ *
  *     // this MUST be called to let the UI know your script is ready for requests
  *     this.ready();
  *
@@ -21,7 +21,7 @@
  *     });
  *   }
  * }
- * 
+ *
  * // start the class
  * (() => {
  *  return new MyPluginUiServer();
@@ -38,8 +38,10 @@ export class HomebridgePluginUiServer {
     }
 
     process.addListener('message', (request) => {
+      // @ts-ignore
       switch (request.action) {
         case 'request': {
+          // @ts-ignore
           this.processRequest(request);
         }
       }
@@ -84,7 +86,8 @@ export class HomebridgePluginUiServer {
         if (e instanceof RequestError) {
           return this.sendResponse(request, { message: e.message, error: e.requestError }, false);
         } else {
-          console.error(e);
+          console.error(e as Error);
+          // @ts-ignore
           return this.sendResponse(request, { message: e.message }, false);
         }
       }
@@ -119,19 +122,19 @@ export class HomebridgePluginUiServer {
    * Register a new request handler for a given route.
    * @param path the request route name
    * @param fn the function to handle the request and provide a response
-   * 
+   *
    * @example
    * ```ts
    * this.onRequest('/hello', async (payload) => {
    *  return {hello: 'user'};
    * });
    * ```
-   * 
+   *
    * You can then make requests to this endpoint from the client / ui using `homebridge.request`:
    * @example
    * ```ts
    * homebridge.request('/hello', {some: 'payload data'});
-   * ``` 
+   * ```
    *
    */
   public onRequest(path: string, fn: RequestHandler) {
@@ -142,14 +145,14 @@ export class HomebridgePluginUiServer {
    * Push an event or stream data to the UI.
    * @param event the event name, the plugin UI can listen for this event
    * @param data the data to send
-   * 
+   *
    * @example
    * ```ts
    * this.pushEvent('my-event', {some: 'data'});
    * ```
-   * 
+   *
    * In the client / ui, you would then listen to this event using `homebridge.addEventListener`:
-   * 
+   *
    * @example
    * ```ts
    * homebridge.addEventListener('my-event', (event) => {

@@ -103,7 +103,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
   /**
    * Show a loading spinner overlay.
    * Prevents user input until cleared with `homebridge.hideSpinner();`
-   * 
+   *
    * @example
    * ```ts
    * homebridge.showSpinner();
@@ -113,7 +113,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
 
   /**
    * Hide theloading spinner overlay.
-   * 
+   *
    * @example
    * ```ts
    * homebridge.hideSpinner();
@@ -124,7 +124,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
   /**
    * Show the schema-generated form below the custom UI.
    * This only works for platform plugins that have set `singular` = `true` in their config.schema.json file.
-   * 
+   *
    * @example
    * ```ts
    * homebridge.showSchemaForm();
@@ -134,7 +134,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
 
   /**
    * Hides the schema-generated form.
-   * 
+   *
    * @example
    * ```ts
    * this.hideSchemaForm();
@@ -143,12 +143,12 @@ export declare class IHomebridgePluginUi extends EventTarget {
   public hideSchemaForm(): void;
 
   /**
-   * Create a standalone form using a generic schema. 
+   * Create a standalone form using a generic schema.
    * This is not linked to the main config schema model and you must listen for changes yourself.
-   * 
+   *
    * @param schema the schema used to generate the standlone form. See [schema guide](https://developers.homebridge.io/#/config-schema).
    * @param data the initial form data
-   * 
+   *
    * @example
    * ```ts
    * const myForm = homebridge.createForm(
@@ -170,12 +170,12 @@ export declare class IHomebridgePluginUi extends EventTarget {
    *      name: 'initial name value'
    *   }
    * );
-   * 
+   *
    * // listen for input changes
    * myForm.onChange((change) => {
    *    console.log(change);
    * });
-   * 
+   *
    * // stop listening / hide the form
    * myForm.end();
    * ```
@@ -191,7 +191,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * Get the current config for the plugin.
    * @returns an array of platforms or accessory config blocks.
    * @returns an empty array if the plugin has no current config.
-   * 
+   *
    * @example
    * ```ts
    * const pluginConfigBlocks = await homebridge.getPluginConfig();
@@ -222,7 +222,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
   /**
    * Save the plugin config.
    * You must called `homebridge.updatePluginConfig` first.
-   * 
+   *
    * @example
    * ```ts
    * await homebridge.savePluginConfig();
@@ -232,7 +232,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
 
   /**
    * Returns the plugin's config.schema.json
-   * 
+   *
    * @example
    * ```ts
    * const schema = await homebridge.getPluginConfigSchema();
@@ -249,16 +249,16 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * Make a request to the plugins server side script
    * @param path - the path handler on the server that the request should be sent to
    * @param body - an optional payload
-   * 
+   *
    * @example
    * ```ts
-   * 
+   *
    * const response = await homebridge.request('/hello', { who: 'world' });
    * console.log(response); // the response from the server
    * ```
-   * 
+   *
    * The server side component would handle this using `this.onRequest`.
-   * 
+   *
    * @example
    * ```ts
    * this.onRequest('/hello', async (payload) => {
@@ -283,28 +283,28 @@ export declare class IHomebridgePluginUi extends EventTarget {
 export declare class IHomebridgeUiToastHelper {
   /**
    * Trigger a success toast notification in the UI
-   * @param message 
+   * @param message
    * @param title - optional title
    */
   public success(message: string, title?: string);
 
   /**
    * Trigger an error toast notification in the UI
-   * @param message 
+   * @param message
    * @param title  - optional title
    */
   public error(message: string, title?: string);
 
   /**
    * Trigger a warning toast notification in the UI
-   * @param message 
+   * @param message
    * @param title  - optional title
    */
   public warning(message: string, title?: string);
 
   /**
    * Trigger an info toast notification in the UI
-   * @param message 
+   * @param message
    * @param title  - optional title
    */
   public info(message: string, title?: string);
@@ -322,11 +322,11 @@ export declare class IHomebridgeUiFormHelper {
   /**
    * Hide the form and stop listening to events
    */
-  public end(): void
+  public end(): void;
 
   /**
    * Listen to input / change events emitted by the standalone form
-   * @param fn 
+   * @param fn
    */
   public onChange(fn: (change: Record<string, any>) => any): void;
 
@@ -338,7 +338,7 @@ export declare class IHomebridgeUiFormHelper {
 
   /**
    * Listen cancel button form events
-   * @param fn 
+   * @param fn
    */
   public onCancel(fn: (change: Record<string, any>) => any): void;
 }
