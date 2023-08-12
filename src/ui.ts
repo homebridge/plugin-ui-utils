@@ -52,6 +52,7 @@ if (!Object.prototype.hasOwnProperty.call(window.EventTarget, 'caller')) {
 class HomebridgePluginUi extends EventTargetConstructor {
   private origin = '';
   private lastBodyHeight = 0;
+  private linkRequests: Promise<unknown>[] = [];
 
   public toast = new HomebridgeUiToastHelper();
   public plugin = window['_homebridge'].plugin;
@@ -62,9 +63,10 @@ class HomebridgePluginUi extends EventTargetConstructor {
     window.addEventListener('message', this._handleIncomingMessage.bind(this), false);
   }
 
-  private _handleIncomingMessage(e) {
+  private async _handleIncomingMessage(e) {
     switch (e.data.action) {
       case 'ready': {
+        await Promise.all(this.linkRequests);
         this.origin = e.origin;
         document.body.style.display = 'block';
         this.dispatchEvent(new Event('ready'));
@@ -116,10 +118,14 @@ class HomebridgePluginUi extends EventTargetConstructor {
   }
 
   private _setLinkElement(e) {
-    const linkElement = document.createElement('link');
-    linkElement.setAttribute('href', e.data.href);
-    linkElement.setAttribute('rel', e.data.rel);
-    document.head.appendChild(linkElement);
+    const request = new Promise(resolve => {
+      const linkElement = document.createElement('link');
+      linkElement.setAttribute('href', e.data.href);
+      linkElement.setAttribute('rel', e.data.rel);
+      linkElement.onload = resolve
+      document.head.appendChild(linkElement);
+    })
+    this.linkRequests.push(request);
   }
 
   private _monitorFrameHeight() {
