@@ -37,11 +37,9 @@ export class HomebridgePluginUiServer {
       process.exit(1);
     }
 
-    process.addListener('message', (request) => {
-      // @ts-ignore
+    process.addListener('message', (request: any) => {
       switch (request.action) {
         case 'request': {
-          // @ts-ignore
           this.processRequest(request);
         }
       }
@@ -87,8 +85,7 @@ export class HomebridgePluginUiServer {
           return this.sendResponse(request, { message: e.message, error: e.requestError }, false);
         } else {
           console.error(e);
-          // @ts-ignore
-          return this.sendResponse(request, { message: e.message }, false);
+          return this.sendResponse(request, { message: (e as Error).message }, false);
         }
       }
     } else {
