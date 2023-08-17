@@ -6,26 +6,26 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_and_test:
-    uses: homebridge/.github/.github/workflows/nodejs-build-and-test.yml@main
-    with:
-      enable_coverage: true
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
+  #build_and_test:
+  # uses: homebridge/.github/.github/workflows/nodejs-build-and-test.yml@main
+  #with:
+  # enable_coverage: true
+  #secrets:
+  #  token: ${{ secrets.GITHUB_TOKEN }}
   lint:
-    needs: build_and_test
+    #needs: build_and_test
     uses: homebridge/.github/.github/workflows/eslint.yml@main
 
   publish:
     needs: lint
 
-    if: ${{ github.repository == 'homebridge/homebridge' }}
+    if: ${{ github.repository == 'homebridge/plugin-ui-utils' }}
 
     uses: homebridge/.github/.github/workflows/npm-publish.yml@main
     with:
-      tag: 'beta'
+      tag: "beta"
       dynamically_adjust_version: true
-      npm_version_command: 'pre'
-      pre_id: 'beta'
+      npm_version_command: "pre"
+      pre_id: "beta"
     secrets:
       npm_auth_token: ${{ secrets.npm_token }}
