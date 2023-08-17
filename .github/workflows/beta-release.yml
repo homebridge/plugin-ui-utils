@@ -13,7 +13,7 @@ jobs:
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
   lint:
-    #needs: build_and_test
+    needs: build_and_test
     uses: homebridge/.github/.github/workflows/eslint.yml@main
 
   publish:
