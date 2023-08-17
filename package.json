@@ -20,7 +20,7 @@
     "prepublishOnly": "npm run lint && npm run build"
   },
   "devDependencies": {
-    "@types/node": "^18.11.19",
+    "@types/node": "^20.5.0",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
     "eslint": "^8.47.0",
