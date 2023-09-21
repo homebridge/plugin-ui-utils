@@ -122,9 +122,9 @@ class HomebridgePluginUi extends EventTargetConstructor {
       const linkElement = document.createElement('link');
       linkElement.setAttribute('href', e.data.href);
       linkElement.setAttribute('rel', e.data.rel);
-      linkElement.onload = resolve
+      linkElement.onload = resolve;
       document.head.appendChild(linkElement);
-    })
+    });
     this.linkRequests.push(request);
   }
 
