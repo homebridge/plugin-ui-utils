@@ -17,7 +17,9 @@
   "scripts": {
     "lint": "eslint src/**.ts --max-warnings=0",
     "build": "rimraf ./dist && tsc --project tsconfig.json && tsc --project tsconfig.ui.json",
-    "prepublishOnly": "npm run lint && npm run build"
+    "prepublishOnly": "npm run lint && npm run build",
+    "test": "echo \"No test script specified\" && exit 0",
+    "test-coverage": "echo \"No test-coverage script specified\" && exit 0"
   },
   "devDependencies": {
     "@types/node": "^20.6.3",
