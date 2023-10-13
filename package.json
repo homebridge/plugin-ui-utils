@@ -19,13 +19,15 @@
     "build": "rimraf ./dist && tsc --project tsconfig.json && tsc --project tsconfig.ui.json",
     "prepublishOnly": "npm run lint && npm run build",
     "test": "echo \"No test script specified\" && exit 0",
-    "test-coverage": "echo \"No test-coverage script specified\" && exit 0"
+    "test-coverage": "jest --coverage --forceExit --detectOpenHandles --verbose=false --silent"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.5",
     "@types/node": "^20.6.3",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.49.0",
+    "jest": "^29.5.0",
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
