@@ -1,6 +1,6 @@
 {
   "name": "@homebridge/plugin-ui-utils",
-  "version": "0.0.19",
+  "version": "1.0.0",
   "description": "A tool to help plugins provide custom ui screens in the Homebridge UI",
   "author": "oznu",
   "license": "MIT",
@@ -12,7 +12,8 @@
   "bugs": {
     "url": "https://github.com/homebridge/plugin-ui-utils/issues"
   },
-  "main": "dist/index.js",
+  "type": "module",
+  "exports": "./dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint src/**.ts --max-warnings=0",
@@ -22,11 +23,11 @@
     "test-coverage": "echo \"No test-coverage script specified\" && exit 0"
   },
   "devDependencies": {
-    "@types/node": "^20.6.3",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
-    "eslint": "^8.49.0",
-    "rimraf": "^5.0.1",
+    "@types/node": "^20.8.6",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
+    "eslint": "^8.51.0",
+    "rimraf": "^5.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },

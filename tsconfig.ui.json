@@ -1,8 +1,23 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "es2018", // ~node10
-    "module": "None"
+    "target": "es2022", // ~node18
+    "module": "Node16",
+    "lib": [
+      "es2022",
+      "dom"
+    ],
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "noImplicitAny": false,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node16"
   },
   "include": [
     "src/ui.ts"
