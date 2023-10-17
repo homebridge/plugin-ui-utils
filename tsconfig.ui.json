@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "es2018", // ~node10
+    "target": "es2022", // ~node18
     "module": "None"
   },
   "include": [
