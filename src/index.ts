@@ -1,1 +1,1 @@
-export { HomebridgePluginUiServer, RequestError } from './server.js';
+export { HomebridgePluginUiServer, RequestError } from './server';
