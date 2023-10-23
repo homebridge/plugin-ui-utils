@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2018", // ~node10
+    "target": "es2022",
     "module": "commonjs",
     "lib": [
       "es2015",
@@ -15,7 +15,8 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "skipLibCheck": true
   },
   "include": [
     "src/"
