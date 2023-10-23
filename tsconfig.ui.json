@@ -1,8 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "es2022", // ~node18
-    "module": "None"
+    "target": "es2022",
+    "module": "commonjs",
   },
   "include": [
     "src/ui.ts"
