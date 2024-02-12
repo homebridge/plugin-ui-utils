@@ -22,3 +22,10 @@ jobs:
     uses: homebridge/.github/.github/workflows/npm-publish.yml@latest
     secrets:
       npm_auth_token: ${{ secrets.npm_token }}
+
+  github-releases-to-discord:
+    uses: homebridge/.github/.github/workflows/discord-webhooks.yml@latest
+    with:
+      footer_title: "plugin-ui-utils"
+    secrets:
+      DISCORD_WEBHOOK_URL_LATEST: ${{ secrets.DISCORD_WEBHOOK_URL_LATEST }}

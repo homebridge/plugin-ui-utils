@@ -29,3 +29,10 @@ jobs:
       pre_id: beta
     secrets:
       npm_auth_token: ${{ secrets.npm_token }}
+
+  github-releases-to-discord:
+    uses: homebridge/.github/.github/workflows/discord-webhooks.yml@latest
+    with:
+      footer_title: "plugin-ui-utils"
+    secrets:
+      DISCORD_WEBHOOK_URL_BETA: ${{ secrets.DISCORD_WEBHOOK_URL_LATEST }}
