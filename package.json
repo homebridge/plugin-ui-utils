@@ -1,19 +1,8 @@
 {
   "name": "@homebridge/plugin-ui-utils",
-  "version": "1.0.1",
-  "description": "A tool to help plugins provide custom ui screens in the Homebridge UI",
-  "author": "oznu",
-  "license": "MIT",
-  "homepage": "https://github.com/homebridge/plugin-ui-utils#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/homebridge/plugin-ui-utils.git"
-  },
-  "bugs": {
-    "url": "https://github.com/homebridge/plugin-ui-utils/issues"
-  },
+  "version": "1.0.2",
+  "description": "A tool to help plugins provide custom UI screens in the Homebridge UI.",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "check": "npm install && npm outdated",
     "lint": "eslint src/**.ts --max-warnings=0",
@@ -22,6 +11,30 @@
     "test": "echo \"No test script specified\" && exit 0",
     "test-coverage": "echo \"No test-coverage script specified\" && exit 0"
   },
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/homebridge/plugin-ui-utils.git"
+  },
+  "keywords": [
+    "homebridge",
+    "homebridge-ui"
+  ],
+  "author": {
+    "name": "oznu",
+    "email": "dev@oz.nu"
+  },
+  "contributors": [
+    {
+      "name": "homebridge",
+      "url": "https://github.com/homebridge"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/homebridge/plugin-ui-utils/issues"
+  },
+  "homepage": "https://github.com/homebridge/plugin-ui-utils#readme",
   "devDependencies": {
     "@types/node": "^20.12.2",
     "@typescript-eslint/eslint-plugin": "^7.4.0",
@@ -30,9 +43,5 @@
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3"
-  },
-  "keywords": [
-    "homebridge",
-    "homebridge-ui"
-  ]
+  }
 }
