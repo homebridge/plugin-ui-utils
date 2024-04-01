@@ -37,8 +37,8 @@
   "homepage": "https://github.com/homebridge/plugin-ui-utils#readme",
   "devDependencies": {
     "@types/node": "^20.12.2",
-    "@typescript-eslint/eslint-plugin": "^7.4.0",
-    "@typescript-eslint/parser": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
     "eslint": "^8.57.0",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
