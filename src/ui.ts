@@ -7,7 +7,7 @@
 let EventTargetConstructor = window.EventTarget;
 
 /**
- * Pollyfill for older browsers that do not support EventTarget as a constructor.
+ * Polyfill for older browsers that do not support EventTarget as a constructor.
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
  */
 if (!Object.prototype.hasOwnProperty.call(window.EventTarget, 'caller')) {
@@ -148,7 +148,7 @@ class HomebridgePluginUi extends EventTargetConstructor {
   }
 
   private async _requestResponse(payload): Promise<any> {
-    // generate a random request id so we can link the response
+    // generate a random request id, so we can link the response
     const requestId = Math.random().toString(36).substring(2);
     payload.requestId = requestId;
 

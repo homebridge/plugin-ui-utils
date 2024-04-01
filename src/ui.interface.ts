@@ -112,7 +112,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
   public showSpinner(): void;
 
   /**
-   * Hide theloading spinner overlay.
+   * Hide the loading spinner overlay.
    *
    * @example
    * ```ts
@@ -144,11 +144,13 @@ export declare class IHomebridgePluginUi extends EventTarget {
 
   /**
    * Create a standalone form using a generic schema.
-   * This is not linked to the main config schema model and you must listen for changes yourself.
+   * This is not linked to the main config schema model, and you must listen for changes yourself.
    *
-   * @param schema the schema used to generate the standlone form. See [schema guide](https://developers.homebridge.io/#/config-schema).
+   * @param schema the schema used to generate the standalone form. See [schema guide](https://developers.homebridge.io/#/config-schema).
    * @param data the initial form data
    *
+   * @param submitButton
+   * @param cancelButton
    * @example
    * ```ts
    * const myForm = homebridge.createForm(
@@ -221,7 +223,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
 
   /**
    * Save the plugin config.
-   * You must called `homebridge.updatePluginConfig` first.
+   * You must call `homebridge.updatePluginConfig` first.
    *
    * @example
    * ```ts
