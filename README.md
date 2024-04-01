@@ -1,8 +1,15 @@
+<p align="center">
+  <a href="https://homebridge.io"><img src="https://raw.githubusercontent.com/homebridge/branding/latest/logos/homebridge-color-round-stylized.png" height="140"></a>
+</p>
+<span align="center">
+
+# Plugin UI Utils
+
 [![npm](https://badgen.net/npm/v/@homebridge/plugin-ui-utils)](https://www.npmjs.com/package/@homebridge/plugin-ui-utils)
 [![npm](https://badgen.net/npm/dt/@homebridge/plugin-ui-utils)](https://www.npmjs.com/package/@homebridge/plugin-ui-utils)
 [![Discord](https://img.shields.io/discord/432663330281226270?color=728ED5&logo=discord&label=discord)](https://discord.gg/kqNCe2D)
 
-# Homebridge Plugin Custom UI Utils
+</span>
 
 The package assists plugin developers creating fully customisable configuration user interfaces for their plugins.
 
@@ -25,14 +32,14 @@ The package assists plugin developers creating fully customisable configuration 
 - [Examples](#examples)
 - [Development](#development)
 
-# Implementation
+## Implementation
 
 A plugin's custom user interface has two main components:
 
 * [User Interface](#user-interface-api) - this is the HTML / CSS / JavaScript code the users interact with
 * [Server](#server-api) - this is an optional server side script that provides endpoints the UI can call
 
-## Project Layout
+### Project Layout
 
 A custom UI should be published under a directory named `homebridge-ui`:
 
@@ -55,7 +62,7 @@ homebridge-example-plugin/
 
 You may customise the location of the `homebridge-ui` by setting the `customUiPath` property in the `config.schema.json`. For example: `"customUiPath": "./dist/homebridge-ui"`.
 
-# User Interface API
+## User Interface API
 
 A plugin's custom user interface is displayed inside an iframe in the settings modal, in place of the schema-generated form. 
 
@@ -96,9 +103,9 @@ Example `index.html`:
 </script>
 ```
 
-## Config
+### Config
 
-### `homebridge.getPluginConfig`
+#### `homebridge.getPluginConfig`
 
 > `homebridge.getPluginConfig(): Promise<PluginConfig[]>;`
 
@@ -111,7 +118,7 @@ const pluginConfigBlocks = await homebridge.getPluginConfig();
 // [{ platform: 'ExamplePlatform', name: 'example' }]
 ```
 
-### `homebridge.updatePluginConfig`
+#### `homebridge.updatePluginConfig`
 
 > `homebridge.updatePluginConfig(pluginConfig: PluginConfig[]): Promise<PluginConfig[]>;`
 
@@ -140,7 +147,7 @@ const pluginConfig = [
 await homebridge.updatePluginConfig(pluginConfig);
 ```
 
-### `homebridge.savePluginConfig`
+#### `homebridge.savePluginConfig`
 
 > `homebridge.savePluginConfig(): Promise<void>`
 
@@ -158,7 +165,7 @@ await homebridge.updatePluginConfig(pluginConfig);
 await homebridge.savePluginConfig();
 ```
 
-### `homebridge.getPluginConfigSchema`
+#### `homebridge.getPluginConfigSchema`
 
 > `homebridge.getPluginConfigSchema(): Promise<PluginSchema>;`
 
@@ -168,7 +175,7 @@ Returns the plugin's config.schema.json.
 const schema = await homebridge.getPluginConfigSchema();
 ```
 
-### `homebridge.getCachedAccessories`
+#### `homebridge.getCachedAccessories`
 
 > `homebridge.getCachedAccessories(): Promise<CachedAccessory[]>;`
 
@@ -178,11 +185,11 @@ Returns the any cached accessories for the plugin
 const cachedAccessories = await homebridge.getCachedAccessories();
 ```
 
-## Requests
+### Requests
 
 This allows the custom UI to make API requests to their `server.js` script.
 
-### `homebridge.request`
+#### `homebridge.request`
 
 > `homebridge.request(path: string, body?: any): Promise<any>`
 
@@ -210,7 +217,7 @@ this.onRequest('/hello', async (payload) => {
 });
 ```
 
-## Toast Notifications
+### Toast Notifications
 
 Toast notifications are the pop-up notifications displayed in the bottom right corner. A plugin's custom UI can generate custom notifications with custom content.
 
@@ -218,7 +225,7 @@ Toast notifications are the pop-up notifications displayed in the bottom right c
 <img src="https://user-images.githubusercontent.com/3979615/97829910-7e97c780-1d1f-11eb-95ff-7d85d883b44c.png">
 </p>
 
-### `homebridge.toast.success`
+#### `homebridge.toast.success`
 
 > `homebridge.toast.success(message: string, title?: string): void`
 
@@ -227,7 +234,7 @@ Shows a green "success" notification.
 * `message`: the toast content
 * `title`: an optional title
 
-### `homebridge.toast.error`
+#### `homebridge.toast.error`
 
 > `homebridge.toast.error(message: string, title?: string): void`
 
@@ -236,7 +243,7 @@ Shows a red "error" notification.
 * `message`: the toast content
 * `title`: an optional title
 
-### `homebridge.toast.warning`
+#### `homebridge.toast.warning`
 
 > `homebridge.toast.warning(message: string, title?: string): void`
 
@@ -245,7 +252,7 @@ Shows an amber "warning" notification.
 * `message`: the toast content
 * `title`: an optional title
 
-### `homebridge.toast.info`
+#### `homebridge.toast.info`
 
 > `homebridge.toast.info(message: string, title?: string): void`
 
@@ -254,9 +261,9 @@ Shows a blue "info" notification.
 * `message`: the toast content
 * `title`: an optional title
 
-## Modal
+### Modal
 
-### `homebridge.closeSettings`
+#### `homebridge.closeSettings`
 
 > `homebridge.closeSettings(): void`
 
@@ -268,7 +275,7 @@ This action does not save any config changes.
 homebridge.closeSettings();
 ```
 
-### `homebridge.showSpinner`
+#### `homebridge.showSpinner`
 
 > `homebridge.showSpinner(): void`
 
@@ -285,7 +292,7 @@ await homebridge.request('/hello');
 homebridge.hideSpinner();
 ```
 
-### `homebridge.hideSpinner`
+#### `homebridge.hideSpinner`
 
 > `homebridge.hideSpinner(): void`
 
@@ -295,7 +302,7 @@ Hide the spinner / loading overlay.
 homebridge.hideSpinner();
 ```
 
-## Forms
+### Forms
 
 The custom user interface allows you to create two types of forms:
 
@@ -310,7 +317,7 @@ The custom user interface allows you to create two types of forms:
 
 Developers are also able to create their own forms using HTML.
 
-### `homebridge.showSchemaForm`
+#### `homebridge.showSchemaForm`
 
 > `homebridge.showSchemaForm(): void`
 
@@ -329,7 +336,7 @@ window.homebridge.addEventListener('configChanged', (event: MessageEvent) => {
 });
 ```
 
-### `homebridge.hideSchemaForm`
+#### `homebridge.hideSchemaForm`
 
 > `homebridge.hideSchemaForm(): void`
 
@@ -339,7 +346,7 @@ Hides the schema-generated form.
 homebridge.hideSchemaForm();
 ```
 
-### `homebridge.createForm`
+#### `homebridge.createForm`
 
 > `homebridge.createForm(schema: FormSchema, data: any, submitButton?: string, cancelButton?: string): IHomebridgeUiFormHelper;`
 
@@ -395,11 +402,11 @@ myForm.onCancel((form) => {
 myForm.end();
 ```
 
-## Events
+### Events
 
 The `homebridge` object is an [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget), this allows you to use the browsers built in [addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) and [removeEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener) functions to subscribe and unsubscribe from events.
 
-### Ready Event
+#### Ready Event
 
 Called when the Homebridge UI has completed rendering the plugin's custom UI.
 
@@ -409,7 +416,7 @@ homebridge.addEventListener('ready', () => {
 });
 ```
 
-### Custom Events
+#### Custom Events
 
 Custom events can be pushed from the plugin's `server.js` script.
 
@@ -427,9 +434,9 @@ The corresponding code in the `server.js` file would look like this:
 this.pushEvent('my-event', { some: 'data' });
 ```
 
-## Plugin / Server Information
+### Plugin / Server Information
 
-### `homebridge.plugin`
+#### `homebridge.plugin`
 
 > `homebridge.plugin`
 
@@ -451,7 +458,7 @@ Is an object that contains plugin metadata.
 }
 ```
 
-### homebridge.serverEnv
+#### homebridge.serverEnv
 
 > `homebridge.serverEnv`
 
@@ -466,7 +473,7 @@ Is an object containing some server metadata
 }
 ```
 
-# Server API
+## Server API
 
 To provide server API endpoints that can be called from the custom UI, a plugin must place a `server.js` file in the `homebridge-ui` directory.
 
@@ -515,9 +522,9 @@ class UiServer extends HomebridgePluginUiServer {
 })();
 ```
 
-## Setup
+### Setup
 
-### `this.ready`
+#### `this.ready`
 
 > `this.ready(): void`
 
@@ -527,9 +534,9 @@ Let the UI know the server is ready to accept requests.
 this.ready();
 ```
 
-## Request Handling
+### Request Handling
 
-### `this.onRequest`
+#### `this.onRequest`
 
 > `this.onRequest(path: string, fn: RequestHandler)`
 
@@ -558,7 +565,7 @@ const response = await homebridge.request('/hello', { who: 'world' });
 console.log(response); // the response from the server
 ```
 
-## Request Error Handling
+### Request Error Handling
 
 If you need to throw an error during your request, you should throw an instance of `RequestError` instead of a normal `Error`:
 
@@ -587,9 +594,9 @@ try {
 
 Uncaught errors in event handlers, or errors thrown using `new Error` will still result in the waiting promise in the UI being rejected, however the error stack trace will also be shown in the Homebridge logs which should be avoided.
 
-## Push Events
+### Push Events
 
-### `this.pushEvent`
+#### `this.pushEvent`
 
 > `this.pushEvent(event: string, data: any)`
 
@@ -612,9 +619,9 @@ homebridge.addEventListener('my-event', (event) => {
 });
 ```
 
-## Server Information
+### Server Information
 
-### `this.homebridgeStoragePath`
+#### `this.homebridgeStoragePath`
 
 > `this.homebridgeStoragePath: string`
 
@@ -624,7 +631,7 @@ Returns the Homebridge instance's current storage path.
 const storagePath = this.homebridgeStoragePath;
 ```
 
-### `this.homebridgeConfigPath`
+#### `this.homebridgeConfigPath`
 
 > `this.homebridgeConfigPath: string`
 
@@ -634,7 +641,7 @@ Returns the path to the Homebridge `config.json` file:
 const configPath = this.homebridgeConfigPath;
 ```
 
-### `this.homebridgeUiVersion`
+#### `this.homebridgeUiVersion`
 
 > `this.homebridgeUiVersion: string`
 
@@ -644,7 +651,7 @@ Returns the version of the Homebridge UI:
 const uiVersion = this.homebridgeUiVersion;
 ```
 
-# Examples
+## Examples
 
 * [Basic Example](./examples/basic-ui-server) - demos a minimal custom user interface, interacting with server side scripts, updating the plugin config, and using toast notifications.
 * [Push Events](./examples/push-events) - demos how to send push events from the server, and listen for them in the custom user interface.
@@ -652,7 +659,7 @@ const uiVersion = this.homebridgeUiVersion;
 
 A full list of plugins that have implemented the custom user interface can be found [here](https://www.npmjs.com/package/@homebridge/plugin-ui-utils?activeTab=dependents).
 
-#### homebridge-mercedesme
+##### homebridge-mercedesme
 
 The [homebridge-mercedesme](https://github.com/SeydX/homebridge-mercedesme) plugin by [@SeydX](https://github.com/SeydX) allows users to pair their vehicle using a custom user interface:
 
@@ -660,7 +667,7 @@ The [homebridge-mercedesme](https://github.com/SeydX/homebridge-mercedesme) plug
 <img src="https://raw.githubusercontent.com/SeydX/homebridge-mercedesme/beta/images/hb_mercedesme_ui.gif" width="600px">
 </p>
 
-#### homebridge-bravia-tvos
+##### homebridge-bravia-tvos
 
 The [homebridge-bravia-tvos](https://github.com/SeydX/homebridge-bravia-tvos) plugin by [@SeydX](https://github.com/SeydX) allows users to pair and dynamically configure a user's TV using a custom user interface:
 
@@ -668,7 +675,7 @@ The [homebridge-bravia-tvos](https://github.com/SeydX/homebridge-bravia-tvos) pl
 <img src="https://user-images.githubusercontent.com/3979615/99958753-0a13ee00-2dde-11eb-95fb-69a896d37545.png" width="600px">
 </p>
 
-#### homebridge-electra-smart
+##### homebridge-electra-smart
 
 The [homebridge-electra-smart](https://github.com/nitaybz/homebridge-electra-smart) plugin by [nitaybz](https://github.com/nitaybz) allows users to request a OTP and enter it in exchange for an authentication token:
 
@@ -676,6 +683,6 @@ The [homebridge-electra-smart](https://github.com/nitaybz/homebridge-electra-sma
 <img src="https://user-images.githubusercontent.com/3979615/99959242-be157900-2dde-11eb-8114-6394da2a2e14.png" width="600px">
 </p>
 
-# Development
+## Development
 
 For hints and tips on how to develop your custom user interface, see [DEVELOPMENT.md](./DEVELOPMENT.md).
