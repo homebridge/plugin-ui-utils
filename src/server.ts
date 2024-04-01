@@ -1,6 +1,6 @@
 /**
  * Homebridge Custom Plugin UI Base Class
- * This provides the api to facilitate two way communication between a plugin
+ * This provides the api to facilitate two-way communication between a plugin
  * custom UI HTML code and the server.
  *
  * This is a base class and is intended to be extended.
@@ -59,7 +59,7 @@ export class HomebridgePluginUiServer {
     return process.env.HOMEBRIDGE_UI_VERSION;
   }
 
-  private sendResponse(request, data: any, success = true) {
+  private sendResponse(request: any, data: any, success = true) {
     if (!process.send) {
       return;
     }
@@ -185,7 +185,7 @@ export class RequestError extends Error {
 }
 
 type RequestResponse = string | number | Record<any, any> | Array<any>;
-type RequestHandler = (any) => Promise<RequestResponse> | RequestResponse;
+type RequestHandler = (arg: any) => Promise<RequestResponse> | RequestResponse;
 
 setInterval(() => {
   if (!process.connected) {
