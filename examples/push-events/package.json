@@ -5,10 +5,10 @@
     "homebridge-plugin"
   ],
   "engines": {
-    "node": ">=10.17.0",
-    "homebridge": ">=0.4.4"
+    "node": "^18 || ^20",
+    "homebridge": "^1.6.0"
   },
   "dependencies": {
-    "@homebridge/plugin-ui-utils": "1.0.0"
+    "@homebridge/plugin-ui-utils": "1.0.2"
   }
 }

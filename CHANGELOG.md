@@ -7,6 +7,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 ### Other Changes
 
 - update CHANGELOG to match hb repo formats
+- update example folder package json files
 
 ## v1.0.2 (2024-03-30)
 
