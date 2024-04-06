@@ -1,6 +1,6 @@
 {
   "name": "@homebridge/plugin-ui-utils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A tool to help plugins provide custom UI screens in the Homebridge UI.",
   "main": "dist/index.js",
   "scripts": {
@@ -36,12 +36,12 @@
   },
   "homepage": "https://github.com/homebridge/plugin-ui-utils#readme",
   "devDependencies": {
-    "@types/node": "^20.12.2",
+    "@types/node": "^20.12.5",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
     "eslint": "^8.57.0",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.4"
   }
 }
