@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 /**
  * Homebridge Custom Plugin UI Base Class
  * This provides the api to facilitate two-way communication between a plugin
@@ -29,68 +31,68 @@
  * ```
  */
 export class HomebridgePluginUiServer {
-  private handlers: Record<string, RequestHandler> = {};
+  private handlers: Record<string, RequestHandler> = {}
 
   constructor() {
     if (!process.send) {
-      console.error('This script can only run as a child process.');
-      process.exit(1);
+      console.error('This script can only run as a child process.')
+      process.exit(1)
     }
 
     process.addListener('message', (request: any) => {
       switch (request.action) {
         case 'request': {
-          this.processRequest(request);
+          this.processRequest(request)
         }
       }
-    });
-
+    })
   }
 
   get homebridgeStoragePath() {
-    return process.env.HOMEBRIDGE_STORAGE_PATH;
+    return process.env.HOMEBRIDGE_STORAGE_PATH
   }
 
   get homebridgeConfigPath() {
-    return process.env.HOMEBRIDGE_CONFIG_PATH;
+    return process.env.HOMEBRIDGE_CONFIG_PATH
   }
 
   get homebridgeUiVersion() {
-    return process.env.HOMEBRIDGE_UI_VERSION;
+    return process.env.HOMEBRIDGE_UI_VERSION
   }
 
   private sendResponse(request: any, data: any, success = true) {
     if (!process.send) {
-      return;
+      return
     }
 
     process.send({
       action: 'response',
       payload: {
         requestId: request.requestId,
-        success: success,
-        data: data,
+        success,
+        data,
       },
-    });
+    })
   }
 
-  private async processRequest(request: { path: string; body: any }) {
+  private async processRequest(request: { path: string, body: any }) {
     if (this.handlers[request.path]) {
       try {
-        console.log('Incoming Request:', request.path);
-        const resp = await this.handlers[request.path](request.body || {});
-        return this.sendResponse(request, resp, true);
+        // eslint-disable-next-line no-console
+        console.log('Incoming Request:', request.path)
+        const resp = await this.handlers[request.path](request.body || {})
+        return this.sendResponse(request, resp, true)
       } catch (e) {
         if (e instanceof RequestError) {
-          return this.sendResponse(request, { message: e.message, error: e.requestError }, false);
+          return this.sendResponse(request, { message: e.message, error: e.requestError }, false)
         } else {
-          console.error(e);
-          return this.sendResponse(request, { message: (e as Error).message }, false);
+          console.error(e)
+          return this.sendResponse(request, { message: (e as Error).message }, false)
         }
       }
     } else {
-      console.error('No Registered Handler:', request.path);
-      return this.sendResponse(request, { message: 'Not Found', path: request.path }, false);
+      console.error('No Registered Handler:', request.path)
+      return this.sendResponse(request, { message: 'Not Found', path: request.path }, false)
     }
   }
 
@@ -104,7 +106,7 @@ export class HomebridgePluginUiServer {
    */
   public ready(): void {
     if (!process.send) {
-      return;
+      return
     }
 
     process.send({
@@ -112,7 +114,7 @@ export class HomebridgePluginUiServer {
       payload: {
         server: true,
       },
-    });
+    })
   }
 
   /**
@@ -135,7 +137,7 @@ export class HomebridgePluginUiServer {
    *
    */
   public onRequest(path: string, fn: RequestHandler) {
-    this.handlers[path] = fn;
+    this.handlers[path] = fn
   }
 
   /**
@@ -159,40 +161,39 @@ export class HomebridgePluginUiServer {
    */
   public pushEvent(event: string, data: any) {
     if (!process.send) {
-      return;
+      return
     }
 
     process.send({
       action: 'stream',
       payload: {
-        event: event,
-        data: data,
+        event,
+        data,
       },
-    });
+    })
   }
-
 }
 
 export class RequestError extends Error {
-  public requestError: any;
+  public requestError: any
 
   constructor(message: string, requestError: any) {
-    super(message);
-    Object.setPrototypeOf(this, RequestError.prototype);
+    super(message)
+    Object.setPrototypeOf(this, RequestError.prototype)
 
-    this.requestError = requestError;
+    this.requestError = requestError
   }
 }
 
-type RequestResponse = string | number | Record<any, any> | Array<any>;
-type RequestHandler = (arg: any) => Promise<RequestResponse> | RequestResponse;
+type RequestResponse = string | number | Record<any, any> | Array<any>
+type RequestHandler = (arg: any) => Promise<RequestResponse> | RequestResponse
 
 setInterval(() => {
   if (!process.connected) {
-    process.kill(process.pid, 'SIGTERM');
+    process.kill(process.pid, 'SIGTERM')
   }
-}, 10000);
+}, 10000)
 
 process.on('disconnect', () => {
-  process.kill(process.pid, 'SIGTERM');
-});
+  process.kill(process.pid, 'SIGTERM')
+})

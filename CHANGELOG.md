@@ -2,6 +2,12 @@
 
 All notable changes to `@homebridge/plugin-ui-utils` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
+## BETA
+
+### Notable Changes
+
+- update to esm package
+
 ## v1.0.3 (2024-04-06)
 
 ### Other Changes

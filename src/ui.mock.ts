@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable unused-imports/no-unused-vars */
 
-import {
+import type {
   IHomebridgePluginUi,
   IHomebridgeUiToastHelper,
   PluginConfig,
@@ -9,15 +8,15 @@ import {
   PluginMetadata,
   PluginSchema,
   ServerEnvMetadata,
-} from './ui.interface';
+} from './ui.interface'
 
 export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
-  public mockPluginConfig: PluginConfig[] = [];
+  public mockPluginConfig: PluginConfig[] = []
 
   public mockPluginSchema: PluginSchema = {
     pluginAlias: 'HomebridgeTest',
     pluginType: 'platform',
-  };
+  }
 
   public plugin: PluginMetadata = {
     name: 'homebridge-test',
@@ -32,7 +31,7 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
     publicPackage: true,
     links: [],
     funding: [],
-  };
+  }
 
   public serverEnv: ServerEnvMetadata = {
     env: {
@@ -55,14 +54,14 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
     formAuth: true,
     theme: 'auto',
     serverTimestamp: new Date().toISOString(),
-  };
-
-  constructor() {
-    super();
-    this.dispatchEvent(new Event('ready'));
   }
 
-  public toast = new MockHomebridgeUiToastHelper();
+  constructor() {
+    super()
+    this.dispatchEvent(new Event('ready'))
+  }
+
+  public toast = new MockHomebridgeUiToastHelper()
 
   public fixScrollHeight() { }
   public closeSettings() { }
@@ -72,39 +71,39 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
   public hideSchemaForm() { }
   public endForm() { }
 
-  public createForm(schema, data) {
-    return new MockHomebridgeUiFormHelper(this, schema, data);
+  public createForm(schema: PluginFormSchema, data: any) {
+    return new MockHomebridgeUiFormHelper(this, schema, data)
   }
 
   public async getPluginConfig() {
-    return this.mockPluginConfig;
+    return this.mockPluginConfig
   }
 
   public async updatePluginConfig(pluginConfig: PluginConfig[]) {
-    this.mockPluginConfig = pluginConfig;
-    return this.mockPluginConfig;
+    this.mockPluginConfig = pluginConfig
+    return this.mockPluginConfig
   }
 
   public async savePluginConfig() { }
 
   public async getPluginConfigSchema() {
-    return this.mockPluginSchema;
+    return this.mockPluginSchema
   }
 
   public async request(path: string, body: string) {
-    return {};
+    return {}
   }
 
   public async i18nCurrentLang() {
-    return 'en';
+    return 'en'
   }
 
   public async i18nGetTranslation() {
-    return {};
+    return {}
   }
 
   public async getCachedAccessories() {
-    return [];
+    return []
   }
 }
 
@@ -115,14 +114,17 @@ export class MockHomebridgeUiToastHelper implements IHomebridgeUiToastHelper {
   info(message: string, title: string) { }
 }
 
-
 export class MockHomebridgeUiFormHelper {
   constructor(
     parent: IHomebridgePluginUi,
     schema: PluginFormSchema,
     data: any,
+    submitButton?: string,
+    cancelButton?: string,
   ) { }
 
   public end() { }
-  public onChange(fn) { }
+  public onChange(fn) {}
+  public onSubmit(fn) {}
+  public onCancel(fn) {}
 }

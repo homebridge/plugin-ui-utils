@@ -104,12 +104,12 @@ Here is a simple example using Jest:
 import { MockHomebridgePluginUi } from '@homebridge/plugin-ui-utils/dist/ui.mock'
 
 describe('TestCustomUi', () => {
-  let homebridge: MockHomebridgePluginUi;
+  let homebridge: MockHomebridgePluginUi
 
   beforeEach(() => {
-    homebridge = new MockHomebridgePluginUi();
-    window.homebridge = homebridge;
-  });
+    homebridge = new MockHomebridgePluginUi()
+    window.homebridge = homebridge
+  })
 
   it('should return the plugin config and schema when called', async () => {
     // mock the config
@@ -117,17 +117,16 @@ describe('TestCustomUi', () => {
       {
         platform: 'homebridge-example'
       }
-    ];
+    ]
 
     // mock the schema
     homebridge.mockPluginSchema = {
       pluginAlias: 'homebridge-example',
       pluginType: 'platform'
-    };
+    }
 
-    expect(await window.homebridge.getPluginConfig()).toHaveLength(1);
-    expect(await window.homebridge.getPluginConfigSchema()).toHaveProperty('pluginAlias');
-  });
-
-});
+    expect(await window.homebridge.getPluginConfig()).toHaveLength(1)
+    expect(await window.homebridge.getPluginConfigSchema()).toHaveProperty('pluginAlias')
+  })
+})
 ```
