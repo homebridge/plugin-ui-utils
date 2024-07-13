@@ -9,5 +9,5 @@
   "editor.rulers": [
     140
   ],
-  "codeQL.githubDatabase.download": "never",
+  "codeQL.githubDatabase.download": "never"
 }

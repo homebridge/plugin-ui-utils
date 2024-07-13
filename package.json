@@ -1,25 +1,8 @@
 {
   "name": "@homebridge/plugin-ui-utils",
+  "type": "module",
   "version": "1.0.3",
   "description": "A tool to help plugins provide custom UI screens in the Homebridge UI.",
-  "main": "dist/index.js",
-  "scripts": {
-    "check": "npm install && npm outdated",
-    "lint": "eslint src/**.ts --max-warnings=0",
-    "build": "rimraf ./dist && tsc --project tsconfig.json && tsc --project tsconfig.ui.json",
-    "prepublishOnly": "npm run lint && npm run build",
-    "test": "echo \"No test script specified\" && exit 0",
-    "test-coverage": "echo \"No test-coverage script specified\" && exit 0"
-  },
-  "types": "dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/homebridge/plugin-ui-utils.git"
-  },
-  "keywords": [
-    "homebridge",
-    "homebridge-ui"
-  ],
   "author": {
     "name": "oznu",
     "email": "dev@oz.nu"
@@ -31,17 +14,40 @@
     }
   ],
   "license": "MIT",
+  "homepage": "https://github.com/homebridge/plugin-ui-utils#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/homebridge/plugin-ui-utils.git"
+  },
   "bugs": {
     "url": "https://github.com/homebridge/plugin-ui-utils/issues"
   },
-  "homepage": "https://github.com/homebridge/plugin-ui-utils#readme",
+  "keywords": [
+    "homebridge",
+    "homebridge-ui"
+  ],
+  "exports": "./dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
+  "scripts": {
+    "check": "npm install && npm outdated",
+    "build": "rimraf ./dist && tsc --project tsconfig.json && tsc --project tsconfig.ui.json",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "prepublishOnly": "npm run lint && npm run build",
+    "test": "echo \"No test script specified\" && exit 0",
+    "test-coverage": "echo \"No test-coverage script specified\" && exit 0"
+  },
   "devDependencies": {
-    "@types/node": "^20.12.5",
-    "@typescript-eslint/eslint-plugin": "^7.5.0",
-    "@typescript-eslint/parser": "^7.5.0",
-    "eslint": "^8.57.0",
-    "rimraf": "^5.0.5",
+    "@antfu/eslint-config": "^3.9.2",
+    "@types/node": "^22.9.1",
+    "eslint-plugin-format": "^0.1.2",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.4"
+    "typescript": "^5.6.3"
   }
 }

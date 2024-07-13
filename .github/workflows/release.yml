@@ -3,7 +3,7 @@ name: Node Release
 on:
   push:
     tags:
-      - "v*.*.*"
+      - 'v*.*.*'
   workflow_dispatch:
 
 jobs:
@@ -19,13 +19,18 @@ jobs:
 
     if: ${{ github.repository == 'homebridge/plugin-ui-utils' }}
 
-    uses: homebridge/.github/.github/workflows/npm-publish.yml@latest
+    uses: homebridge/.github/.github/workflows/npm-publish-esm.yml@latest
     secrets:
       npm_auth_token: ${{ secrets.npm_token }}
 
-  github-releases-to-discord:
-    uses: homebridge/.github/.github/workflows/discord-webhooks.yml@latest
-    with:
-      footer_title: "plugin-ui-utils"
-    secrets:
-      DISCORD_WEBHOOK_URL_LATEST: ${{ secrets.DISCORD_WEBHOOK_URL_LATEST }}
+#  github-releases-to-discord:
+#    name: Discord Webhooks
+#    needs: publish
+#    uses: homebridge/.github/.github/workflows/discord-webhooks.yml@latest
+#    with:
+#      title: Plugin UI Utils
+#      description: |
+#        Version `v${{ needs.publish.outputs.NPM_VERSION }}`
+#      url: 'https://github.com/homebridge/plugin-ui-utils/releases/tag/v${{ needs.publish.outputs.NPM_VERSION }}'
+#    secrets:
+#      DISCORD_WEBHOOK_URL_LATEST: ${{ secrets.DISCORD_WEBHOOK_URL_LATEST }}

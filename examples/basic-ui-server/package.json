@@ -1,14 +1,15 @@
 {
-  "private": true,
   "name": "homebridge-ui-basic-example",
+  "type": "module",
+  "private": true,
   "keywords": [
     "homebridge-plugin"
   ],
   "engines": {
-    "node": "^18 || ^20",
-    "homebridge": "^1.6.0"
+    "node": "^18 || ^20 || ^22",
+    "homebridge": "^1.8.0"
   },
   "dependencies": {
-    "@homebridge/plugin-ui-utils": "1.0.2"
+    "@homebridge/plugin-ui-utils": "2.0.0"
   }
 }
