@@ -203,6 +203,14 @@ class HomebridgePluginUi extends EventTargetConstructor {
     this._postMessage({ action: 'spinner.hide' })
   }
 
+  public disableSaveButton(): void {
+    this._postMessage({ action: 'button.save.disabled' })
+  }
+
+  public enableSaveButton(): void {
+    this._postMessage({ action: 'button.save.enabled' })
+  }
+
   public showSchemaForm(): void {
     this._postMessage({ action: 'schema.show' })
   }

@@ -102,11 +102,11 @@ export declare class IHomebridgePluginUi extends EventTarget {
 
   /**
    * Show a loading spinner overlay.
-   * Prevents user input until cleared with `homebridge.hideSpinner();`
+   * Prevents user input until cleared with `homebridge.hideSpinner()`
    *
    * @example
    * ```ts
-   * homebridge.showSpinner();
+   * homebridge.showSpinner()
    * ```
    */
   public showSpinner(): void
@@ -116,10 +116,30 @@ export declare class IHomebridgePluginUi extends EventTarget {
    *
    * @example
    * ```ts
-   * homebridge.hideSpinner();
+   * homebridge.hideSpinner()
    * ```
    */
   public hideSpinner(): void
+
+  /**
+   * Disable the save button in the UI.
+   *
+   * @example
+   * ```ts
+   * homebridge.disableSaveButton()
+   * ```
+   */
+  public disableSaveButton(): void
+
+  /**
+   * Enable the save button in the UI.
+   *
+   * @example
+   * ```ts
+   * homebridge.enableSaveButton()
+   * ```
+   */
+  public enableSaveButton(): void
 
   /**
    * Show the schema-generated form below the custom UI.
@@ -127,7 +147,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    *
    * @example
    * ```ts
-   * homebridge.showSchemaForm();
+   * homebridge.showSchemaForm()
    * ```
    */
   public showSchemaForm(): void
@@ -137,7 +157,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    *
    * @example
    * ```ts
-   * this.hideSchemaForm();
+   * this.hideSchemaForm()
    * ```
    */
   public hideSchemaForm(): void
@@ -179,7 +199,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * });
    *
    * // stop listening / hide the form
-   * myForm.end();
+   * myForm.end()
    * ```
    */
   public createForm(schema: PluginFormSchema, data: any, submitButton?: string, cancelButton?: string): IHomebridgeUiFormHelper
@@ -196,7 +216,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    *
    * @example
    * ```ts
-   * const pluginConfigBlocks = await homebridge.getPluginConfig();
+   * const pluginConfigBlocks = await homebridge.getPluginConfig()
    * ```
    */
   public getPluginConfig(): Promise<PluginConfig[]>
@@ -227,7 +247,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    *
    * @example
    * ```ts
-   * await homebridge.savePluginConfig();
+   * await homebridge.savePluginConfig()
    * ```
    */
   public savePluginConfig(): Promise<void>
@@ -237,7 +257,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    *
    * @example
    * ```ts
-   * const schema = await homebridge.getPluginConfigSchema();
+   * const schema = await homebridge.getPluginConfigSchema()
    * ```
    */
   public getPluginConfigSchema(): Promise<PluginSchema>

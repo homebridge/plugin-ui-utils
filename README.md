@@ -303,6 +303,26 @@ Hide the spinner / loading overlay.
 homebridge.hideSpinner()
 ```
 
+#### `homebridge.disableSaveButton`
+
+> `homebridge.disableSaveButton(): void`
+
+Disables the save button in the settings modal.
+
+```ts
+homebridge.disableSaveButton()
+```
+
+#### `homebridge.enableSaveButton`
+
+> `homebridge.enableSaveButton(): void`
+
+Enables the save button in the settings modal.
+
+```ts
+homebridge.enableSaveButton()
+```
+
 ### Forms
 
 The custom user interface allows you to create two types of forms:
