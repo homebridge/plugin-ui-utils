@@ -67,6 +67,8 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
   public closeSettings() { }
   public showSpinner() { }
   public hideSpinner() { }
+  public disableSaveButton() {}
+  public enableSaveButton() {}
   public showSchemaForm() { }
   public hideSchemaForm() { }
   public endForm() { }

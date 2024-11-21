@@ -7,6 +7,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 ### Notable Changes
 
 - update to esm package
+- add methods for enabling and disabling save button
 
 ## v1.0.3 (2024-04-06)
 
