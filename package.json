@@ -26,7 +26,17 @@
     "homebridge",
     "homebridge-ui"
   ],
-  "exports": "./dist/index.js",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./ui.interface": {
+      "default": "./dist/ui.interface.js",
+      "types": "./dist/ui.interface.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "types": "dist/index.d.ts",
   "files": [
     "LICENSE",
