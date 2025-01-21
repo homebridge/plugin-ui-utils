@@ -2,6 +2,13 @@
 
 All notable changes to `@homebridge/plugin-ui-utils` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
+## BETA
+
+### Changes
+
+- fix: package.json not export `ui.interface` (#23) (@baranwang)
+- updated dependencies
+
 ## v2.0.0 (2024-11-22)
 
 ### Notable Changes

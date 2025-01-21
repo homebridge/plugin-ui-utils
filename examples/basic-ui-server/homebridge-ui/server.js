@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+
 import { HomebridgePluginUiServer, RequestError } from '@homebridge/plugin-ui-utils'
 
 class PluginUiServer extends HomebridgePluginUiServer {
