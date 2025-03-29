@@ -2,6 +2,19 @@
 
 All notable changes to `@homebridge/plugin-ui-utils` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
+## v2.0.2 (2025-03-30)
+
+### Homebridge UI Bootstrap Version
+
+Please note that the Boostrap version in the UI was recently updated from `v4` to `v5`.
+This may cause some style changes to your custom UIs.
+
+For more information about the changes, please refer to the [Bootstrap v5 migration guide](https://getbootstrap.com/docs/5.0/migration/).
+
+### Changes
+
+- update `README` to document updated UI bootstrap version
+
 ## v2.0.1 (2025-01-21)
 
 ### Changes

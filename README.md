@@ -75,7 +75,7 @@ The user interface API is provided to the plugin's custom UI via the `window.hom
 Note:
 
 - Developers are free to use front end frameworks such as Angular, Vue, or React to create the plugin's custom user interface.
-- Developers should make use [Bootstrap 4](https://getbootstrap.com/docs) CSS classes, as these will automatically be styled and themed correctly. There is no need to include the boostrap css yourself, this will be injected by the Homebridge UI during render.
+- Developers should make use [Bootstrap 5](https://getbootstrap.com/docs) CSS classes, as these will automatically be styled and themed correctly. There is no need to include the boostrap css yourself, this will be injected by the Homebridge UI during render.
 - As the user interface is displayed in an isolated iframe, you can safely use any custom JavaScript and CSS.
 - The `index.html` file should not include `<html>`, `<head>`, or `<body>` tags, as these are added by the Homebridge UI during the render process.
 - You may include external assets in your HTML.
@@ -154,7 +154,7 @@ await homebridge.updatePluginConfig(pluginConfig)
 
 Saves the plugin config changes to the Homebridge `config.json`. This is the equivalent of clicking the _Save_ button.
 
-This should be used sparingly, for example, after a access token is generated.
+This should be used sparingly, for example, after an access token is generated.
 
 You must call `await homebridge.updatePluginConfig()` first.
 
@@ -180,7 +180,7 @@ const schema = await homebridge.getPluginConfigSchema()
 
 > `homebridge.getCachedAccessories(): Promise<CachedAccessory[]>;`
 
-Returns the any cached accessories for the plugin
+Returns the cached accessories for the plugin
 
 ```ts
 const cachedAccessories = await homebridge.getCachedAccessories()
@@ -698,7 +698,7 @@ The [homebridge-bravia-tvos](https://github.com/SeydX/homebridge-bravia-tvos) pl
 
 ##### homebridge-electra-smart
 
-The [homebridge-electra-smart](https://github.com/nitaybz/homebridge-electra-smart) plugin by [nitaybz](https://github.com/nitaybz) allows users to request a OTP and enter it in exchange for an authentication token:
+The [homebridge-electra-smart](https://github.com/nitaybz/homebridge-electra-smart) plugin by [nitaybz](https://github.com/nitaybz) allows users to request an OTP and enter it in exchange for an authentication token:
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/3979615/99959242-be157900-2dde-11eb-8114-6394da2a2e14.png" width="600px">
