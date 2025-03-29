@@ -92,7 +92,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
   /**
    * Tell the UI to adjust the height of the iframe container to the same as your document body
    */
-  public fixScrollHeight()
+  public fixScrollHeight(): void
 
   /**
    * Close the Plugin Settings modal.
@@ -308,28 +308,28 @@ export declare class IHomebridgeUiToastHelper {
    * @param message
    * @param title - optional title
    */
-  public success(message: string, title?: string)
+  public success(message: string, title?: string): void
 
   /**
    * Trigger an error toast notification in the UI
    * @param message
    * @param title - optional title
    */
-  public error(message: string, title?: string)
+  public error(message: string, title?: string): void
 
   /**
    * Trigger a warning toast notification in the UI
    * @param message
    * @param title - optional title
    */
-  public warning(message: string, title?: string)
+  public warning(message: string, title?: string): void
 
   /**
    * Trigger an info toast notification in the UI
    * @param message
    * @param title - optional title
    */
-  public info(message: string, title?: string)
+  public info(message: string, title?: string): void
 }
 
 export declare class IHomebridgeUiFormHelper {

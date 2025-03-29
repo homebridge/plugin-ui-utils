@@ -187,7 +187,7 @@ class HomebridgePluginUi extends EventTargetConstructor {
     })
   }
 
-  public fixScrollHeight() {
+  public fixScrollHeight(): void {
     this._postMessage({ action: 'scrollHeight', scrollHeight: document.body.scrollHeight })
   }
 
@@ -265,19 +265,19 @@ class HomebridgeUiToastHelper {
     window.parent.postMessage({ action: `toast.${type}`, message, title }, '*')
   }
 
-  public success(message: string, title?: string) {
+  public success(message: string, title?: string): void {
     this._postMessage('success', message, title)
   }
 
-  public error(message: string, title?: string) {
+  public error(message: string, title?: string): void {
     this._postMessage('error', message, title)
   }
 
-  public warning(message: string, title?: string) {
+  public warning(message: string, title?: string): void {
     this._postMessage('warning', message, title)
   }
 
-  public info(message: string, title?: string) {
+  public info(message: string, title?: string): void {
     this._postMessage('info', message, title)
   }
 }

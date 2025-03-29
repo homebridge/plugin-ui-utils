@@ -15,6 +15,7 @@ For more information about the changes, please refer to the [Bootstrap v5 migrat
 
 - update `README` to document updated UI bootstrap version
 - updated dependencies
+- improve typings
 
 ## v2.0.1 (2025-01-21)
 
