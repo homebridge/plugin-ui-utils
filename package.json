@@ -53,11 +53,11 @@
     "test-coverage": "echo \"No test-coverage script specified\" && exit 0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.11.0",
-    "@types/node": "^22.13.14",
+    "@antfu/eslint-config": "^4.13.2",
+    "@types/node": "^22.15.29",
     "eslint-plugin-format": "^1.0.1",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   }
 }

@@ -2,6 +2,13 @@
 
 All notable changes to `@homebridge/plugin-ui-utils` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
+## v2.1.0 (Unreleased)
+
+### Changes
+
+- add method `userCurrentLightingMode` to get the current lighting mode
+  - requires homebridge ui `^4.75.1-beta.2 || ^5.0.0-beta.76`
+
 ## v2.0.2 (2025-03-30)
 
 ### Homebridge UI Bootstrap Version

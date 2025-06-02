@@ -96,6 +96,10 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
     return {}
   }
 
+  public async userCurrentLightingMode(): Promise<'light' | 'dark'> {
+    return 'light'
+  }
+
   public async i18nCurrentLang() {
     return 'en'
   }

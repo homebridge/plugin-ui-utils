@@ -300,6 +300,11 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * Returns the full translation object for the current language.
    */
   public i18nGetTranslation(): Promise<Record<string, string>>
+
+  /**
+   * Returns the lighting mode currently being used by the UI.
+   */
+  public userCurrentLightingMode(): Promise<'light' | 'dark'>
 }
 
 export declare class IHomebridgeUiToastHelper {

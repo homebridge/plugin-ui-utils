@@ -251,6 +251,10 @@ class HomebridgePluginUi extends EventTargetConstructor {
     return await this._requestResponse({ action: 'request', path, body })
   }
 
+  public async userCurrentLightingMode(): Promise<'dark' | 'light'> {
+    return await this._requestResponse({ action: 'user.lightingMode' })
+  }
+
   public async i18nCurrentLang(): Promise<string> {
     return await this._requestResponse({ action: 'i18n.lang' })
   }

@@ -186,6 +186,21 @@ Returns the cached accessories for the plugin
 const cachedAccessories = await homebridge.getCachedAccessories()
 ```
 
+### Environment
+
+#### `homebridge.i18nCurrentLang`
+
+> `homebridge.i18nCurrentLang(): Promise<string>;`
+
+Return the current language the user interface is displayed in. Returns the i18n country code.
+
+#### `homebridge.userCurrentLightingMode`
+
+> `homebridge.userCurrentLightingMode(): Promise<'light' | 'dark'>;`
+
+Returns the lighting mode currently being used by the UI.
+
+
 ### Requests
 
 This allows the custom UI to make API requests to their `server.js` script.
