@@ -4,7 +4,6 @@ export default antfu({
   ignores: ['dist', 'README.md', 'DEVELOPMENT.md'],
   rules: {
     'new-cap': 'off',
-    'import/extensions': ['error', 'ignorePackages'],
     'import/order': 'off',
     'jsdoc/check-alignment': 'error',
     'jsdoc/check-line-alignment': 'error',
