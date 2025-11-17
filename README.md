@@ -5,8 +5,8 @@
 
 # Plugin UI Utils
 
-[![npm](https://badgen.net/npm/v/@homebridge/plugin-ui-utils)](https://www.npmjs.com/package/@homebridge/plugin-ui-utils)
-[![npm](https://badgen.net/npm/dt/@homebridge/plugin-ui-utils)](https://www.npmjs.com/package/@homebridge/plugin-ui-utils)
+[![npm](https://shields.io/npm/v/@homebridge/plugin-ui-utils)](https://www.npmjs.com/package/@homebridge/plugin-ui-utils)
+[![npm](https://shields.io/npm/dt/@homebridge/plugin-ui-utils)](https://www.npmjs.com/package/@homebridge/plugin-ui-utils)
 [![Discord](https://img.shields.io/discord/432663330281226270?color=728ED5&logo=discord&label=discord)](https://discord.gg/kqNCe2D)
 
 </span>
