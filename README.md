@@ -180,7 +180,7 @@ const schema = await homebridge.getPluginConfigSchema()
 
 > `homebridge.getCachedAccessories(): Promise<CachedAccessory[]>;`
 
-Returns the cached accessories for the plugin
+Returns the cached accessories for the plugin.
 
 ```ts
 const cachedAccessories = await homebridge.getCachedAccessories()

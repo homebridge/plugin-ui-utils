@@ -111,6 +111,10 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
   public async getCachedAccessories() {
     return []
   }
+
+  public async getCachedMatterAccessories() {
+    return []
+  }
 }
 
 export class MockHomebridgeUiToastHelper implements IHomebridgeUiToastHelper {
