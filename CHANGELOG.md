@@ -8,6 +8,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 
 - updated dependencies
 - update release script for oidc releases
+- add empty method for future homebridge version
 
 ## v2.1.2 (2025-11-22)
 

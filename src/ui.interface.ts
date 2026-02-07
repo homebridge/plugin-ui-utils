@@ -71,6 +71,8 @@ export interface CachedAccessory {
   services: any[]
 }
 
+export interface CachedMatterAccessory { /* coming soon */ }
+
 export declare type PluginConfig = Record<string, any>
 
 export declare class IHomebridgePluginUi extends EventTarget {
@@ -266,6 +268,11 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * Return an array of cached accessories for your plugin.
    */
   public getCachedAccessories(): Promise<CachedAccessory[]>
+
+  /**
+   * Return an array of cached Matter accessories for your plugin.
+   */
+  public getCachedMatterAccessories(): Promise<CachedMatterAccessory[]>
 
   /**
    * Make a request to the plugins server side script
