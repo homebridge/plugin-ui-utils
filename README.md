@@ -186,6 +186,16 @@ Returns the cached accessories for the plugin.
 const cachedAccessories = await homebridge.getCachedAccessories()
 ```
 
+#### `homebridge.getCachedMatterAccessories`
+
+> `homebridge.getCachedMatterAccessories(): Promise<CachedMatterAccessory[]>;`
+
+Returns the cached Matter accessories for the plugin.
+
+```ts
+const cachedMatterAccessories = await homebridge.getCachedMatterAccessories()
+```
+
 ### Environment
 
 #### `homebridge.i18nCurrentLang`

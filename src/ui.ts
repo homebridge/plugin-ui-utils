@@ -248,7 +248,7 @@ class HomebridgePluginUi extends EventTargetConstructor {
   }
 
   public async getCachedMatterAccessories(): Promise<Record<string, any>[]> {
-    return []
+    return await this._requestResponse({ action: 'cachedMatterAccessories.get' })
   }
 
   public async request(path: string, body?: any) {

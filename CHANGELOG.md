@@ -7,6 +7,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 ### Changes
 
 - updated dependencies
+- added methods for future homebridge versions
 
 ## v2.1.3 (2026-02-08)
 

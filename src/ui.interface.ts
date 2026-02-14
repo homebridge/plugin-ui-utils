@@ -71,7 +71,21 @@ export interface CachedAccessory {
   services: any[]
 }
 
-export interface CachedMatterAccessory { /* coming soon */ }
+export interface CachedMatterAccessory {
+  plugin: string
+  platform: string
+  uuid: string
+  displayName: string
+  deviceType: {
+    name: string
+  }
+  serialNumber: string
+  manufacturer: string
+  model: string
+  clusters: Record<string, any>
+  $deviceId: string
+  $protocol: string
+}
 
 export declare type PluginConfig = Record<string, any>
 
