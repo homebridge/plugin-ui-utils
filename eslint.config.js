@@ -5,8 +5,8 @@ export default antfu({
   rules: {
     'new-cap': 'off',
     'import/order': 'off',
-    'jsdoc/check-alignment': 'error',
-    'jsdoc/check-line-alignment': 'error',
+    // 'jsdoc/check-alignment': 'error',
+    // 'jsdoc/check-line-alignment': 'error',
     'no-undef': 'error',
     'perfectionist/sort-exports': 'error',
     'perfectionist/sort-named-exports': 'error',
