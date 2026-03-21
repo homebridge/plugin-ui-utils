@@ -1,10 +1,10 @@
+/* eslint-disable no-console, unused-imports/no-unused-vars */
+
 /**
  * This script is injected into a plugins custom settings ui by the Homebridge UI
  * You should not include it in your own code, however you can use it for type information if desired.
  * It provides the interface to interact with the Homebridge UI service.
  */
-
-/* eslint-disable no-console */
 
 let EventTargetConstructor = window.EventTarget
 
@@ -12,7 +12,7 @@ let EventTargetConstructor = window.EventTarget
  * Polyfill for older browsers that do not support EventTarget as a constructor.
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
  */
-if (!Object.prototype.hasOwnProperty.call(window.EventTarget, 'caller')) {
+if (!Object.hasOwn(window.EventTarget, 'caller')) {
   EventTargetConstructor = function (this: EventTarget) {
     // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
     this.listeners = {}

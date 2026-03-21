@@ -186,6 +186,8 @@ export class RequestError extends Error {
 }
 
 type RequestResponse = string | number | Record<any, any> | Array<any>
+
+// eslint-disable-next-line unused-imports/no-unused-vars
 type RequestHandler = (arg: any) => Promise<RequestResponse> | RequestResponse
 
 setInterval(() => {

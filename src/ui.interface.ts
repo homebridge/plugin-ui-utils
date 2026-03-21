@@ -1,3 +1,5 @@
+/* eslint-disable unused-imports/no-unused-vars */
+
 declare global {
   interface Window {
     homebridge: IHomebridgePluginUi
