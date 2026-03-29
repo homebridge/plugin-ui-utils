@@ -1,4 +1,4 @@
-/* eslint-disable no-console, unused-imports/no-unused-vars */
+/* eslint-disable no-console */
 
 /**
  * This script is injected into a plugins custom settings ui by the Homebridge UI
