@@ -204,11 +204,27 @@ const cachedMatterAccessories = await homebridge.getCachedMatterAccessories()
 
 Return the current language the user interface is displayed in. Returns the i18n country code.
 
+#### `homebridge.i18nGetTranslation`
+
+> `homebridge.i18nGetTranslation(): Promise<Record<string, string>>;`
+
+Returns the full translation table for the current language, keyed by translation id. Useful if you want to display localised strings in your custom UI without bundling your own translations.
+
+```ts
+const translations = await homebridge.i18nGetTranslation()
+```
+
 #### `homebridge.userCurrentLightingMode`
 
 > `homebridge.userCurrentLightingMode(): Promise<'light' | 'dark'>;`
 
 Returns the lighting mode currently being used by the UI.
+
+#### `homebridge.fixScrollHeight`
+
+> `homebridge.fixScrollHeight(): void`
+
+Force the Homebridge UI to resize the iframe to match `document.body.scrollHeight`. The library already does this automatically via `ResizeObserver` (or a polling fallback) — you should only need to call this manually if you're animating content in a way that bypasses the observer, or if you want to trigger a resize before the next observer tick.
 
 
 ### Requests
@@ -446,6 +462,16 @@ myForm.onCancel((form) => {
 
 // stop listening to change events and hide the form
 myForm.end()
+```
+
+#### `homebridge.endForm`
+
+> `homebridge.endForm(): void`
+
+Hide the active standalone form without needing a reference to its helper. Prefer `myForm.end()` from `createForm` — that variant also removes the change/submit/cancel listeners, whereas `endForm()` only hides the form. Use this when the helper instance is out of scope and you just want to close whatever is showing.
+
+```ts
+homebridge.endForm()
 ```
 
 ### Events

@@ -17,6 +17,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - fix(server): widen RequestResponse to include boolean, null and void
 - chore(server): correct processRequest IPC payload type
 - docs(readme): sync serverEnv documentation with ServerEnvMetadata
+- docs(readme): document endForm, fixScrollHeight and i18nGetTranslation
 
 ## v2.2.3 (2026-03-29)
 
