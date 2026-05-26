@@ -58,7 +58,10 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
 
   constructor() {
     super()
-    this.dispatchEvent(new Event('ready'))
+    // Defer so consumers that call `addEventListener('ready', ...)` after
+    // `new MockHomebridgePluginUi()` still observe the event. Firing
+    // synchronously from the constructor leaves the listener attached too late.
+    queueMicrotask(() => this.dispatchEvent(new Event('ready')))
   }
 
   public toast = new MockHomebridgeUiToastHelper()
