@@ -155,13 +155,19 @@ class HomebridgePluginUi extends EventTargetConstructor {
   }
 
   private _setLinkElement(e) {
-    const request = new Promise((resolve) => {
+    const request = new Promise<void>((resolve) => {
+      const done = () => resolve()
       const linkElement = document.createElement('link')
       linkElement.setAttribute('href', e.data.href)
       linkElement.setAttribute('rel', e.data.rel)
-      linkElement.onload = resolve
-      linkElement.onerror = resolve
+      linkElement.onload = done
+      linkElement.onerror = done
       document.head.appendChild(linkElement)
+      // Resolve after 5s even if neither onload nor onerror fires (e.g. CSP
+      // block, blocked extension, browsers that swallow the events). The
+      // 'ready' event awaits every link request, so a stuck link would
+      // otherwise leave the plugin UI hidden indefinitely.
+      setTimeout(done, 5000)
     })
     this.linkRequests.push(request)
   }

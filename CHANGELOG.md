@@ -11,6 +11,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - fix(ui): verify origin and source on incoming postMessage
 - fix(ui): pin toast notifications to parent origin
 - fix(mock): defer ready event so listeners can attach
+- fix(ui): time out link-element loads so ready does not hang
 
 ## v2.2.3 (2026-03-29)
 
