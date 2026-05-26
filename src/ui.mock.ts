@@ -2,6 +2,7 @@
 
 import type {
   IHomebridgePluginUi,
+  IHomebridgeUiFormHelper,
   IHomebridgeUiToastHelper,
   PluginConfig,
   PluginFormSchema,
@@ -76,8 +77,8 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
   public hideSchemaForm() { }
   public endForm() { }
 
-  public createForm(schema: PluginFormSchema, data: any) {
-    return new MockHomebridgeUiFormHelper(this, schema, data)
+  public createForm(schema: PluginFormSchema, data: any, submitButton?: string, cancelButton?: string) {
+    return new MockHomebridgeUiFormHelper(this, schema, data, submitButton, cancelButton)
   }
 
   public async getPluginConfig() {
@@ -95,7 +96,7 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
     return this.mockPluginSchema
   }
 
-  public async request(path: string, body: string) {
+  public async request(path: string, body?: any) {
     return {}
   }
 
@@ -121,13 +122,13 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
 }
 
 export class MockHomebridgeUiToastHelper implements IHomebridgeUiToastHelper {
-  success(message: string, title: string) { }
-  error(message: string, title: string) { }
-  warning(message: string, title: string) { }
-  info(message: string, title: string) { }
+  success(message: string, title?: string) { }
+  error(message: string, title?: string) { }
+  warning(message: string, title?: string) { }
+  info(message: string, title?: string) { }
 }
 
-export class MockHomebridgeUiFormHelper {
+export class MockHomebridgeUiFormHelper implements IHomebridgeUiFormHelper {
   constructor(
     parent: IHomebridgePluginUi,
     schema: PluginFormSchema,
@@ -137,7 +138,7 @@ export class MockHomebridgeUiFormHelper {
   ) { }
 
   public end() { }
-  public onChange(fn) {}
-  public onSubmit(fn) {}
-  public onCancel(fn) {}
+  public onChange(fn: (change: Record<string, any>) => any) {}
+  public onSubmit(fn: (change: Record<string, any>) => any) {}
+  public onCancel(fn: (change: Record<string, any>) => any) {}
 }
