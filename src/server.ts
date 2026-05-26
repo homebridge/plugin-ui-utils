@@ -75,7 +75,7 @@ export class HomebridgePluginUiServer {
     })
   }
 
-  private async processRequest(request: { path: string, body: any }) {
+  private async processRequest(request: { action: string, requestId: string, path: string, body: any }) {
     if (this.handlers[request.path]) {
       try {
         // eslint-disable-next-line no-console
