@@ -508,13 +508,29 @@ Is an object that contains plugin metadata.
 
 > `homebridge.serverEnv`
 
-Is an object containing some server metadata
+Is an object containing server metadata. Mirrors the `ServerEnvMetadata` type exported by `@homebridge/plugin-ui-utils/ui.interface`.
 
 ```ts
 {
+  theme: string                  // 'auto' | 'light' | 'dark' | a named theme
+  serverTimestamp: string        // ISO timestamp captured at render time
+  formAuth: boolean | 'none'
   env: {
-    platform: string // darwin, win32, linux, freebsd etc.
-    nodeVersion: string // Node.js version
+    ableToConfigureSelf: boolean
+    dockerOfflineUpdate: boolean
+    enableAccessories: boolean
+    enableTerminalAccess: boolean
+    homebridgeInstanceName: string
+    nodeVersion: string          // Node.js version
+    packageName: string          // typically 'homebridge-config-ui-x'
+    packageVersion: string       // version of the Homebridge UI host
+    platform: string             // darwin, win32, linux, freebsd etc.
+    runningInDocker: boolean
+    runningInLinux: boolean
+    serviceMode: boolean
+    temperatureUnits: string     // 'c' | 'f'
+    lang: string | null
+    instanceId: string
   }
 }
 ```

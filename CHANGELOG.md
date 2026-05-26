@@ -16,6 +16,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - fix(mock): align mock signatures with IHomebridgePluginUi
 - fix(server): widen RequestResponse to include boolean, null and void
 - chore(server): correct processRequest IPC payload type
+- docs(readme): sync serverEnv documentation with ServerEnvMetadata
 
 ## v2.2.3 (2026-03-29)
 
