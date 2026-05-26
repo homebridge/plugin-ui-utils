@@ -7,6 +7,9 @@
     ],
     "rootDir": "./src",
     "module": "ESNext",
+    "types": [
+      "node"
+    ],
     "strict": true,
     "noImplicitAny": false,
     "declaration": true,
