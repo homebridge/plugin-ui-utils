@@ -185,7 +185,7 @@ export class RequestError extends Error {
   }
 }
 
-type RequestResponse = string | number | Record<any, any> | Array<any>
+type RequestResponse = string | number | boolean | null | void | Record<any, any> | Array<any>
 
 type RequestHandler = (arg: any) => Promise<RequestResponse> | RequestResponse
 
