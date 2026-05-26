@@ -81,10 +81,30 @@ class HomebridgePluginUi extends EventTargetConstructor {
   }
 
   private async _handleIncomingMessage(e) {
+    // Only accept messages from the parent window. Sibling iframes or popups
+    // could otherwise inject styles / links via body-class, inline-style and
+    // link-element, or spoof responses.
+    if (e.source !== window.parent) {
+      return
+    }
+
+    // Pin the origin to whatever the first message arrived from, and reject
+    // anything from a different origin afterwards. The parent's wrapper script
+    // posts body-class / link-element / inline-style before 'ready', so we
+    // can't wait for 'ready' to capture the origin.
+    if (!this.origin) {
+      this.origin = e.origin
+    } else if (e.origin !== this.origin) {
+      return
+    }
+
+    if (!e.data || typeof e.data !== 'object') {
+      return
+    }
+
     switch (e.data.action) {
       case 'ready': {
         await Promise.all(this.linkRequests)
-        this.origin = e.origin
         document.body.style.display = 'block'
         this.dispatchEvent(new Event('ready'))
         this.fixScrollHeight()
