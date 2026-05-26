@@ -7,6 +7,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 ### Changes
 
 - chore: dependency updates
+- docs: add `CLAUDE.md` for claude code
 
 ## v2.2.3 (2026-03-29)
 
