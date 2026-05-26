@@ -9,6 +9,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - chore: dependency updates
 - docs: add `CLAUDE.md` for claude code
 - fix(ui): verify origin and source on incoming postMessage
+- fix(ui): pin toast notifications to parent origin
 
 ## v2.2.3 (2026-03-29)
 

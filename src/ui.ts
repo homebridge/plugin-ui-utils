@@ -68,7 +68,7 @@ class HomebridgePluginUi extends EventTargetConstructor {
   private lastBodyHeight = 0
   private linkRequests: Promise<unknown>[] = []
 
-  public toast = new HomebridgeUiToastHelper()
+  public toast = new HomebridgeUiToastHelper(this)
   // @ts-expect-error - TS2339: Property _homebridge does not exist on type Window & typeof globalThis
   public plugin = window._homebridge.plugin
 
@@ -289,8 +289,12 @@ class HomebridgePluginUi extends EventTargetConstructor {
 }
 
 class HomebridgeUiToastHelper {
+  constructor(private parent: HomebridgePluginUi) {}
+
   private _postMessage(type: string, message: string, title?: string) {
-    window.parent.postMessage({ action: `toast.${type}`, message, title }, '*')
+    // Route through the parent so toast payloads inherit the pinned origin
+    // and aren't readable by sibling frames before the ready handshake.
+    this.parent._postMessage({ action: `toast.${type}`, message, title })
   }
 
   public success(message: string, title?: string): void {
