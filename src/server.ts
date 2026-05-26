@@ -189,12 +189,11 @@ type RequestResponse = string | number | Record<any, any> | Array<any>
 
 type RequestHandler = (arg: any) => Promise<RequestResponse> | RequestResponse
 
-setInterval(() => {
-  if (!process.connected) {
-    process.kill(process.pid, 'SIGTERM')
-  }
-}, 10000)
-
+// Node emits 'disconnect' on the child as soon as the parent's IPC channel
+// closes (either via child.disconnect() or because the parent process
+// exited), so this single handler is enough to terminate the server. The
+// previous 10s setInterval check was both redundant and kept the event
+// loop alive, preventing natural process exit.
 process.on('disconnect', () => {
   process.kill(process.pid, 'SIGTERM')
 })
