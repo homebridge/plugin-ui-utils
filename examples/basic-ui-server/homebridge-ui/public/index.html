@@ -19,7 +19,7 @@
     // get the initial config - this is an array potentially containing multiple config blocks
     const pluginConfig = await homebridge.getPluginConfig();
 
-    // get the intial from the config and add it to the form
+    // get the initial values from the config and add them to the form
     if (pluginConfig.length) {
       document.querySelector('#userNameInput').value = pluginConfig[0].username;
       document.querySelector('#tokenInput').value = pluginConfig[0].token;
@@ -67,7 +67,9 @@
         // show a success toast notification
         homebridge.toast.success('Got Token!', 'Success');
       } catch (e) {
-        homebridge.toast.error(e.error, e.message);
+        // e.message is the RequestError message from server.js,
+        // e.error is the payload passed as its second argument
+        homebridge.toast.error(e.error.message, e.message);
       } finally {
         // remember to un-hide the spinner
         homebridge.hideSpinner();

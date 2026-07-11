@@ -9,6 +9,6 @@
   // a basic example showing how to listen for events sent from the server script
   homebridge.addEventListener('server-time-event', (event) => {
     console.log('Got "server-time-event" event:', event.data);
-    document.querySelector('#serverTime').innerHTML = event.data.time;
+    document.querySelector('#serverTime').textContent = event.data.time;
   });
 </script>
