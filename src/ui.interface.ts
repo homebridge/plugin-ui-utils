@@ -313,7 +313,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
 
   /**
    * Return the current language the user interface is displayed in.
-   * Returns the i18n country code.
+   * Returns the i18n language code (e.g. `en`, `de`, `fr`).
    */
   public i18nCurrentLang(): Promise<string>
 
@@ -363,8 +363,8 @@ export declare class IHomebridgeUiFormHelper {
     parent: IHomebridgePluginUi,
     schema: PluginFormSchema,
     data: any,
-    submitButton: string,
-    cancelButton: string,
+    submitButton?: string,
+    cancelButton?: string,
   )
 
   /**

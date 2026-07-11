@@ -14,6 +14,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - chore(ui): set injected inline styles via textContent
 - fix(server): register the IPC disconnect handler in the constructor, not at import
 - fix(mock): expose `ui.mock` via the package exports map
+- fix(interface): make form helper buttons optional and correct i18n doc comment
 
 ## v2.2.4 (2026-05-26)
 
