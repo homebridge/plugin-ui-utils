@@ -17,6 +17,7 @@ The package assists plugin developers creating fully customisable configuration 
   - [Project Layout](#project-layout)
 - [User Interface API](#user-interface-api)
   - [Config](#config)
+  - [Environment](#environment)
   - [Requests](#requests)
   - [Toast Notifications](#toast-notifications)
   - [Modal](#modal)
@@ -75,10 +76,11 @@ The user interface API is provided to the plugin's custom UI via the `window.hom
 Note:
 
 - Developers are free to use front end frameworks such as Angular, Vue, or React to create the plugin's custom user interface.
-- Developers should make use [Bootstrap 5](https://getbootstrap.com/docs) CSS classes, as these will automatically be styled and themed correctly. There is no need to include the boostrap css yourself, this will be injected by the Homebridge UI during render.
+- Developers should make use of [Bootstrap 5](https://getbootstrap.com/docs) CSS classes, as these will automatically be styled and themed correctly. There is no need to include the Bootstrap CSS yourself, this will be injected by the Homebridge UI during render.
 - As the user interface is displayed in an isolated iframe, you can safely use any custom JavaScript and CSS.
 - The `index.html` file should not include `<html>`, `<head>`, or `<body>` tags, as these are added by the Homebridge UI during the render process.
 - You may include external assets in your HTML.
+- TypeScript users can register the types for the `window.homebridge` object with `import '@homebridge/plugin-ui-utils/ui.interface'` — see [DEVELOPMENT.md](./DEVELOPMENT.md) for this and for testing with the provided mock.
 
 Example `index.html`:
 
@@ -202,7 +204,7 @@ const cachedMatterAccessories = await homebridge.getCachedMatterAccessories()
 
 > `homebridge.i18nCurrentLang(): Promise<string>;`
 
-Return the current language the user interface is displayed in. Returns the i18n country code.
+Return the current language the user interface is displayed in. Returns the i18n language code (e.g. `en`, `de`, `fr`).
 
 #### `homebridge.i18nGetTranslation`
 
@@ -410,7 +412,7 @@ homebridge.hideSchemaForm()
 
 #### `homebridge.createForm`
 
-> `homebridge.createForm(schema: FormSchema, data: any, submitButton?: string, cancelButton?: string): IHomebridgeUiFormHelper;`
+> `homebridge.createForm(schema: PluginFormSchema, data: any, submitButton?: string, cancelButton?: string): IHomebridgeUiFormHelper;`
 
 Create a new standalone form. You may pass in an arbitrary schema using the same options as the [config.schema.json](https://developers.homebridge.io/#/config-schema).
 
@@ -512,21 +514,23 @@ this.pushEvent('my-event', { some: 'data' })
 
 > `homebridge.plugin`
 
-Is an object that contains plugin metadata.
+Is an object that contains plugin metadata. Mirrors the `PluginMetadata` type exported by `@homebridge/plugin-ui-utils/ui.interface`.
 
 ```ts
 {
-  name: string;
-  description: string;
-  installedVersion: string;
-  latestVersion: string;
-  verifiedPlugin: boolean;
-  updateAvailable: boolean;
-  publicPackage: boolean;
-  links: {
-    npm: string;
-    homepage?: string;
-  }
+  name: string
+  displayName?: string
+  description: string
+  verifiedPlugin: boolean
+  installedVersion: string
+  latestVersion: string | null
+  updateAvailable: boolean
+  publicPackage: boolean
+  globalInstall: boolean
+  settingsSchema: boolean
+  installPath: string
+  links: Record<string, string>[]
+  funding?: Record<string, string>[]
 }
 ```
 
@@ -573,10 +577,9 @@ npm install --save @homebridge/plugin-ui-utils
 
 Note:
 
-- This `server.js` script will be spawned as a child process when the plugin's settings modal is opened, and is terminated when the settings modal is closed.
+- The `server.js` script will be spawned as a child process when the plugin's settings modal is opened, and is terminated when the settings modal is closed.
 - The `server.js` script must create a new instance of a class that extends `HomebridgePluginUiServer` from the `@homebridge/plugin-ui-utils` library.
-- This file will be spawned as a child process when the plugin's settings modal is opened, and is terminated when the settings modal is closed.
-- The server side script must extend the class provided by the `@homebridge/plugin-ui-utils` library.
+- Anything written to stdout or stderr (e.g. `console.log`) in `server.js` appears in the Homebridge UI log, prefixed with the plugin's name — not in the browser console.
 
 Example `server.js`:
 
@@ -607,8 +610,8 @@ class UiServer extends HomebridgePluginUiServer {
 
 // start the instance of the class
 (() => {
-  return new UiServer;
-})();
+  return new UiServer()
+})()
 ```
 
 ### Setup
@@ -681,7 +684,7 @@ try {
 }
 ```
 
-Uncaught errors in event handlers, or errors thrown using `new Error` will still result in the waiting promise in the UI being rejected, however the error stack trace will also be shown in the Homebridge logs which should be avoided.
+Uncaught errors in request handlers, or errors thrown using `new Error`, will still result in the waiting promise in the UI being rejected — however the error's stack trace will also be printed to the Homebridge UI log, which should be avoided.
 
 ### Push Events
 
@@ -689,7 +692,7 @@ Uncaught errors in event handlers, or errors thrown using `new Error` will still
 
 > `this.pushEvent(event: string, data: any)`
 
-Push events allow you to send data to the UI, without needed the UI to request it first.
+Push events allow you to send data to the UI, without needing the UI to request it first.
 
 - `event`: a string to describe the event type
 - `data`: any data to send as an event payload to the UI.

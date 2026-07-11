@@ -19,6 +19,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - fix(examples): correct toast error arguments and avoid innerHTML
 - docs: update claude and copilot reference files
 - docs: revamp development guide with working import paths and logging FAQ
+- docs(readme): sync plugin metadata shape, fix typos and document server logging
 
 ## v2.2.4 (2026-05-26)
 
