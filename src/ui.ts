@@ -160,7 +160,7 @@ class HomebridgePluginUi extends EventTargetConstructor {
 
   private _setInlineStyle(e) {
     const styleElement = document.createElement('style')
-    styleElement.innerHTML = e.data.style
+    styleElement.textContent = e.data.style
     document.head.appendChild(styleElement)
   }
 
