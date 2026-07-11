@@ -17,6 +17,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - fix(interface): make form helper buttons optional and correct i18n doc comment
 - chore(examples): update dependencies and engines
 - fix(examples): correct toast error arguments and avoid innerHTML
+- docs: update claude and copilot reference files
 
 ## v2.2.4 (2026-05-26)
 
