@@ -10,6 +10,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - chore: dependency updates
 - chore: bump `actions/checkout` to v7 in `release.yml`
 - chore: update copyright year in `LICENSE`
+- fix(ui): only use the EventTarget polyfill when the native constructor is unsupported
 
 ## v2.2.4 (2026-05-26)
 

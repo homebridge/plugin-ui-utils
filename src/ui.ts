@@ -12,7 +12,17 @@ let EventTargetConstructor = window.EventTarget
  * Polyfill for older browsers that do not support EventTarget as a constructor.
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
  */
-if (!Object.hasOwn(window.EventTarget, 'caller')) {
+function isEventTargetConstructible(): boolean {
+  try {
+    // eslint-disable-next-line no-new
+    new window.EventTarget()
+    return true
+  } catch {
+    return false
+  }
+}
+
+if (!isEventTargetConstructible()) {
   EventTargetConstructor = function (this: EventTarget) {
     // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
     this.listeners = {}
