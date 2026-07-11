@@ -9,6 +9,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - chore: update action versions in `release.yml`
 - chore: dependency updates
 - chore: bump `actions/checkout` to v7 in `release.yml`
+- chore: update copyright year in `LICENSE`
 
 ## v2.2.4 (2026-05-26)
 
