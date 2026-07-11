@@ -35,6 +35,10 @@
       "types": "./dist/ui.interface.d.ts",
       "default": "./dist/ui.interface.js"
     },
+    "./ui.mock": {
+      "types": "./dist/ui.mock.d.ts",
+      "default": "./dist/ui.mock.js"
+    },
     "./package.json": "./package.json"
   },
   "types": "dist/index.d.ts",
