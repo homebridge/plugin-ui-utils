@@ -46,6 +46,17 @@ export class HomebridgePluginUiServer {
         }
       }
     })
+
+    // Node emits 'disconnect' on the child as soon as the parent's IPC channel
+    // closes (either via child.disconnect() or because the parent process
+    // exited), so this single handler is enough to terminate the server.
+    // Registered here rather than at module scope so that merely importing
+    // the package (e.g. for RequestError in a plugin's main code, which may
+    // itself run as an IPC child such as a child bridge) does not install a
+    // self-terminating handler.
+    process.on('disconnect', () => {
+      process.kill(process.pid, 'SIGTERM')
+    })
   }
 
   get homebridgeStoragePath() {
@@ -188,12 +199,3 @@ export class RequestError extends Error {
 type RequestResponse = string | number | boolean | null | void | Record<any, any> | Array<any>
 
 type RequestHandler = (arg: any) => Promise<RequestResponse> | RequestResponse
-
-// Node emits 'disconnect' on the child as soon as the parent's IPC channel
-// closes (either via child.disconnect() or because the parent process
-// exited), so this single handler is enough to terminate the server. The
-// previous 10s setInterval check was both redundant and kept the event
-// loop alive, preventing natural process exit.
-process.on('disconnect', () => {
-  process.kill(process.pid, 'SIGTERM')
-})
