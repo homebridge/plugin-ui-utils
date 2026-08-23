@@ -7,6 +7,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 ### Changes
 
 - chore(examples): regenerate lock files for v2.2.5
+- docs: point the schema links at the restructured developer docs
 
 ## v2.2.5 (2026-07-11)
 

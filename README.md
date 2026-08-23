@@ -414,11 +414,11 @@ homebridge.hideSchemaForm()
 
 > `homebridge.createForm(schema: PluginFormSchema, data: any, submitButton?: string, cancelButton?: string): IHomebridgeUiFormHelper;`
 
-Create a new standalone form. You may pass in an arbitrary schema using the same options as the [config.schema.json](https://developers.homebridge.io/#/config-schema).
+Create a new standalone form. You may pass in an arbitrary schema using the same options as the [config.schema.json](https://developers.homebridge.io/#/config-screen/schema).
 
 Only one standalone form can be displayed at a time. The main config-schema based form cannot be shown while a standalone form is being displayed.
 
-- `schema`: The [form schema object](https://developers.homebridge.io/#/config-schema), may also contain layout metadata
+- `schema`: The [form schema object](https://developers.homebridge.io/#/config-screen/schema), may also contain layout metadata
 - `data`: The initial form data
 - `submitButton`: String. Optional label for a submit button, if not provided, no submit button will be displayed
 - `cancelButton`: String. Optional label for a cancel button, if not provided, no cancel button will be displayed

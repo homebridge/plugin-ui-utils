@@ -182,7 +182,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * Create a standalone form using a generic schema.
    * This is not linked to the main config schema model, and you must listen for changes yourself.
    *
-   * @param schema the schema used to generate the standalone form. See [schema guide](https://developers.homebridge.io/#/config-schema).
+   * @param schema the schema used to generate the standalone form. See [schema guide](https://developers.homebridge.io/#/config-screen/schema).
    * @param data the initial form data
    *
    * @param submitButton
