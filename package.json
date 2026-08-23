@@ -1,7 +1,7 @@
 {
   "name": "@homebridge/plugin-ui-utils",
   "type": "module",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "A tool to help plugins provide custom UI screens in the Homebridge UI.",
   "author": {
     "name": "oznu",
