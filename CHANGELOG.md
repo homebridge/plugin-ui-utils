@@ -2,6 +2,12 @@
 
 All notable changes to `@homebridge/plugin-ui-utils` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
+## v2.2.7 (Pending Release)
+
+### Changes
+
+- chore(deps): dependency updates
+
 ## v2.2.6 (2026-08-23)
 
 ### Changes

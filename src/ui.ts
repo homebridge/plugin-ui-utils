@@ -344,7 +344,14 @@ class HomebridgeUiFormHelper {
     submitButton?: string,
     cancelButton?: string,
   ) {
-    this.parent._postMessage({ action: 'form.create', formId: this.formId, schema, data, submitButton, cancelButton })
+    this.parent._postMessage({
+      action: 'form.create',
+      formId: this.formId,
+      schema,
+      data,
+      submitButton,
+      cancelButton,
+    })
 
     const handle = this._eventHandle.bind(this)
 
@@ -352,7 +359,12 @@ class HomebridgeUiFormHelper {
 
     this.end = () => {
       this.parent.removeEventListener(this.formId, handle)
-      this.parent._postMessage({ action: 'form.end', formId: this.formId, schema, data })
+      this.parent._postMessage({
+        action: 'form.end',
+        formId: this.formId,
+        schema,
+        data,
+      })
     }
   }
 
