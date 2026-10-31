@@ -7,6 +7,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 ### Changes
 
 - chore(examples): bump plugin-ui-utils to v2.2.7
+- chore(examples): drop the example lock files
 - chore(deps): dependency updates
 
 ## v2.2.6 (2026-08-23)
