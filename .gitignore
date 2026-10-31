@@ -122,3 +122,6 @@ dist
 # IDEs
 .idea
 .DS_Store
+
+# example plugins are not locked
+examples/*/package-lock.json
