@@ -1,9 +1,7 @@
 name: Release
 
-# This workflow handles latest, beta, and alpha releases:
-# - Latest: Triggered by GitHub releases (tag vX.Y.Z)
-# - Beta: Triggered by pushes to beta-X.Y.Z branches
-# - Alpha: Triggered by pushes to alpha-X.Y.Z branches
+# Latest: GitHub releases. Beta and alpha: pushes to beta-X.Y.Z / alpha-X.Y.Z branches.
+# The release itself lives in homebridge/.github.
 
 on:
   release:
@@ -23,79 +21,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  determine-release-type:
-    name: Determine Release Type
+  release:
     if: ${{ github.repository == 'homebridge/plugin-ui-utils' }}
-    uses: homebridge/.github/.github/workflows/determine-npm-release.yml@latest
-
-  publish:
-    needs: [determine-release-type]
-    name: Publish to npm (${{ needs.determine-release-type.outputs.npm_tag }})
-    runs-on: ubuntu-latest
-    outputs:
-      npm_version: ${{ steps.get-published-version.outputs.version }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Upgrade npm for OIDC support
-        run: npm install -g npm@latest
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Handle prerelease versioning
-        if: needs.determine-release-type.outputs.release_type == 'beta' || needs.determine-release-type.outputs.release_type == 'alpha'
-        run: |
-          # Download versioning script from homebridge/.github
-          mkdir -p .github
-          wget -q https://raw.githubusercontent.com/homebridge/.github/latest/.github/npm-version-script-esm.js -O .github/npm-version-script-esm.js
-
-          # Run the script to set base version
-          node .github/npm-version-script-esm.js ${{ github.ref }} ${{ needs.determine-release-type.outputs.release_type }}
-
-          # Add prerelease suffix
-          npm version pre --preid=${{ needs.determine-release-type.outputs.release_type }} --no-git-tag-version
-
-      - name: Build
-        run: npm run build
-
-      - name: Publish to npm with OIDC
-        run: npm publish --tag ${{ needs.determine-release-type.outputs.npm_tag }} --provenance --access public
-
-      - name: Get published version
-        id: get-published-version
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Published version: $VERSION"
-
-  pre-release:
-    needs: [determine-release-type, publish]
-    name: Create GitHub Pre-Release
-    if: |
-      always() &&
-      needs.publish.result == 'success' &&
-      github.repository == 'homebridge/plugin-ui-utils' &&
-      (needs.determine-release-type.outputs.release_type == 'beta' || needs.determine-release-type.outputs.release_type == 'alpha')
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Create nightly release
-        id: create_release
-        uses: viperproject/create-nightly-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ needs.publish.outputs.npm_version }}
-          release_name: v${{ needs.publish.outputs.npm_version }}
-          body: |
-            v${{ needs.publish.outputs.npm_version }}
-          keep_num: 5
-          keep_tags: false
+    uses: homebridge/.github/.github/workflows/npm-release.yml@latest
