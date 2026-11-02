@@ -25,52 +25,8 @@ concurrency:
 jobs:
   determine-release-type:
     name: Determine Release Type
-    runs-on: ubuntu-latest
     if: ${{ github.repository == 'homebridge/plugin-ui-utils' }}
-    outputs:
-      release_type: ${{ steps.release-type.outputs.type }}
-      npm_tag: ${{ steps.release-type.outputs.tag }}
-      version: ${{ steps.get_version.outputs.version }}
-    steps:
-      - name: Determine release type
-        id: release-type
-        run: |
-          if [[ "${{ github.event_name }}" == "release" ]]; then
-            echo "type=latest" >> $GITHUB_OUTPUT
-            echo "tag=latest" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.ref }}" == refs/heads/beta-* ]]; then
-            echo "type=beta" >> $GITHUB_OUTPUT
-            echo "tag=beta" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.ref }}" == refs/heads/alpha-* ]]; then
-            echo "type=alpha" >> $GITHUB_OUTPUT
-            echo "tag=alpha" >> $GITHUB_OUTPUT
-          else
-            echo "type=none" >> $GITHUB_OUTPUT
-            echo "tag=none" >> $GITHUB_OUTPUT
-            echo "No valid release type detected - skipping publish"
-          fi
-
-      - name: Get Release Tag (Latest Only)
-        if: steps.release-type.outputs.type == 'latest'
-        id: get_version
-        uses: jannemattila/get-version-from-tag@v4
-
-      - name: Tag Info (Latest Only)
-        if: steps.release-type.outputs.type == 'latest'
-        run: |
-          echo "Release Tag: ${{github.ref}}"
-          echo "Latest Tag: ${{ steps.get_version.outputs.version }}"
-
-      - name: Tag Info Matches (Latest Only)
-        if: steps.release-type.outputs.type == 'latest' && endsWith(github.ref, steps.get_version.outputs.version)
-        run: |
-          echo Latest Tag matches Release tag
-
-      - name: Tag Info Doesn't Match (Latest Only)
-        if: steps.release-type.outputs.type == 'latest' && !endsWith(github.ref, steps.get_version.outputs.version)
-        run: |
-          echo Latest Tag does not matches Release tag
-          exit 1
+    uses: homebridge/.github/.github/workflows/determine-npm-release.yml@latest
 
   publish:
     needs: [determine-release-type]
