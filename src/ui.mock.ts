@@ -1,6 +1,7 @@
 /* eslint-disable unused-imports/no-unused-vars */
 
 import type {
+  AccessoryLayoutRoom,
   IHomebridgePluginUi,
   IHomebridgeUiFormHelper,
   IHomebridgeUiToastHelper,
@@ -13,6 +14,10 @@ import type {
 
 export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
   public mockPluginConfig: PluginConfig[] = []
+
+  public mockAccessoryLayout: AccessoryLayoutRoom[] = [
+    { name: 'Default Room', isDefault: true, services: [] },
+  ]
 
   public mockPluginSchema: PluginSchema = {
     pluginAlias: 'HomebridgeTest',
@@ -118,6 +123,10 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
 
   public async getCachedMatterAccessories() {
     return []
+  }
+
+  public async getAccessoryLayout() {
+    return this.mockAccessoryLayout
   }
 }
 

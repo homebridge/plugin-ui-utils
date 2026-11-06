@@ -198,6 +198,20 @@ Returns the cached Matter accessories for the plugin.
 const cachedMatterAccessories = await homebridge.getCachedMatterAccessories()
 ```
 
+#### `homebridge.getAccessoryLayout`
+
+> `homebridge.getAccessoryLayout(): Promise<AccessoryLayoutRoom[]>;`
+
+Returns the rooms the logged-in user has arranged their accessories into on the Homebridge UI's Accessories page. Each room has a `name`, an optional `isDefault` flag, and a list of `services` identified by their `uniqueId` (the same id `@homebridge/hap-client` reports). Services the user has not placed in a room are not listed.
+
+Older versions of the Homebridge UI do not provide this method, so check for it first:
+
+```ts
+const rooms = typeof homebridge.getAccessoryLayout === 'function'
+  ? await homebridge.getAccessoryLayout()
+  : []
+```
+
 ### Environment
 
 #### `homebridge.i18nCurrentLang`

@@ -87,6 +87,22 @@ export interface CachedMatterAccessory {
   $protocol: string
 }
 
+export interface AccessoryLayoutService {
+  /**
+   * The service's `uniqueId`, as reported by `@homebridge/hap-client`.
+   */
+  uniqueId: string
+}
+
+export interface AccessoryLayoutRoom {
+  name: string
+  /**
+   * Set on the room that holds accessories the user has not placed in a room.
+   */
+  isDefault?: boolean
+  services: AccessoryLayoutService[]
+}
+
 export declare type PluginConfig = Record<string, any>
 
 export declare class IHomebridgePluginUi extends EventTarget {
@@ -287,6 +303,23 @@ export declare class IHomebridgePluginUi extends EventTarget {
    * Return an array of cached Matter accessories for your plugin.
    */
   public getCachedMatterAccessories(): Promise<CachedMatterAccessory[]>
+
+  /**
+   * Return the rooms the logged-in user has arranged their accessories into
+   * on the Homebridge UI's Accessories page. Each service is identified by its
+   * `uniqueId`; services the user has not placed are not listed.
+   *
+   * The Homebridge UI supplies this method, so check that it exists before
+   * calling it: older UI versions do not have it.
+   *
+   * @example
+   * ```ts
+   * const rooms = typeof homebridge.getAccessoryLayout === 'function'
+   *   ? await homebridge.getAccessoryLayout()
+   *   : []
+   * ```
+   */
+  public getAccessoryLayout(): Promise<AccessoryLayoutRoom[]>
 
   /**
    * Make a request to the plugins server side script
