@@ -7,6 +7,7 @@ on:
     branches: [latest, beta*]
   schedule:
     - cron: '17 9 * * 2'
+  workflow_dispatch:
 
 jobs:
   analyze:
