@@ -11,6 +11,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 ### Other Changes
 
 - test: add Vitest with jsdom, with specs for `getAccessoryLayout`
+- chore(examples): bump plugin-ui-utils to v2.3.0
 - chore(deps): dependency updates (rimraf 6.1.4, which clears the glob advisory GHSA-3g3m-2fjr-6pw4)
 
 ## v2.2.7 (2026-10-31)
