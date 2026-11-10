@@ -2,12 +2,16 @@
 
 All notable changes to `@homebridge/plugin-ui-utils` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
-## v2.2.8 (Pending Release)
+## v2.3.0 (2026-11-10)
 
-### Changes
+### Notable Changes
 
-- feat(ui): add `homebridge.getAccessoryLayout()` to read the user's accessory rooms
+- feat(ui): add `homebridge.getAccessoryLayout()`, so a custom plugin UI can read the rooms the user has arranged their accessories into on the Accessories page. Each room lists its services by `uniqueId`, the same id `@homebridge/hap-client` reports. It needs Homebridge UI 5.30.1 or later, so check that the method exists before calling it (see the README).
+
+### Other Changes
+
 - test: add Vitest with jsdom, with specs for `getAccessoryLayout`
+- chore(deps): dependency updates (rimraf 6.1.4, which clears the glob advisory GHSA-3g3m-2fjr-6pw4)
 
 ## v2.2.7 (2026-10-31)
 
