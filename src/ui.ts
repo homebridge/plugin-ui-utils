@@ -6,74 +6,9 @@
  * It provides the interface to interact with the Homebridge UI service.
  */
 
-let EventTargetConstructor = window.EventTarget
-
-/**
- * Polyfill for older browsers that do not support EventTarget as a constructor.
- * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
- */
-function isEventTargetConstructible(): boolean {
-  try {
-    // eslint-disable-next-line no-new
-    new window.EventTarget()
-    return true
-  } catch {
-    return false
-  }
-}
-
-if (!isEventTargetConstructible()) {
-  EventTargetConstructor = function (this: EventTarget) {
-    // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
-    this.listeners = {}
-  } as unknown as { new(): EventTarget, prototype: EventTarget }
-
-  // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
-  EventTargetConstructor.prototype.listeners = null
-  EventTargetConstructor.prototype.addEventListener = function (type, callback) {
-    // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
-    if (!(type in this.listeners)) {
-      // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
-      this.listeners[type] = []
-    }
-
-    // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
-    this.listeners[type].push(callback)
-  }
-
-  EventTargetConstructor.prototype.removeEventListener = function (type, callback) {
-    // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
-    if (!(type in this.listeners)) {
-      return
-    }
-
-    // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
-    const stack = this.listeners[type]
-    for (let i = 0, l = stack.length; i < l; i++) {
-      if (stack[i] === callback) {
-        stack.splice(i, 1)
-        return
-      }
-    }
-  }
-
-  EventTargetConstructor.prototype.dispatchEvent = function (event) {
-    // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
-    if (!(event.type in this.listeners)) {
-      return true
-    }
-
-    // @ts-expect-error - TS2339: Property listeners does not exist on type EventTarget
-    const stack = this.listeners[event.type].slice()
-
-    for (let i = 0, l = stack.length; i < l; i++) {
-      stack[i].call(this, event)
-    }
-    return !event.defaultPrevented
-  }
-}
-
-class HomebridgePluginUi extends EventTargetConstructor {
+// No EventTarget polyfill: the Homebridge UI supports only the last two
+// versions of each browser, and all of them can construct an EventTarget.
+class HomebridgePluginUi extends EventTarget {
   private origin = ''
   private lastBodyHeight = 0
   private linkRequests: Promise<unknown>[] = []
