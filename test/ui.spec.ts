@@ -152,6 +152,23 @@ describe('homebridge requests', () => {
   })
 })
 
+describe('homebridge stylesheets from the parent', () => {
+  it('stops the 5 second fallback timer once the stylesheet has loaded', () => {
+    vi.useFakeTimers()
+    try {
+      fromParent({ action: 'link-element', href: 'http://homebridge.local:8581/theme.css', rel: 'stylesheet' })
+      const link = document.head.querySelector('link[href$="theme.css"]') as HTMLLinkElement
+      expect(vi.getTimerCount()).toBe(1)
+
+      link.dispatchEvent(new Event('load'))
+
+      expect(vi.getTimerCount()).toBe(0)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+})
+
 describe('mockHomebridgePluginUi.getAccessoryLayout', () => {
   it('returns the default room until a layout is set', async () => {
     const mock = new MockHomebridgePluginUi()
