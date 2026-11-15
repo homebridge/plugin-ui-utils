@@ -52,6 +52,9 @@ export interface PluginMetadata {
 export type PluginFunding = string | { type: string, url: string } | Array<string | { type: string, url: string }>
 
 export interface ServerEnvMetadata {
+  /**
+   * The colour theme, for example `deep-purple`. For light or dark mode, use `homebridge.userCurrentLightingMode()`.
+   */
   theme: string
   serverTimestamp: string
   /**
@@ -214,7 +217,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    *
    * @example
    * ```ts
-   * this.hideSchemaForm()
+   * homebridge.hideSchemaForm()
    * ```
    */
   public hideSchemaForm(): void
@@ -225,9 +228,8 @@ export declare class IHomebridgePluginUi extends EventTarget {
    *
    * @param schema the schema used to generate the standalone form. See [schema guide](https://developers.homebridge.io/#/config-screen/schema).
    * @param data the initial form data
-   *
-   * @param submitButton
-   * @param cancelButton
+   * @param submitButton optional label for a submit button; without it, no submit button is shown
+   * @param cancelButton optional label for a cancel button; without it, no cancel button is shown
    * @example
    * ```ts
    * const myForm = homebridge.createForm(
@@ -237,7 +239,7 @@ export declare class IHomebridgePluginUi extends EventTarget {
    *        properties: {
    *          name: {
    *            title: 'Name',
-   *            type: string,
+   *            type: 'string',
    *            required: true,
    *          }
    *        }

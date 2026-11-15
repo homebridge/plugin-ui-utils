@@ -24,6 +24,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - refactor(types): turn on noImplicitAny and type the UI script's messages and helpers
 - fix(ui): give every request and form an id that can not repeat
 - refactor(ui): stop the 5 second stylesheet timer once the stylesheet has loaded
+- docs: correct the hideSchemaForm and createForm examples and what theme holds
 
 ## v2.3.0 (2026-11-10)
 
