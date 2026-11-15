@@ -1,8 +1,8 @@
-import type { AccessoryLayoutRoom } from '../src/ui.interface'
+import type { AccessoryLayoutRoom } from '../src/ui.interface.js'
 
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
-import { MockHomebridgePluginUi } from '../src/ui.mock'
+import { MockHomebridgePluginUi } from '../src/ui.mock.js'
 
 const PARENT_ORIGIN = 'http://homebridge.local:8581'
 

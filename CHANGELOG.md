@@ -7,6 +7,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 ### Changes
 
 - test: type-check the sources and specs as part of npm test
+- fix(mock): add the missing .js ending so NodeNext projects get the mock's types
 
 ## v2.3.0 (2026-11-10)
 
