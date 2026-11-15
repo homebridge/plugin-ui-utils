@@ -13,6 +13,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - fix(server): answer with the reason when a handler throws a value that is not an Error
 - fix(server): pass a request body of false, 0 or an empty string to the handler unchanged
 - fix(server): send nothing after the UI closes the channel instead of crashing
+- fix(server): name RequestError so logs and stack traces show RequestError
 
 ## v2.3.0 (2026-11-10)
 
