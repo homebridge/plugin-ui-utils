@@ -79,12 +79,23 @@ export class HomebridgePluginUiServer {
     return process.env.HOMEBRIDGE_UI_VERSION
   }
 
-  private sendResponse(request: any, data: any, success = true) {
-    if (!process.send) {
+  /**
+   * Send a message to the Homebridge UI, unless the channel to it is closed.
+   * The channel closes when the user closes the settings modal. A send after
+   * that does not throw: Node emits an 'error' event on `process`, and with no
+   * listener for it the process crashes with ERR_IPC_CHANNEL_CLOSED. A request
+   * that finishes late, or a timer that pushes events, would hit this.
+   * @param message - the message to send
+   */
+  private send(message: Record<string, unknown>) {
+    if (!process.send || !process.connected) {
       return
     }
+    process.send(message)
+  }
 
-    process.send({
+  private sendResponse(request: any, data: any, success = true) {
+    this.send({
       action: 'response',
       payload: {
         requestId: request.requestId,
@@ -130,11 +141,7 @@ export class HomebridgePluginUiServer {
    * ```
    */
   public ready(): void {
-    if (!process.send) {
-      return
-    }
-
-    process.send({
+    this.send({
       action: 'ready',
       payload: {
         server: true,
@@ -185,11 +192,7 @@ export class HomebridgePluginUiServer {
    * ```
    */
   public pushEvent(event: string, data: any) {
-    if (!process.send) {
-      return
-    }
-
-    process.send({
+    this.send({
       action: 'stream',
       payload: {
         event,
