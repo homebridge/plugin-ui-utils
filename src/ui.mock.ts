@@ -10,7 +10,7 @@ import type {
   PluginMetadata,
   PluginSchema,
   ServerEnvMetadata,
-} from './ui.interface'
+} from './ui.interface.js'
 
 export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
   public mockPluginConfig: PluginConfig[] = []
