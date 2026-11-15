@@ -160,3 +160,26 @@ describe('homebridgePluginUiServer requests', () => {
     await expect(responseTo('null')).resolves.toEqual({ requestId: 'null', success: true, data: {} })
   })
 })
+
+describe('homebridgePluginUiServer after the Homebridge UI closed the channel', () => {
+  it('sends nothing, because a send on a closed channel crashes the process', async () => {
+    vi.spyOn(console, 'log').mockImplementation(() => {})
+    const server = new HomebridgePluginUiServer()
+    let finish!: () => void
+    server.onRequest('/slow', () => new Promise<string>((resolve) => {
+      finish = () => resolve('late')
+    }))
+    fromParent({ action: 'request', requestId: 'slow', path: '/slow' })
+    await vi.waitFor(() => expect(finish).toBeDefined())
+
+    // The settings modal closes: Node sets process.connected to false.
+    ;(process as { connected: boolean }).connected = false
+
+    server.ready()
+    server.pushEvent('tick', 1)
+    finish()
+    await new Promise(resolve => setTimeout(resolve, 10))
+
+    expect(sent).not.toHaveBeenCalled()
+  })
+})
