@@ -53,8 +53,9 @@
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "prepublishOnly": "npm run lint && npm run build",
-    "test": "vitest run",
-    "test-coverage": "echo \"No test-coverage script specified\" && exit 0"
+    "test": "npm run typecheck && vitest run",
+    "test-coverage": "echo \"No test-coverage script specified\" && exit 0",
+    "typecheck": "tsc --project tsconfig.test.json"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^10.0.0",

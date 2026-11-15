@@ -15,7 +15,7 @@ npm run build       # clean dist/, then run BOTH tsc projects — see dual-build
 npm run lint        # eslint via @antfu/eslint-config; prepublishOnly runs lint + build
 npm run lint:fix
 npm run check       # npm install + npm outdated, used to review dependency drift
-npm test            # Vitest specs in test/ (jsdom)
+npm test            # type-check src/ and test/ (npm run typecheck), then the Vitest specs (jsdom)
 ```
 
 Always use `npm run build`, never `tsc` alone — `tsc --project tsconfig.json` silently misses `ui.ts`, and `tsc --project tsconfig.ui.json` misses everything else.

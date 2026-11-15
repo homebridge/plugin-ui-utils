@@ -35,6 +35,7 @@ describe('homebridge.getAccessoryLayout', () => {
   beforeAll(async () => {
     // The Homebridge UI sets this before it injects ui.js into the iframe.
     (window as any)._homebridge = { plugin: {}, serverEnv: {} }
+    // @ts-expect-error ui.ts is a plain script that sets window.homebridge, not a module
     await import('../src/ui')
     homebridge = (window as any).homebridge
 
