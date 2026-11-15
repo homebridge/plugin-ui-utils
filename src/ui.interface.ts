@@ -67,7 +67,10 @@ export interface CachedAccessory {
   context: Record<string, any>
   displayName: string
   UUID: string
-  category: string
+  /**
+   * The HAP accessory category, as a number (for example 5 = lightbulb).
+   */
+  category: number
   services: any[]
 }
 

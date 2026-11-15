@@ -15,6 +15,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - fix(server): send nothing after the UI closes the channel instead of crashing
 - fix(server): name RequestError so logs and stack traces show RequestError
 - refactor(server): replace the internal any types with real ones
+- fix(interface): type a cached accessory's category as a number
 
 ## v2.3.0 (2026-11-10)
 
