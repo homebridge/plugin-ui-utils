@@ -10,7 +10,6 @@
 // versions of each browser, and all of them can construct an EventTarget.
 class HomebridgePluginUi extends EventTarget {
   private origin = ''
-  private lastBodyHeight = 0
   private linkRequests: Promise<unknown>[] = []
 
   public toast = new HomebridgeUiToastHelper(this)
@@ -118,21 +117,12 @@ class HomebridgePluginUi extends EventTarget {
   }
 
   private _monitorFrameHeight() {
-    if (window.ResizeObserver) {
-      // use ResizeObserver if available
-      const resizeObserver = new window.ResizeObserver(() => {
-        this.fixScrollHeight()
-      })
-      resizeObserver.observe(document.body)
-    } else {
-      // fall back to polling
-      setInterval(() => {
-        if (document.body.scrollHeight !== this.lastBodyHeight) {
-          this.lastBodyHeight = document.body.scrollHeight
-          this.fixScrollHeight()
-        }
-      }, 250)
-    }
+    // Every browser the Homebridge UI supports has ResizeObserver, so the old
+    // fall back (checking the height every 250 ms) is gone.
+    const resizeObserver = new window.ResizeObserver(() => {
+      this.fixScrollHeight()
+    })
+    resizeObserver.observe(document.body)
   }
 
   private async _requestResponse(payload): Promise<any> {
