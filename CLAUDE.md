@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - `@homebridge/plugin-ui-utils` — a helper library that plugin authors install to build a custom config UI for their Homebridge plugin.
 - Published as an ESM package (`"type": "module"`). The `exports` map exposes three entry points: the root (`HomebridgePluginUiServer`, `RequestError`, UI interface types), `./ui.interface` (just the type declarations for `window.homebridge`), and `./ui.mock` (the Jest/Karma mock — deliberately not re-exported from the root, because it must never end up in a production build). `tsconfig.json` uses `module: NodeNext`, so a relative import without its `.js` ending fails the build (an extensionless import in a published `.d.ts` turns the types into `any` for NodeNext users).
-- Tests are Vitest specs in `test/` (jsdom, config in `vitest.config.ts`), run with `npm test`. They cover the `window.homebridge` request/response surface, not the full UI; validation is still `npm run lint && npm run build && npm test` plus manual testing against a real Homebridge UI (see `DEVELOPMENT.md`).
+- Tests are Vitest specs in `test/` (jsdom, config in `vitest.config.ts`), run with `npm test`. They cover the `window.homebridge` request/response surface, the server's request handling (`test/server.spec.ts`, node environment), the published types (`test/ui.interface.spec.ts`, checked by `tsc`) and that `ui.ts` builds to a plain script (`test/ui.script.spec.ts`), not the full UI; validation is still `npm run lint && npm run build && npm test` plus manual testing against a real Homebridge UI (see `DEVELOPMENT.md`).
 
 ## Commands
 

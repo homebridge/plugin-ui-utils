@@ -30,6 +30,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - build: put the sources in the source maps and stop emitting declaration maps
 - fix(examples): show a toast when a request fails without a RequestError payload
 - docs: bring the copilot instructions up to date with the tests and type checks
+- docs: point to ui.interface for the types and list what each spec file covers
 
 ## v2.3.0 (2026-11-10)
 

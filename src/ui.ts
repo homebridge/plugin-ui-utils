@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 
 /**
- * This script is injected into a plugins custom settings ui by the Homebridge UI
- * You should not include it in your own code, however you can use it for type information if desired.
- * It provides the interface to interact with the Homebridge UI service.
+ * The Homebridge UI loads this script into a plugin's custom settings UI and
+ * sets `window.homebridge` to the object it creates. Do not include it in your
+ * own code. For its types, use `@homebridge/plugin-ui-utils/ui.interface`.
  */
 
 // Type-only imports written as import() types: a top-level `import` would turn
