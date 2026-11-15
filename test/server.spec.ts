@@ -129,4 +129,34 @@ describe('homebridgePluginUiServer requests', () => {
       data: { message },
     })
   })
+
+  it.each([false, 0, ''])('passes the request body %j to the handler unchanged', async (body) => {
+    const server = new HomebridgePluginUiServer()
+    server.onRequest('/echo', payload => payload)
+
+    fromParent({
+      action: 'request',
+      requestId: 'echo',
+      path: '/echo',
+      body,
+    })
+
+    await expect(responseTo('echo')).resolves.toEqual({ requestId: 'echo', success: true, data: body })
+  })
+
+  it('gives the handler an empty object when the request has no body', async () => {
+    const server = new HomebridgePluginUiServer()
+    server.onRequest('/echo', payload => payload)
+
+    fromParent({ action: 'request', requestId: 'none', path: '/echo' })
+    fromParent({
+      action: 'request',
+      requestId: 'null',
+      path: '/echo',
+      body: null,
+    })
+
+    await expect(responseTo('none')).resolves.toEqual({ requestId: 'none', success: true, data: {} })
+    await expect(responseTo('null')).resolves.toEqual({ requestId: 'null', success: true, data: {} })
+  })
 })
