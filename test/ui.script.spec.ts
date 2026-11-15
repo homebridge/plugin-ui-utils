@@ -14,6 +14,14 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
  * @param source - the TypeScript source
  */
 function compileLikeTheBuild(source: string) {
+  return transpileLikeTheBuild(source).outputText
+}
+
+/**
+ * Compile src/ui.ts as the build does, and return the output with its source map.
+ * @param source - the TypeScript source
+ */
+function transpileLikeTheBuild(source: string) {
   const configPath = resolve(root, 'tsconfig.ui.json')
   const config = ts.getParsedCommandLineOfConfigFile(configPath, {}, {
     ...ts.sys,
@@ -21,7 +29,7 @@ function compileLikeTheBuild(source: string) {
       throw new Error(String(d.messageText))
     },
   })!
-  return ts.transpileModule(source, { compilerOptions: config.options }).outputText
+  return ts.transpileModule(source, { compilerOptions: config.options, fileName: 'ui.ts' })
 }
 
 const source = readFileSync(resolve(root, 'src/ui.ts'), 'utf8')
@@ -52,5 +60,13 @@ describe('dist/ui.js', () => {
     const withImport = `import type { PluginConfig } from './ui.interface.js'\n${source}`
 
     expect(compileLikeTheBuild(withImport)).toMatch(/^\s*export\b/m)
+  })
+
+  it('carries its own source in the source map', () => {
+    // The Homebridge UI copies only dist/ui.js and dist/ui.js.map, and the
+    // package ships no src/, so a map without the source can show nothing.
+    const map = JSON.parse(transpileLikeTheBuild(source).sourceMapText!)
+
+    expect(map.sourcesContent).toEqual([source])
   })
 })
