@@ -1,4 +1,4 @@
-import type { CachedAccessory, PluginMetadata } from '../src/ui.interface.js'
+import type { CachedAccessory, PluginMetadata, ServerEnvMetadata } from '../src/ui.interface.js'
 
 import { describe, expectTypeOf, it } from 'vitest'
 
@@ -14,5 +14,10 @@ describe('ui.interface types', () => {
     expectTypeOf<'https://example.com/fund'>().toExtend<NonNullable<PluginMetadata['funding']>>()
     expectTypeOf<{ type: 'github', url: string }>().toExtend<NonNullable<PluginMetadata['funding']>>()
     expectTypeOf<Array<string | { type: string, url: string }>>().toExtend<NonNullable<PluginMetadata['funding']>>()
+  })
+
+  it('types formAuth as a boolean and allows the env fields the Homebridge UI no longer sends to be missing', () => {
+    expectTypeOf<ServerEnvMetadata['formAuth']>().toEqualTypeOf<boolean>()
+    expectTypeOf<Omit<ServerEnvMetadata['env'], 'ableToConfigureSelf' | 'serviceMode'>>().toExtend<ServerEnvMetadata['env']>()
   })
 })

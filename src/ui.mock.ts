@@ -42,18 +42,16 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
 
   public serverEnv: ServerEnvMetadata = {
     env: {
-      ableToConfigureSelf: true,
       enableAccessories: true,
       enableTerminalAccess: true,
       homebridgeInstanceName: 'Homebridge 1B77',
-      nodeVersion: 'v14.15.0',
+      nodeVersion: 'v24.11.0',
       packageName: 'homebridge-config-ui-x',
-      packageVersion: '4.32.1',
+      packageVersion: '5.30.1',
       platform: 'darwin',
       runningInDocker: false,
       runningInLinux: false,
       dockerOfflineUpdate: false,
-      serviceMode: true,
       temperatureUnits: 'c',
       lang: null,
       instanceId: 'eca2e929f20e8a1292893a2852cba6c10d5efb1a77e20238ce9fe2da8da75b88',

@@ -17,6 +17,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - refactor(server): replace the internal any types with real ones
 - fix(interface): type a cached accessory's category as a number
 - fix(interface): type plugin links as one object and funding in every shape npm allows
+- fix(interface): type formAuth as a boolean and mark two env fields the UI stopped sending
 
 ## v2.3.0 (2026-11-10)
 
