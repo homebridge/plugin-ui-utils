@@ -31,7 +31,9 @@ import process from 'node:process'
  * ```
  */
 export class HomebridgePluginUiServer {
-  private handlers: Record<string, RequestHandler> = {}
+  // A Map, not a plain object: on an object, a path such as 'constructor' or
+  // 'toString' would find a method of Object.prototype and call it as a handler.
+  private handlers = new Map<string, RequestHandler>()
 
   constructor() {
     if (!process.send) {
@@ -87,11 +89,12 @@ export class HomebridgePluginUiServer {
   }
 
   private async processRequest(request: { action: string, requestId: string, path: string, body: any }) {
-    if (this.handlers[request.path]) {
+    const handler = this.handlers.get(request.path)
+    if (handler) {
       try {
         // eslint-disable-next-line no-console
         console.log('Incoming Request:', request.path)
-        const resp = await this.handlers[request.path](request.body || {})
+        const resp = await handler(request.body || {})
         return this.sendResponse(request, resp, true)
       } catch (e) {
         if (e instanceof RequestError) {
@@ -148,7 +151,7 @@ export class HomebridgePluginUiServer {
    *
    */
   public onRequest(path: string, fn: RequestHandler) {
-    this.handlers[path] = fn
+    this.handlers.set(path, fn)
   }
 
   /**
