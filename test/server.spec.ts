@@ -4,7 +4,7 @@ import process from 'node:process'
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { HomebridgePluginUiServer } from '../src/server.js'
+import { HomebridgePluginUiServer, RequestError } from '../src/server.js'
 
 /**
  * The server only runs as a child process the Homebridge UI forks. These tests
@@ -181,5 +181,16 @@ describe('homebridgePluginUiServer after the Homebridge UI closed the channel', 
     await new Promise(resolve => setTimeout(resolve, 10))
 
     expect(sent).not.toHaveBeenCalled()
+  })
+})
+
+describe('requestError', () => {
+  it('is named RequestError, so a log or stack trace says what it is', () => {
+    const error = new RequestError('Failed', { status: 404 })
+
+    expect(error.name).toBe('RequestError')
+    expect(String(error)).toBe('RequestError: Failed')
+    expect(error).toBeInstanceOf(Error)
+    expect(error.requestError).toEqual({ status: 404 })
   })
 })
