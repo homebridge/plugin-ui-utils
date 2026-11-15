@@ -100,7 +100,7 @@ export class HomebridgePluginUiServer {
       try {
         // eslint-disable-next-line no-console
         console.log('Incoming Request:', request.path)
-        const resp = await handler(request.body || {})
+        const resp = await handler(request.body ?? {})
         return this.sendResponse(request, resp, true)
       } catch (e) {
         if (e instanceof RequestError) {
