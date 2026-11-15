@@ -18,7 +18,7 @@ Always reference these instructions first and fall back to search or bash comman
   - `tsconfig.ui.json` — only `ui.ts` → `dist/ui.js` (the script the Homebridge UI injects into the plugin's iframe)
   - Never run `tsc` directly with a single project; each project alone misses part of the output. After a build, `dist/ui.js` existing is the proof the second project ran.
 - Lint: `npm run lint` (fix with `npm run lint:fix`) — ESLint with `@antfu/eslint-config`. `prepublishOnly` runs lint + build, and CI runs both, so run them before finalizing any change.
-- Tests: **there is no test suite**. `npm test` is a stub that exits 0. Do not add test infrastructure unless explicitly asked. Validation is lint + build + (for behaviour changes) manual testing inside a real Homebridge UI, as described in `DEVELOPMENT.md`.
+- Tests: `npm test` type-checks `src/` and `test/` (`npm run typecheck`, which also runs the type-level specs) and then runs the Vitest specs in `test/` (jsdom for the UI side, node for `test/server.spec.ts`). Every bug fix needs a spec that fails without the fix. For behaviour changes, also test inside a real Homebridge UI, as described in `DEVELOPMENT.md`.
 
 ## Project Structure
 
@@ -33,7 +33,7 @@ The library spans two completely different runtime environments — keep each fi
 
 ## API Surface Consistency (important)
 
-`ui.ts`, `ui.interface.ts`, `ui.mock.ts`, and `README.md` all describe the same `window.homebridge` API, but the build does not link them — `ui.ts` compiles in a separate project from its declarations. When adding or changing any method on `HomebridgePluginUi`, update **all four files** in the same change:
+`ui.ts`, `ui.interface.ts`, `ui.mock.ts`, and `README.md` all describe the same `window.homebridge` API. `ui.ts` and `ui.mock.ts` both `implements IHomebridgePluginUi`, so the build catches a signature that drifts; the README is not checked. `ui.ts` must stay a plain script (the Homebridge UI loads it with a `<script>` tag): take types only through `import('./ui.interface.js').X` type aliases, never a top-level `import`. When adding or changing any method on `HomebridgePluginUi`, update **all four files** in the same change:
 
 1. Implementation in `src/ui.ts`
 2. Declaration in `src/ui.interface.ts`
@@ -44,7 +44,7 @@ The same applies on the server side: changes to `HomebridgePluginUiServer` need 
 
 ## Validation
 
-- Always run `npm run lint && npm run build` before finalizing changes; both must pass with no errors.
+- Always run `npm run lint && npm run build && npm test` before finalizing changes; all must pass with no errors.
 - Check `dist/` after the build: it should contain `index.js`, `server.js`, `ui.interface.js`, `ui.mock.js`, **and** `ui.js` (plus `.d.ts` files for everything except `ui.js`'s project output).
 - ESLint also formats Markdown files (`formatters.markdown: true`), so lint any `.md` you touch — only `README.md` and `DEVELOPMENT.md` are excluded.
 
@@ -52,5 +52,5 @@ The same applies on the server side: changes to `HomebridgePluginUiServer` need 
 
 - **`dist/ui.js` missing after build**: you ran `tsc` with only `tsconfig.json`. Use `npm run build`, which runs both projects.
 - **Import sorting lint errors**: the config uses `perfectionist/sort-imports` with grouped order (types → builtin → external → internal → relative → side-effect) and newlines between groups; `npm run lint:fix` resolves these automatically.
-- **ESM pitfalls**: the package is `"type": "module"` — local imports in `src/` use the `.js` extension (e.g. `from './server.js'`), and the examples are ESM too.
+- **ESM pitfalls**: the package is `"type": "module"` — local imports in `src/` use the `.js` extension (e.g. `from './server.js'`); `module: NodeNext` makes the build fail without it. The examples are ESM too.
 - **Message protocol changes**: the request/response protocol (`requestId` correlation, `action: 'request' | 'response' | 'stream' | 'ready'`) is shared with `homebridge-config-ui-x`, which sits between the two ends of this library. Changing a payload shape here breaks compatibility with the Homebridge UI — coordinate any protocol change with that repo.
