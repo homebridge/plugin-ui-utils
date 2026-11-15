@@ -39,7 +39,7 @@ The Homebridge UI itself (the `homebridge-config-ui-x` package) is the intermedi
 
 ### Keep the four UI files in sync
 
-`ui.ts` (implementation), `ui.interface.ts` (declarations), `ui.mock.ts` (mock), and `README.md` (docs) all describe the same `window.homebridge` surface. When you add or change a method on `HomebridgePluginUi`, update all four — there is no compiler link between `ui.ts` and `ui.interface.ts` (they are separate tsc projects), so drift will not be caught by the build.
+`ui.ts` (implementation), `ui.interface.ts` (declarations), `ui.mock.ts` (mock), and `README.md` (docs) all describe the same `window.homebridge` surface. When you add or change a method on `HomebridgePluginUi`, update all four. `HomebridgePluginUi` in `ui.ts` `implements IHomebridgePluginUi` and `MockHomebridgePluginUi` does too, so the build fails when a method's signature drifts from `ui.interface.ts`; the README is not checked. `ui.ts` must stay a plain script (the Homebridge UI loads it with a `<script>` tag), so it takes types from `ui.interface.ts` only through `import('./ui.interface.js').X` type aliases, never a top-level `import`; `test/ui.script.spec.ts` fails if it becomes a module.
 
 ### Request / response correlation
 

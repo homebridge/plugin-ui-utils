@@ -20,6 +20,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - fix(interface): type formAuth as a boolean and mark two env fields the UI stopped sending
 - refactor(ui): remove the EventTarget polyfill that no supported browser needs
 - refactor(ui): remove the 250 ms height check for browsers without ResizeObserver
+- refactor(ui): check the injected script against the published interface when building
 
 ## v2.3.0 (2026-11-10)
 
