@@ -543,8 +543,8 @@ Is an object that contains plugin metadata. Mirrors the `PluginMetadata` type ex
   globalInstall: boolean
   settingsSchema: boolean
   installPath: string
-  links: Record<string, string>[]
-  funding?: Record<string, string>[]
+  links: { npm?: string, homepage?: string, bugs?: string | null }
+  funding?: string | { type: string, url: string } | Array<string | { type: string, url: string }>
 }
 ```
 
