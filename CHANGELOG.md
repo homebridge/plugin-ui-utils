@@ -34,6 +34,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - build: compile for es2024, which node 22 runs in full, instead of the moving esnext
 - chore: declare the supported node versions in engines, as the other homebridge packages do
 - fix(ui): add no global names that a plugin script on the same page could clash with
+- fix(server): answer instead of crashing when a thrown error can not be sent as it is
 
 ## v2.3.0 (2026-11-10)
 
