@@ -12,7 +12,6 @@
       "node"
     ],
     "strict": true,
-    "noImplicitAny": false,
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
