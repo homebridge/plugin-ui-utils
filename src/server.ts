@@ -112,22 +112,36 @@ export class HomebridgePluginUiServer {
         const resp = await handler(request.body ?? {})
         return this.sendResponse(request, resp, true)
       } catch (e) {
-        if (e instanceof RequestError) {
-          return this.sendResponse(request, { message: e.message, error: e.requestError }, false)
-        } else {
-          console.error(e)
-          // A handler can throw any value, not only an Error: `throw null`
-          // used to fail again here, reading .message of null.
-          const message = e instanceof Error
-            ? e.message
-            : String(e)
-          return this.sendResponse(request, { message }, false)
-        }
+        return this.sendError(request, e)
       }
     } else {
       console.error('No Registered Handler:', request.path)
       return this.sendResponse(request, { message: 'Not Found', path: request.path }, false)
     }
+  }
+
+  /**
+   * Answer a request whose handler threw. Nothing here may throw: this runs in
+   * a catch with no catch above it, so a throw would be an unhandled rejection,
+   * which ends the process and leaves the UI waiting for an answer.
+   * @param request - the request to answer
+   * @param e - what the handler threw
+   */
+  private sendError(request: UiRequest, e: unknown) {
+    if (e instanceof RequestError) {
+      try {
+        return this.sendResponse(request, { message: e.message, error: e.requestError }, false)
+      } catch (sendError) {
+        // process.send throws at once when the payload can not become JSON,
+        // for example a circular object or a BigInt. Send the message alone.
+        console.error(sendError)
+        return this.sendResponse(request, { message: e.message }, false)
+      }
+    }
+    console.error(e)
+    return this.sendResponse(request, {
+      message: describeThrown(e),
+    }, false)
   }
 
   /**
@@ -209,6 +223,23 @@ export class RequestError extends Error {
 
     this.name = 'RequestError'
     this.requestError = requestError
+  }
+}
+
+/**
+ * Turn any thrown value into a message. A handler can throw anything, not only
+ * an Error: `.message` of `null` throws, and so does `String()` of an object
+ * with no prototype.
+ * @param e - the thrown value
+ */
+function describeThrown(e: unknown): string {
+  if (e instanceof Error) {
+    return e.message
+  }
+  try {
+    return String(e)
+  } catch {
+    return Object.prototype.toString.call(e)
   }
 }
 

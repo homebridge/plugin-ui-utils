@@ -24,7 +24,12 @@ beforeEach(() => {
   }
   originalSend = process.send
   originalConnected = Object.getOwnPropertyDescriptor(process, 'connected')
-  sent = vi.fn()
+  // Node turns an IPC message into JSON inside process.send, so a value JSON
+  // can not hold (a circular object, a BigInt) throws there. The spy does too.
+  sent = vi.fn((message: unknown) => {
+    JSON.stringify(message)
+    return true
+  })
   process.send = sent as unknown as typeof process.send
   Object.defineProperty(process, 'connected', { configurable: true, value: true, writable: true })
 })
@@ -59,8 +64,13 @@ function fromParent(message: unknown) {
  * @param requestId - the id of the request
  */
 async function responseTo(requestId: string) {
-  await vi.waitFor(() => expect(sent.mock.calls.some(([m]) => m.payload?.requestId === requestId)).toBe(true))
-  return sent.mock.calls.find(([m]) => m.payload?.requestId === requestId)![0].payload
+  // Skip a send that threw: Node delivers nothing for it.
+  const delivered = () => sent.mock.calls
+    .filter((_, i) => sent.mock.results[i].type === 'return')
+    .map(([m]) => m)
+    .find(m => m.payload?.requestId === requestId)
+  await vi.waitFor(() => expect(delivered()).toBeDefined())
+  return delivered().payload
 }
 
 describe('homebridgePluginUiServer requests', () => {
@@ -127,6 +137,49 @@ describe('homebridgePluginUiServer requests', () => {
       requestId: 'thrown',
       success: false,
       data: { message },
+    })
+  })
+
+  it('answers with the reason when a handler throws an object that has no prototype', async () => {
+    const server = new HomebridgePluginUiServer()
+    server.onRequest('/throws', () => {
+      throw Object.create(null)
+    })
+
+    fromParent({ action: 'request', requestId: 'bare', path: '/throws' })
+
+    await expect(responseTo('bare')).resolves.toEqual({
+      requestId: 'bare',
+      success: false,
+      data: { message: '[object Object]' },
+    })
+  })
+
+  it.each([
+    [
+      'a circular object',
+      () => {
+        const payload: Record<string, unknown> = {}
+        payload.self = payload
+        return payload
+      },
+    ],
+    [
+      'a BigInt',
+      () => ({ count: 1n }),
+    ],
+  ])('answers with the message alone when a RequestError carries %s, which JSON can not hold', async (_, payload) => {
+    const server = new HomebridgePluginUiServer()
+    server.onRequest('/fails', () => {
+      throw new RequestError('Failed', payload())
+    })
+
+    fromParent({ action: 'request', requestId: 'unsendable', path: '/fails' })
+
+    await expect(responseTo('unsendable')).resolves.toEqual({
+      requestId: 'unsendable',
+      success: false,
+      data: { message: 'Failed' },
     })
   })
 
