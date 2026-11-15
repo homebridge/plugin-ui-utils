@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import vm from 'node:vm'
 
 import ts from 'typescript'
 import { describe, expect, it } from 'vitest'
@@ -60,6 +61,42 @@ describe('dist/ui.js', () => {
     const withImport = `import type { PluginConfig } from './ui.interface.js'\n${source}`
 
     expect(compileLikeTheBuild(withImport)).toMatch(/^\s*export\b/m)
+  })
+
+  // Every top-level name in a plain script is shared with the plugin's own
+  // scripts on the same page. If both declare a name, the plugin's script
+  // fails with "Identifier has already been declared" and does not run.
+  it('adds no top-level names beyond the three classes v2.3.0 already had', () => {
+    const file = ts.createSourceFile('ui.js', compileLikeTheBuild(source), ts.ScriptTarget.Latest)
+    const names = file.statements.flatMap((statement) => {
+      if (ts.isClassDeclaration(statement) || ts.isFunctionDeclaration(statement)) {
+        return [statement.name!.text]
+      }
+      if (ts.isVariableStatement(statement)) {
+        return statement.declarationList.declarations.map(d => d.name.getText(file))
+      }
+      return []
+    })
+
+    expect(names).toEqual(['HomebridgePluginUi', 'HomebridgeUiToastHelper', 'HomebridgeUiFormHelper'])
+  })
+
+  it('lets a plugin script on the same page declare lastId and uniqueId', () => {
+    // Scripts run in one vm context share their top-level names, as <script>
+    // tags on one page do.
+    const page: Record<string, unknown> = {
+      EventTarget,
+      Event,
+      MessageEvent,
+      _homebridge: { plugin: {}, serverEnv: {} },
+      addEventListener: () => {},
+    }
+    page.window = page
+    const context = vm.createContext(page)
+    vm.runInContext(compileLikeTheBuild(source), context)
+
+    expect(() => vm.runInContext('let lastId = 0; const uniqueId = () => lastId', context)).not.toThrow()
+    expect(page.homebridge).toBeDefined()
   })
 
   it('carries its own source in the source map', () => {

@@ -60,18 +60,24 @@ interface Window {
   }
 }
 
-// Ids link a reply to its request, and a form's events to the form. They are
-// also event names on window.homebridge, so they must never repeat: a counter
-// makes each one unique, and the random part keeps them hard to guess.
-let lastId = 0
-function uniqueId(): string {
-  lastId += 1
-  return `${lastId}-${Math.random().toString(36).substring(2)}`
-}
-
 // No EventTarget polyfill: the Homebridge UI supports only the last two
 // versions of each browser, and all of them can construct an EventTarget.
 class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
+  // A static, not a top-level `let` or `function`: this file runs as a plain
+  // script, so every top-level name is shared with the plugin's own scripts,
+  // and a plugin script that declares the same name would fail to run.
+  private static lastId = 0
+
+  /**
+   * Make an id that links a reply to its request, or a form's events to the
+   * form. Ids are also event names on window.homebridge, so they must never
+   * repeat: the counter makes each one unique, the random part hard to guess.
+   */
+  public static uniqueId(): string {
+    HomebridgePluginUi.lastId += 1
+    return `${HomebridgePluginUi.lastId}-${Math.random().toString(36).substring(2)}`
+  }
+
   private origin = ''
   private linkRequests: Promise<unknown>[] = []
 
@@ -191,7 +197,7 @@ class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
   }
 
   private async _requestResponse<T>(payload: Record<string, unknown>): Promise<T> {
-    const requestId = uniqueId()
+    const requestId = HomebridgePluginUi.uniqueId()
     payload.requestId = requestId
 
     // post message to parent
@@ -325,7 +331,7 @@ class HomebridgeUiToastHelper implements IHomebridgeUiToastHelper {
 }
 
 class HomebridgeUiFormHelper implements IHomebridgeUiFormHelper {
-  private formId = uniqueId()
+  private formId = HomebridgePluginUi.uniqueId()
   private _changeHandle?: FormHandler
   private _submitHandle?: FormHandler
   private _cancelHandle?: FormHandler
