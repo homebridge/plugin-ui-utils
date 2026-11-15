@@ -240,7 +240,7 @@ Returns the lighting mode currently being used by the UI.
 
 > `homebridge.fixScrollHeight(): void`
 
-Force the Homebridge UI to resize the iframe to match `document.body.scrollHeight`. The library already does this automatically via `ResizeObserver` (or a polling fallback) — you should only need to call this manually if you're animating content in a way that bypasses the observer, or if you want to trigger a resize before the next observer tick.
+Force the Homebridge UI to resize the iframe to match `document.body.scrollHeight`. The library already does this automatically via `ResizeObserver` — you should only need to call this manually if you're animating content in a way that bypasses the observer, or if you want to trigger a resize before the next observer tick.
 
 
 ### Requests
