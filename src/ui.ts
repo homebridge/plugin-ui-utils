@@ -6,17 +6,36 @@
  * It provides the interface to interact with the Homebridge UI service.
  */
 
+// Type-only imports written as import() types: a top-level `import` would turn
+// this file into a module, and the Homebridge UI loads it with a plain
+// <script> tag, which can not run one. Implementing the published interface
+// makes the build fail when this file and ui.interface.ts drift apart.
+type IHomebridgePluginUi = import('./ui.interface.js').IHomebridgePluginUi
+type PluginMetadata = import('./ui.interface.js').PluginMetadata
+type ServerEnvMetadata = import('./ui.interface.js').ServerEnvMetadata
+type AccessoryLayoutRoom = import('./ui.interface.js').AccessoryLayoutRoom
+type CachedAccessory = import('./ui.interface.js').CachedAccessory
+type CachedMatterAccessory = import('./ui.interface.js').CachedMatterAccessory
+
+// Set by the Homebridge UI in an inline script before it loads this one.
+// A global interface (this file is a script), so ESLint sees no use of it.
+// eslint-disable-next-line unused-imports/no-unused-vars
+interface Window {
+  _homebridge: {
+    plugin: PluginMetadata
+    serverEnv: ServerEnvMetadata
+  }
+}
+
 // No EventTarget polyfill: the Homebridge UI supports only the last two
 // versions of each browser, and all of them can construct an EventTarget.
-class HomebridgePluginUi extends EventTarget {
+class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
   private origin = ''
   private linkRequests: Promise<unknown>[] = []
 
   public toast = new HomebridgeUiToastHelper(this)
-  // @ts-expect-error - TS2339: Property _homebridge does not exist on type Window & typeof globalThis
   public plugin = window._homebridge.plugin
 
-  // @ts-expect-error - TS2339: Property _homebridge does not exist on type Window & typeof globalThis
   public serverEnv = window._homebridge.serverEnv
 
   constructor() {
@@ -204,15 +223,15 @@ class HomebridgePluginUi extends EventTarget {
     return await this._requestResponse({ action: 'config.schema' })
   }
 
-  public async getCachedAccessories(): Promise<Record<string, any>[]> {
+  public async getCachedAccessories(): Promise<CachedAccessory[]> {
     return await this._requestResponse({ action: 'cachedAccessories.get' })
   }
 
-  public async getCachedMatterAccessories(): Promise<Record<string, any>[]> {
+  public async getCachedMatterAccessories(): Promise<CachedMatterAccessory[]> {
     return await this._requestResponse({ action: 'cachedMatterAccessories.get' })
   }
 
-  public async getAccessoryLayout(): Promise<Record<string, any>[]> {
+  public async getAccessoryLayout(): Promise<AccessoryLayoutRoom[]> {
     return await this._requestResponse({ action: 'accessoryLayout.get' })
   }
 
@@ -357,5 +376,4 @@ class HomebridgeUiFormHelper {
   }
 }
 
-// @ts-expect-error - TS2339: Property _homebridge does not exist on type Window & typeof globalThis
 window.homebridge = new HomebridgePluginUi()

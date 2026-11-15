@@ -5,6 +5,7 @@
       "ESNext",
       "DOM"
     ],
+    "moduleDetection": "legacy",
     "rootDir": "./src",
     "module": "NodeNext",
     "types": [
