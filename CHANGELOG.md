@@ -32,6 +32,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - docs: bring the copilot instructions up to date with the tests and type checks
 - docs: point to ui.interface for the types and list what each spec file covers
 - build: compile for es2024, which node 22 runs in full, instead of the moving esnext
+- chore: declare the supported node versions in engines, as the other homebridge packages do
 
 ## v2.3.0 (2026-11-10)
 
