@@ -16,6 +16,39 @@ type ServerEnvMetadata = import('./ui.interface.js').ServerEnvMetadata
 type AccessoryLayoutRoom = import('./ui.interface.js').AccessoryLayoutRoom
 type CachedAccessory = import('./ui.interface.js').CachedAccessory
 type CachedMatterAccessory = import('./ui.interface.js').CachedMatterAccessory
+type IHomebridgeUiFormHelper = import('./ui.interface.js').IHomebridgeUiFormHelper
+type IHomebridgeUiToastHelper = import('./ui.interface.js').IHomebridgeUiToastHelper
+type PluginConfig = import('./ui.interface.js').PluginConfig
+type PluginFormSchema = import('./ui.interface.js').PluginFormSchema
+type PluginSchema = import('./ui.interface.js').PluginSchema
+
+/**
+ * A message from the Homebridge UI. Which fields are set depends on `action`.
+ */
+interface ParentMessage {
+  action?: string
+  // response
+  requestId?: string
+  success?: boolean
+  data?: unknown
+  // stream
+  event?: string
+  // body-class, inline-style, link-element
+  class?: string
+  style?: string
+  href?: string
+  rel?: string
+}
+
+/**
+ * What a form event carries, sent as a stream event named after the form id.
+ */
+interface FormEventData {
+  formEvent?: 'cancel' | 'change' | 'submit'
+  formData?: Record<string, any>
+}
+
+type FormHandler = (change: Record<string, any>) => any
 
 // Set by the Homebridge UI in an inline script before it loads this one.
 // A global interface (this file is a script), so ESLint sees no use of it.
@@ -43,7 +76,7 @@ class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
     window.addEventListener('message', this._handleIncomingMessage.bind(this), false)
   }
 
-  private async _handleIncomingMessage(e) {
+  private async _handleIncomingMessage(e: MessageEvent<ParentMessage>) {
     // Only accept messages from the parent window. Sibling iframes or popups
     // could otherwise inject styles / links via body-class, inline-style and
     // link-element, or spoof responses.
@@ -75,13 +108,13 @@ class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
         break
       }
       case 'response': {
-        this.dispatchEvent(new MessageEvent(e.data.requestId, {
+        this.dispatchEvent(new MessageEvent(String(e.data.requestId), {
           data: e.data,
         }))
         break
       }
       case 'stream': {
-        this.dispatchEvent(new MessageEvent(e.data.event, {
+        this.dispatchEvent(new MessageEvent(String(e.data.event), {
           data: e.data.data,
         }))
         break
@@ -103,26 +136,26 @@ class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
     }
   }
 
-  public _postMessage(message) {
+  public _postMessage(message: Record<string, unknown>) {
     window.parent.postMessage(message, this.origin || '*')
   }
 
-  private _setBodyClass(e) {
-    document.body.classList.add(e.data.class)
+  private _setBodyClass(e: MessageEvent<ParentMessage>) {
+    document.body.classList.add(e.data.class!)
   }
 
-  private _setInlineStyle(e) {
+  private _setInlineStyle(e: MessageEvent<ParentMessage>) {
     const styleElement = document.createElement('style')
-    styleElement.textContent = e.data.style
+    styleElement.textContent = e.data.style ?? ''
     document.head.appendChild(styleElement)
   }
 
-  private _setLinkElement(e) {
+  private _setLinkElement(e: MessageEvent<ParentMessage>) {
     const request = new Promise<void>((resolve) => {
       const done = () => resolve()
       const linkElement = document.createElement('link')
-      linkElement.setAttribute('href', e.data.href)
-      linkElement.setAttribute('rel', e.data.rel)
+      linkElement.setAttribute('href', e.data.href ?? '')
+      linkElement.setAttribute('rel', e.data.rel ?? '')
       linkElement.onload = done
       linkElement.onerror = done
       document.head.appendChild(linkElement)
@@ -144,7 +177,7 @@ class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
     resizeObserver.observe(document.body)
   }
 
-  private async _requestResponse(payload): Promise<any> {
+  private async _requestResponse<T>(payload: Record<string, unknown>): Promise<T> {
     // generate a random request id, so we can link the response
     const requestId = Math.random().toString(36).substring(2)
     payload.requestId = requestId
@@ -153,13 +186,14 @@ class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
     this._postMessage(payload)
 
     // wait for response
-    return new Promise((resolve, reject) => {
-      const responseHandler = (event) => {
+    return new Promise<T>((resolve, reject) => {
+      const responseHandler = (event: Event) => {
         this.removeEventListener(requestId, responseHandler)
-        if (event.data.success) {
-          resolve(event.data.data)
+        const { data } = event as MessageEvent<ParentMessage>
+        if (data.success) {
+          resolve(data.data as T)
         } else {
-          reject(event.data.data)
+          reject(data.data)
         }
       }
 
@@ -199,7 +233,7 @@ class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
     this._postMessage({ action: 'schema.hide' })
   }
 
-  public createForm(schema, data, submitButton?: string, cancelButton?: string) {
+  public createForm(schema: PluginFormSchema, data: any, submitButton?: string, cancelButton?: string): IHomebridgeUiFormHelper {
     return new HomebridgeUiFormHelper(this, schema, data, submitButton, cancelButton)
   }
 
@@ -207,19 +241,19 @@ class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
     this._postMessage({ action: 'form.end' })
   }
 
-  public async getPluginConfig() {
+  public async getPluginConfig(): Promise<PluginConfig[]> {
     return await this._requestResponse({ action: 'config.get' })
   }
 
-  public async updatePluginConfig(pluginConfig) {
+  public async updatePluginConfig(pluginConfig: PluginConfig[]): Promise<PluginConfig[]> {
     return await this._requestResponse({ action: 'config.update', pluginConfig })
   }
 
-  public async savePluginConfig() {
+  public async savePluginConfig(): Promise<void> {
     return await this._requestResponse({ action: 'config.save' })
   }
 
-  public async getPluginConfigSchema() {
+  public async getPluginConfigSchema(): Promise<PluginSchema> {
     return await this._requestResponse({ action: 'config.schema' })
   }
 
@@ -235,7 +269,7 @@ class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
     return await this._requestResponse({ action: 'accessoryLayout.get' })
   }
 
-  public async request(path: string, body?: any) {
+  public async request(path: string, body?: any): Promise<any> {
     return await this._requestResponse({ action: 'request', path, body })
   }
 
@@ -252,7 +286,7 @@ class HomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
   }
 }
 
-class HomebridgeUiToastHelper {
+class HomebridgeUiToastHelper implements IHomebridgeUiToastHelper {
   constructor(private parent: HomebridgePluginUi) {}
 
   private _postMessage(type: string, message: string, title?: string) {
@@ -278,17 +312,17 @@ class HomebridgeUiToastHelper {
   }
 }
 
-class HomebridgeUiFormHelper {
+class HomebridgeUiFormHelper implements IHomebridgeUiFormHelper {
   private formId = Math.random().toString(36).substring(2)
-  private _changeHandle?: (change) => any
-  private _submitHandle?: (change) => any
-  private _cancelHandle?: (change) => any
+  private _changeHandle?: FormHandler
+  private _submitHandle?: FormHandler
+  private _cancelHandle?: FormHandler
   public end: () => void
 
   constructor(
     private parent: HomebridgePluginUi,
-    schema: Record<string, any>,
-    data: Record<string, any>,
+    schema: PluginFormSchema,
+    data: any,
     submitButton?: string,
     cancelButton?: string,
   ) {
@@ -316,12 +350,13 @@ class HomebridgeUiFormHelper {
     }
   }
 
-  private _eventHandle(event) {
-    switch (event.data.formEvent) {
+  private _eventHandle(event: Event) {
+    const { data } = event as MessageEvent<FormEventData>
+    switch (data.formEvent) {
       case 'change': {
         // general change events
         if (this._changeHandle && typeof this._changeHandle === 'function') {
-          this._changeHandle(event.data.formData)
+          this._changeHandle(data.formData!)
         } else {
           console.info('Homebridge Custom Plugin UI: Missing form onChange handler.')
         }
@@ -330,7 +365,7 @@ class HomebridgeUiFormHelper {
       case 'submit': {
         // submit form events
         if (this._submitHandle && typeof this._submitHandle === 'function') {
-          this._submitHandle(event.data.formData)
+          this._submitHandle(data.formData!)
         } else {
           console.info('Homebridge Custom Plugin UI: Missing form onSubmit handler.')
         }
@@ -339,19 +374,19 @@ class HomebridgeUiFormHelper {
       case 'cancel': {
         // cancel form events
         if (this._cancelHandle && typeof this._cancelHandle === 'function') {
-          this._cancelHandle(event.data.formData)
+          this._cancelHandle(data.formData!)
         } else {
           console.info('Homebridge Custom Plugin UI: Missing form onCancel handler.')
         }
         break
       }
       default: {
-        console.info('Unknown form event type:', event.data)
+        console.info('Unknown form event type:', data)
       }
     }
   }
 
-  public onChange(fn) {
+  public onChange(fn: FormHandler) {
     if (typeof fn !== 'function') {
       console.error('Homebridge Custom Plugin UI: Form onChange handler must be a function.')
       return
@@ -359,7 +394,7 @@ class HomebridgeUiFormHelper {
     this._changeHandle = fn
   }
 
-  public onSubmit(fn) {
+  public onSubmit(fn: FormHandler) {
     if (typeof fn !== 'function') {
       console.error('Homebridge Custom Plugin UI: Form onSubmit handler must be a function.')
       return
@@ -367,7 +402,7 @@ class HomebridgeUiFormHelper {
     this._submitHandle = fn
   }
 
-  public onCancel(fn) {
+  public onCancel(fn: FormHandler) {
     if (typeof fn !== 'function') {
       console.error('Homebridge Custom Plugin UI: Form onCancel handler must be a function.')
       return
