@@ -34,9 +34,22 @@ export interface PluginMetadata {
   globalInstall: boolean
   settingsSchema: boolean
   installPath: string
-  links: Record<string, string>[]
-  funding?: Record<string, string>[]
+  /**
+   * Links for the plugin, for example `{ npm: 'https://www.npmjs.com/package/homebridge-example', homepage: '...', bugs: '...' }`.
+   * Empty for a plugin that is not on npm.
+   */
+  links: {
+    npm?: string
+    homepage?: string
+    bugs?: string | null
+  }
+  /**
+   * The `funding` field of the plugin's package.json, in any of the shapes npm allows.
+   */
+  funding?: PluginFunding
 }
+
+export type PluginFunding = string | { type: string, url: string } | Array<string | { type: string, url: string }>
 
 export interface ServerEnvMetadata {
   theme: string

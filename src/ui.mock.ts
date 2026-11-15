@@ -35,8 +35,9 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
     globalInstall: true,
     settingsSchema: true,
     publicPackage: true,
-    links: [],
-    funding: [],
+    links: {
+      npm: 'https://www.npmjs.com/package/homebridge-test',
+    },
   }
 
   public serverEnv: ServerEnvMetadata = {

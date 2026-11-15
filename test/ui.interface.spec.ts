@@ -1,4 +1,4 @@
-import type { CachedAccessory } from '../src/ui.interface.js'
+import type { CachedAccessory, PluginMetadata } from '../src/ui.interface.js'
 
 import { describe, expectTypeOf, it } from 'vitest'
 
@@ -7,5 +7,12 @@ import { describe, expectTypeOf, it } from 'vitest'
 describe('ui.interface types', () => {
   it('types a cached accessory category as the number Homebridge stores', () => {
     expectTypeOf<CachedAccessory['category']>().toEqualTypeOf<number>()
+  })
+
+  it('types the plugin links as one object and funding as package.json allows it', () => {
+    expectTypeOf<{ npm: string, homepage: string, bugs: null }>().toExtend<PluginMetadata['links']>()
+    expectTypeOf<'https://example.com/fund'>().toExtend<NonNullable<PluginMetadata['funding']>>()
+    expectTypeOf<{ type: 'github', url: string }>().toExtend<NonNullable<PluginMetadata['funding']>>()
+    expectTypeOf<Array<string | { type: string, url: string }>>().toExtend<NonNullable<PluginMetadata['funding']>>()
   })
 })
