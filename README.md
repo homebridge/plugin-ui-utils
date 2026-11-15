@@ -556,7 +556,7 @@ Is an object containing server metadata. Mirrors the `ServerEnvMetadata` type ex
 
 ```ts
 {
-  theme: string                  // 'auto' | 'light' | 'dark' | a named theme
+  theme: string                  // the colour theme, e.g. 'deep-purple' (light or dark: userCurrentLightingMode())
   serverTimestamp: string        // ISO timestamp captured at render time
   formAuth: boolean              // whether the user has to log in to the UI
   env: {

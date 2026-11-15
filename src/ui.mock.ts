@@ -57,7 +57,7 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
       instanceId: 'eca2e929f20e8a1292893a2852cba6c10d5efb1a77e20238ce9fe2da8da75b88',
     },
     formAuth: true,
-    theme: 'auto',
+    theme: 'deep-purple',
     serverTimestamp: new Date().toISOString(),
   }
 
