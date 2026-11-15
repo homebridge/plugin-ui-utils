@@ -558,9 +558,9 @@ Is an object containing server metadata. Mirrors the `ServerEnvMetadata` type ex
 {
   theme: string                  // 'auto' | 'light' | 'dark' | a named theme
   serverTimestamp: string        // ISO timestamp captured at render time
-  formAuth: boolean | 'none'
+  formAuth: boolean              // whether the user has to log in to the UI
   env: {
-    ableToConfigureSelf: boolean
+    ableToConfigureSelf?: boolean  // deprecated: not sent since UI v4.45.0
     dockerOfflineUpdate: boolean
     enableAccessories: boolean
     enableTerminalAccess: boolean
@@ -571,7 +571,7 @@ Is an object containing server metadata. Mirrors the `ServerEnvMetadata` type ex
     platform: string             // darwin, win32, linux, freebsd etc.
     runningInDocker: boolean
     runningInLinux: boolean
-    serviceMode: boolean
+    serviceMode?: boolean        // deprecated: not sent since UI v5.0.0
     temperatureUnits: string     // 'c' | 'f'
     lang: string | null
     instanceId: string

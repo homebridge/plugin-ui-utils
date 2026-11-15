@@ -54,9 +54,15 @@ export type PluginFunding = string | { type: string, url: string } | Array<strin
 export interface ServerEnvMetadata {
   theme: string
   serverTimestamp: string
-  formAuth: boolean | 'none'
+  /**
+   * Whether the user has to log in to the Homebridge UI.
+   */
+  formAuth: boolean
   env: {
-    ableToConfigureSelf: boolean
+    /**
+     * @deprecated Not sent since Homebridge UI v4.45.0.
+     */
+    ableToConfigureSelf?: boolean
     dockerOfflineUpdate: boolean
     enableAccessories: boolean
     enableTerminalAccess: boolean
@@ -67,7 +73,10 @@ export interface ServerEnvMetadata {
     platform: string
     runningInDocker: boolean
     runningInLinux: boolean
-    serviceMode: boolean
+    /**
+     * @deprecated Not sent since Homebridge UI v5.0.0, which always runs in service mode.
+     */
+    serviceMode?: boolean
     temperatureUnits: string
     lang: string | null
     instanceId: string
