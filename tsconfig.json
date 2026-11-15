@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES2024",
     "lib": [
-      "ESNext",
+      "ES2024",
       "DOM"
     ],
     "moduleDetection": "legacy",
