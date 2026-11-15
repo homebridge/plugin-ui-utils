@@ -27,6 +27,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - docs: correct the hideSchemaForm and createForm examples and what theme holds
 - chore: remove the unused ts-node dev dependency
 - chore: remove the .npmignore that the files list in package.json overrides
+- build: put the sources in the source maps and stop emitting declaration maps
 
 ## v2.3.0 (2026-11-10)
 

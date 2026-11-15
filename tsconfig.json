@@ -13,7 +13,7 @@
     ],
     "strict": true,
     "declaration": true,
-    "declarationMap": true,
+    "inlineSources": true,
     "outDir": "./dist",
     "sourceMap": true,
     "esModuleInterop": true,
