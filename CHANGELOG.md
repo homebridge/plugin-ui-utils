@@ -10,6 +10,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - fix(mock): add the missing .js ending so NodeNext projects get the mock's types
 - fix(server): answer Not Found for a path such as constructor or toString
 - fix(server): ignore a null message from the UI instead of crashing
+- fix(server): answer with the reason when a handler throws a value that is not an Error
 
 ## v2.3.0 (2026-11-10)
 

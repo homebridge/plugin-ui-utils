@@ -110,4 +110,23 @@ describe('homebridgePluginUiServer requests', () => {
     fromParent({ action: 'request', requestId: 'after', path: '/hello' })
     await expect(responseTo('after')).resolves.toEqual({ requestId: 'after', success: true, data: 'hi' })
   })
+
+  it.each([
+    [null, 'null'],
+    ['plain text', 'plain text'],
+    [42, '42'],
+  ])('answers with the reason when a handler throws %s, which is not an Error', async (thrown, message) => {
+    const server = new HomebridgePluginUiServer()
+    server.onRequest('/throws', () => {
+      throw thrown
+    })
+
+    fromParent({ action: 'request', requestId: 'thrown', path: '/throws' })
+
+    await expect(responseTo('thrown')).resolves.toEqual({
+      requestId: 'thrown',
+      success: false,
+      data: { message },
+    })
+  })
 })
