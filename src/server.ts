@@ -41,17 +41,15 @@ export class HomebridgePluginUiServer {
       process.exit(1)
     }
 
-    process.addListener('message', (request: any) => {
+    process.addListener('message', (request: unknown) => {
       // The Homebridge UI passes on what the browser sends, so a message can
       // be anything that survives JSON, null included. Reading .action of
       // null would throw here and end the process.
       if (typeof request !== 'object' || request === null) {
         return
       }
-      switch (request.action) {
-        case 'request': {
-          this.processRequest(request)
-        }
+      if ((request as { action?: unknown }).action === 'request') {
+        this.processRequest(request as UiRequest)
       }
     })
 
@@ -94,7 +92,7 @@ export class HomebridgePluginUiServer {
     process.send(message)
   }
 
-  private sendResponse(request: any, data: any, success = true) {
+  private sendResponse(request: UiRequest, data: unknown, success = true) {
     this.send({
       action: 'response',
       payload: {
@@ -105,7 +103,7 @@ export class HomebridgePluginUiServer {
     })
   }
 
-  private async processRequest(request: { action: string, requestId: string, path: string, body: any }) {
+  private async processRequest(request: UiRequest) {
     const handler = this.handlers.get(request.path)
     if (handler) {
       try {
@@ -191,7 +189,7 @@ export class HomebridgePluginUiServer {
    * });
    * ```
    */
-  public pushEvent(event: string, data: any) {
+  public pushEvent(event: string, data: unknown) {
     this.send({
       action: 'stream',
       payload: {
@@ -214,6 +212,20 @@ export class RequestError extends Error {
   }
 }
 
+/**
+ * A request from the plugin's custom UI, as the Homebridge UI passes it on.
+ * The fields come from the browser and are not checked.
+ */
+interface UiRequest {
+  action: 'request'
+  requestId: string
+  path: string
+  body?: unknown
+}
+
+// `any`, not `unknown`, where a plugin author's own code meets these types:
+// a handler written as `(payload: { name: string }) => ...` must still be
+// accepted, and RequestError.requestError is read back by plugin code.
 type RequestResponse = string | number | boolean | null | void | Record<any, any> | Array<any>
 
 type RequestHandler = (arg: any) => Promise<RequestResponse> | RequestResponse
