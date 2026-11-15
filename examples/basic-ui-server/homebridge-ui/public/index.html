@@ -67,9 +67,10 @@
         // show a success toast notification
         homebridge.toast.success('Got Token!', 'Success');
       } catch (e) {
-        // e.message is the RequestError message from server.js,
-        // e.error is the payload passed as its second argument
-        homebridge.toast.error(e.error.message, e.message);
+        // e.message is the RequestError message from server.js, or the reason the
+        // Homebridge UI gives when the server is not running. e.error is the payload
+        // a RequestError carries as its second argument, so it can be missing.
+        homebridge.toast.error(e.error?.message ?? e.message, e.message);
       } finally {
         // remember to un-hide the spinner
         homebridge.hideSpinner();
