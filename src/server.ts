@@ -42,6 +42,12 @@ export class HomebridgePluginUiServer {
     }
 
     process.addListener('message', (request: any) => {
+      // The Homebridge UI passes on what the browser sends, so a message can
+      // be anything that survives JSON, null included. Reading .action of
+      // null would throw here and end the process.
+      if (typeof request !== 'object' || request === null) {
+        return
+      }
       switch (request.action) {
         case 'request': {
           this.processRequest(request)

@@ -100,4 +100,14 @@ describe('homebridgePluginUiServer requests', () => {
 
     await expect(responseTo('r1')).resolves.toEqual({ requestId: 'r1', success: true, data: 'hi' })
   })
+
+  it.each([null, 'text', 42])('ignores the message %s that is not an object and keeps answering', async (message) => {
+    const server = new HomebridgePluginUiServer()
+    server.onRequest('/hello', () => 'hi')
+
+    expect(() => fromParent(message)).not.toThrow()
+
+    fromParent({ action: 'request', requestId: 'after', path: '/hello' })
+    await expect(responseTo('after')).resolves.toEqual({ requestId: 'after', success: true, data: 'hi' })
+  })
 })
