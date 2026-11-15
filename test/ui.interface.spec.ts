@@ -1,4 +1,5 @@
-import type { CachedAccessory, PluginMetadata, ServerEnvMetadata } from '../src/ui.interface.js'
+import type { CachedAccessory, CachedMatterAccessory, IHomebridgePluginUi, PluginMetadata, ServerEnvMetadata } from '../src/ui.interface.js'
+import type { MockHomebridgePluginUi } from '../src/ui.mock.js'
 
 import { describe, expectTypeOf, it } from 'vitest'
 
@@ -19,5 +20,14 @@ describe('ui.interface types', () => {
   it('types formAuth as a boolean and allows the env fields the Homebridge UI no longer sends to be missing', () => {
     expectTypeOf<ServerEnvMetadata['formAuth']>().toEqualTypeOf<boolean>()
     expectTypeOf<Omit<ServerEnvMetadata['env'], 'ableToConfigureSelf' | 'serviceMode'>>().toExtend<ServerEnvMetadata['env']>()
+  })
+})
+
+describe('mockHomebridgePluginUi types', () => {
+  it('returns the same types as the real window.homebridge, so a test can stub in its own data', () => {
+    expectTypeOf<MockHomebridgePluginUi['getCachedAccessories']>().returns.toEqualTypeOf<Promise<CachedAccessory[]>>()
+    expectTypeOf<MockHomebridgePluginUi['getCachedMatterAccessories']>().returns.toEqualTypeOf<Promise<CachedMatterAccessory[]>>()
+    expectTypeOf<MockHomebridgePluginUi['request']>().returns.toEqualTypeOf<ReturnType<IHomebridgePluginUi['request']>>()
+    expectTypeOf<MockHomebridgePluginUi['i18nGetTranslation']>().returns.toEqualTypeOf<ReturnType<IHomebridgePluginUi['i18nGetTranslation']>>()
   })
 })

@@ -35,6 +35,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - chore: declare the supported node versions in engines, as the other homebridge packages do
 - fix(ui): add no global names that a plugin script on the same page could clash with
 - fix(server): answer instead of crashing when a thrown error can not be sent as it is
+- fix(mock): type the mock answers like the real ones, so a test can stub in its own accessories
 
 ## v2.3.0 (2026-11-10)
 

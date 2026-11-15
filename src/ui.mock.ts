@@ -2,6 +2,8 @@
 
 import type {
   AccessoryLayoutRoom,
+  CachedAccessory,
+  CachedMatterAccessory,
   IHomebridgePluginUi,
   IHomebridgeUiFormHelper,
   IHomebridgeUiToastHelper,
@@ -12,6 +14,8 @@ import type {
   ServerEnvMetadata,
 } from './ui.interface.js'
 
+// Return types written out, not inferred: `return []` alone is typed as
+// never[], and a plugin's test could then not stub in its own accessories.
 export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePluginUi {
   public mockPluginConfig: PluginConfig[] = []
 
@@ -100,7 +104,7 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
     return this.mockPluginSchema
   }
 
-  public async request(path: string, body?: any) {
+  public async request(path: string, body?: any): Promise<any> {
     return {}
   }
 
@@ -112,15 +116,15 @@ export class MockHomebridgePluginUi extends EventTarget implements IHomebridgePl
     return 'en'
   }
 
-  public async i18nGetTranslation() {
+  public async i18nGetTranslation(): Promise<Record<string, string>> {
     return {}
   }
 
-  public async getCachedAccessories() {
+  public async getCachedAccessories(): Promise<CachedAccessory[]> {
     return []
   }
 
-  public async getCachedMatterAccessories() {
+  public async getCachedMatterAccessories(): Promise<CachedMatterAccessory[]> {
     return []
   }
 
