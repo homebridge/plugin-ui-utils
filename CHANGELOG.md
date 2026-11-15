@@ -26,6 +26,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - refactor(ui): stop the 5 second stylesheet timer once the stylesheet has loaded
 - docs: correct the hideSchemaForm and createForm examples and what theme holds
 - chore: remove the unused ts-node dev dependency
+- chore: remove the .npmignore that the files list in package.json overrides
 
 ## v2.3.0 (2026-11-10)
 
