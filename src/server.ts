@@ -107,7 +107,12 @@ export class HomebridgePluginUiServer {
           return this.sendResponse(request, { message: e.message, error: e.requestError }, false)
         } else {
           console.error(e)
-          return this.sendResponse(request, { message: (e as Error).message }, false)
+          // A handler can throw any value, not only an Error: `throw null`
+          // used to fail again here, reading .message of null.
+          const message = e instanceof Error
+            ? e.message
+            : String(e)
+          return this.sendResponse(request, { message }, false)
         }
       }
     } else {
