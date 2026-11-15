@@ -14,6 +14,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - fix(server): pass a request body of false, 0 or an empty string to the handler unchanged
 - fix(server): send nothing after the UI closes the channel instead of crashing
 - fix(server): name RequestError so logs and stack traces show RequestError
+- refactor(server): replace the internal any types with real ones
 
 ## v2.3.0 (2026-11-10)
 
