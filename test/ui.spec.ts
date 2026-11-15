@@ -29,24 +29,24 @@ async function nextRequest(postMessage: ReturnType<typeof vi.spyOn>) {
   return postMessage.mock.calls.at(-1)!
 }
 
+let homebridge: any
+
+beforeAll(async () => {
+  // The Homebridge UI sets this before it injects ui.js into the iframe.
+  (window as any)._homebridge = { plugin: {}, serverEnv: {} }
+  // @ts-expect-error ui.ts is a plain script that sets window.homebridge, not a module
+  await import('../src/ui')
+  homebridge = (window as any).homebridge
+
+  // Pin the origin, as the parent's first message does in a real iframe.
+  fromParent({ action: 'body-class', class: 'test' })
+})
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
+
 describe('homebridge.getAccessoryLayout', () => {
-  let homebridge: any
-
-  beforeAll(async () => {
-    // The Homebridge UI sets this before it injects ui.js into the iframe.
-    (window as any)._homebridge = { plugin: {}, serverEnv: {} }
-    // @ts-expect-error ui.ts is a plain script that sets window.homebridge, not a module
-    await import('../src/ui')
-    homebridge = (window as any).homebridge
-
-    // Pin the origin, as the parent's first message does in a real iframe.
-    fromParent({ action: 'body-class', class: 'test' })
-  })
-
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   it('asks the parent for the layout and resolves with its reply', async () => {
     const postMessage = vi.spyOn(window.parent, 'postMessage').mockImplementation(() => {})
     const layout: AccessoryLayoutRoom[] = [
@@ -120,6 +120,35 @@ describe('homebridge.getAccessoryLayout', () => {
     })
 
     await expect(result).resolves.toEqual([])
+  })
+})
+
+describe('homebridge requests', () => {
+  it('gives every request its own id, even when Math.random repeats', async () => {
+    const postMessage = vi.spyOn(window.parent, 'postMessage').mockImplementation(() => {})
+    vi.spyOn(Math, 'random').mockReturnValue(0.5)
+
+    const first = homebridge.request('/first')
+    const second = homebridge.request('/second')
+    await vi.waitFor(() => expect(postMessage).toHaveBeenCalledTimes(2))
+    const [[firstMessage], [secondMessage]] = postMessage.mock.calls as [Record<string, string>, string][]
+
+    expect(firstMessage.requestId).not.toBe(secondMessage.requestId)
+
+    fromParent({
+      action: 'response',
+      requestId: secondMessage.requestId,
+      success: true,
+      data: 'second',
+    })
+    fromParent({
+      action: 'response',
+      requestId: firstMessage.requestId,
+      success: true,
+      data: 'first',
+    })
+    await expect(first).resolves.toBe('first')
+    await expect(second).resolves.toBe('second')
   })
 })
 

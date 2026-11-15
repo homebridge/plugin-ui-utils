@@ -22,6 +22,7 @@ All notable changes to `@homebridge/plugin-ui-utils` will be documented in this 
 - refactor(ui): remove the 250 ms height check for browsers without ResizeObserver
 - refactor(ui): check the injected script against the published interface when building
 - refactor(types): turn on noImplicitAny and type the UI script's messages and helpers
+- fix(ui): give every request and form an id that can not repeat
 
 ## v2.3.0 (2026-11-10)
 
