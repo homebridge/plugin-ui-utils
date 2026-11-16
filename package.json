@@ -64,7 +64,7 @@
     "@antfu/eslint-config": "^10.0.0",
     "@types/node": "^26.6.6",
     "eslint-plugin-format": "^2.0.1",
-    "jsdom": "^31.0.0",
+    "jsdom": "^31.0.1",
     "rimraf": "^6.1.4",
     "typescript": "^6.0.3",
     "vitest": "^5.1.0"
@@ -76,5 +76,8 @@
     "oxfmt": {
       "tinypool": "^2.2.0"
     }
+  },
+  "allowScripts": {
+    "fsevents@2.3.3": true
   }
 }
